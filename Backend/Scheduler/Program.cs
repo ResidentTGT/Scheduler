@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Scheduler
 {
-    static class Program
+    class Program
     {
-        private static string _port = ConfigurationSettings.AppSettings.Get("AppPort");
+        private readonly static string _port = ConfigurationSettings.AppSettings.Get("AppPort");
 
         static void Main(string[] args)
         {

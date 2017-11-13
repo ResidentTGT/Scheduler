@@ -27,10 +27,15 @@ export class BackendApiService {
 
     }
 
+    deleteDetail(id: number | {}) {
+        return this.http
+            .get(`${env.backendUrl}delete-detail?id=${id}`);
+    }
+
     getEquipments(): Observable<Equipment[]> {
         return this.http
             .get(`${env.backendUrl}equipments`)
-            .map(response => response.json() as Equipment[]);
+            .map(response => response.json().map(e => Equipment.fromJSON(e)));
     }
 
     createEquipment(equipment: Equipment): Observable<number> {
@@ -39,6 +44,10 @@ export class BackendApiService {
 
         return this.http.post(`${env.backendUrl}create-equipment`, JSON.stringify(equipment), options)
             .map(resp => resp.json() as number);
+    }
 
+    deleteEquipment(id: number | {}) {
+        return this.http
+            .get(`${env.backendUrl}delete-equipment?id=${id}`);
     }
 }

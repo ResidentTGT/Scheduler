@@ -30,5 +30,31 @@ namespace Scheduler.Database
 
             return detail.Id;
         }
+
+        public void DeleteDetail(int id)
+        {
+            _context.Details.Remove(_context.Details.First(d => d.Id == id));
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Equipment> GetEquipments()
+        {
+            var equipments = _context.Equipments;
+            return equipments;
+        }
+
+        public int CreateEquipment(Equipment equipment)
+        {
+            _context.Equipments.Add(equipment);
+            _context.SaveChanges();
+
+            return equipment.Id;
+        }
+
+        public void DeleteEquipment(int id)
+        {
+            _context.Equipments.Remove(_context.Equipments.First(d => d.Id == id));
+            _context.SaveChanges();
+        }
     }
 }

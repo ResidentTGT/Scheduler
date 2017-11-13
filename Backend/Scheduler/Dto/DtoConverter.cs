@@ -39,5 +39,18 @@ namespace Scheduler.Dto
             return detail;
         }
 
+        internal static EquipmentDto ConvertEquipment(Equipment equipment)
+        {
+            var equipmentDto = new EquipmentDto()
+            {
+                Description = equipment.Description,
+                Id = equipment.Id,
+                Name = equipment.Name,
+                Type = equipment.Type
+            };
+
+            return equipmentDto;
+        }
+
     }
 }

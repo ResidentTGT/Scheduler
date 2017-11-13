@@ -25,8 +25,14 @@ namespace Scheduler.HttpServer
         private void ConfigureRoutes()
         {
             Get["/"] = Index;
+
             Get["/details"] = GetDetails;
             Post["/create-detail"] = CreateDetail;
+            Get["/delete-detail"] = DeleteDetail;
+
+            Get["/equipments"] = GetEquipments;
+            Post["/create-equipment"] = CreateEquipment;
+            Get["/delete-equipment"] = DeleteEquipment;
         }
 
         private object Index(dynamic parameters)
@@ -48,6 +54,36 @@ namespace Scheduler.HttpServer
             var detailId = _dbManager.CreateDetail(DtoConverter.ConvertDetail(requestBody));
 
             return Response.AsJson(detailId);
+        }
+
+        private object DeleteDetail(dynamic parameters)
+        {
+            _dbManager.DeleteDetail(Request.Query["id"]);
+
+            return HttpStatusCode.OK;
+        }
+
+        private object GetEquipments(dynamic parameters)
+        {
+            var equipments = _dbManager.GetEquipments();
+            var dtoEquipments = equipments.Select(e => DtoConverter.ConvertEquipment(e)).ToList();
+
+            return dtoEquipments;
+        }
+
+        private object CreateEquipment(dynamic parameters)
+        {
+            var requestBody = this.Bind<Equipment>();
+            var equipmentId = _dbManager.CreateEquipment(requestBody);
+
+            return Response.AsJson(equipmentId);
+        }
+
+        private object DeleteEquipment(dynamic parameters)
+        {
+            _dbManager.DeleteEquipment(Request.Query["id"]);
+
+            return HttpStatusCode.OK;
         }
     }
 }

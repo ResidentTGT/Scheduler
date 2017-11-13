@@ -1,0 +1,54 @@
+:host {
+    .layout {
+        display: flex;
+    }
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        margin: 15px 30px;
+        color: rgb(63, 81, 181)
+    }
+    .delete-button {
+        min-width: 40px;
+    }
+    .table-header {
+        display: flex;
+        color: black;
+        padding: 0 16px;
+        width: calc(800px - 32px);
+        background-color: rgb(245, 245, 245);
+        font-size: 16px;
+        border-bottom: 1px solid rgb(63, 81, 181);
+        div {
+            margin: 10px;
+        }
+    }
+    mat-list {
+        mat-list-item {
+            height: auto;
+            font-size: 14px;
+            border-bottom: 1px solid rgb(63, 81, 181);
+        }
+        width: 800px;
+        background-color: rgb(245, 245, 245);
+    }
+    span {
+        font-family: 'Roboto-Light';
+        margin: 15px 10px;
+    }
+    .name {
+        width: 300px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    .description {
+        width: 250px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    .type {
+        width: 100px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+}

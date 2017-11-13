@@ -3,6 +3,20 @@ export class Equipment {
     public name: string;
     public description: string;
     public type: EquipmentType;
+
+    static fromJSON(obj: any) {
+        if (!obj) {
+            return null;
+        }
+
+        return Object.assign(
+            new Equipment(),
+            obj,
+            {
+               type: EquipmentType[obj.type]
+            }
+        );
+    }
 }
 
 export enum EquipmentType {

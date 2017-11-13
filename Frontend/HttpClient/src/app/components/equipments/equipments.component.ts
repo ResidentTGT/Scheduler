@@ -16,12 +16,15 @@ export class EquipmentsComponent implements OnInit {
     name: '';
     description: '';
     type: EquipmentType = EquipmentType.Undefined;
+    typeOptions: string[] = [];
 
     constructor(private _api: BackendApiService) {
     }
 
     ngOnInit() {
         this.getEquipments();
+        this.typeOptions = Object.keys(EquipmentType);
+        this.typeOptions = this.typeOptions.slice(this.typeOptions.length / 2);
     }
 
     private getEquipments() {
@@ -35,10 +38,10 @@ export class EquipmentsComponent implements OnInit {
     }
 
     public createEquipment() {
-        const equipment: Equipment = {
+        const equipment: any = {
             name: this.name,
             description: this.description,
-            type: this.type
+            type: this.type === EquipmentType.Undefined ? EquipmentType[this.type] : this.type
         };
 
         this._api.createEquipment(equipment)
@@ -50,6 +53,15 @@ export class EquipmentsComponent implements OnInit {
                 equipment.id = id;
                 this.equipments.push(equipment);
             });
+    }
+
+    public deleteEquipment(equipment: Equipment) {
+        this._api.deleteEquipment(equipment.id)
+            .catch(resp => {
+                alert(`Не удалось удалить оборудование по причине: ${JSON.stringify(resp.json())}`);
+                return Observable.empty();
+            })
+            .subscribe(_ => this.equipments.splice(this.equipments.indexOf(equipment), 1));
     }
 
 }

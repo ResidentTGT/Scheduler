@@ -34,8 +34,8 @@
                 <span class="routeId">
                     {{detail.routeId}}
                 </span>
-                <button routerLink="/" mat-button>
-                    <i class="material-icons">face</i>
+                <button  mat-button class="delete-button" (click)="deleteDetail(detail)">
+                    <mat-icon>delete</mat-icon>
                 </button>
             </mat-list-item>
         </mat-list>

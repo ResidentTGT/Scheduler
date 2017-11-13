@@ -1,3 +1,50 @@
-<p>
-  equipment works!
-</p>
+<div class="layout">
+    <div class="table">
+        <div class="table-header">
+            <div class="name">
+                Наименование
+            </div>
+            <div class="description">
+                Описание
+            </div>
+            <div class="type">
+                Тип
+            </div>
+
+        </div>
+        <mat-list>
+            <mat-list-item *ngFor="let equipment of equipments">
+                <span class="name">
+                    {{equipment.name}}
+                </span>
+                <span class="description">
+                    {{equipment.description}}
+                </span>
+                <span class="type">
+                    {{equipment.type|equipmentType}}
+                </span>
+                <button mat-button class="delete-button" (click)="deleteEquipment(equipment)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-list-item>
+        </mat-list>
+    </div>
+
+    <div class="form-container">
+
+        <mat-form-field>
+            <input matInput [(ngModel)]="name" placeholder="Наименование">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="description" placeholder="Описание">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select placeholder="Тип оборудования" [(ngModel)]="type">
+                <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption">
+                    {{ typeOption|equipmentType }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-button (click)="createEquipment()">Добавить оборудование</button>
+    </div>
+</div>

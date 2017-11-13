@@ -8,11 +8,14 @@
         margin: 15px 30px;
         color: rgb(63, 81, 181)
     }
+    .delete-button {
+        min-width: 40px;
+    }
     .table-header {
         display: flex;
         color: black;
         padding: 0 16px;
-        width: calc(950px - 32px);
+        width: calc(1000px - 32px);
         background-color: rgb(245, 245, 245);
         font-size: 16px;
         border-bottom: 1px solid rgb(63, 81, 181);
@@ -26,17 +29,12 @@
             font-size: 14px;
             border-bottom: 1px solid rgb(63, 81, 181);
         }
-        width: 950px;
+        width: 1000px;
         background-color: rgb(245, 245, 245);
     }
     span {
         font-family: 'Roboto-Light';
         margin: 15px 10px;
-    }
-    .id {
-        width: 50px;
-        word-wrap: break-word;
-        word-break: break-word;
     }
     .title {
         width: 300px;

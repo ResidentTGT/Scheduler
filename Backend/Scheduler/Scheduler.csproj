@@ -63,6 +63,7 @@
     <Compile Include="Database\DbManager.cs" />
     <Compile Include="Dto\DtoConverter.cs" />
     <Compile Include="Database\SchedulerContext.cs" />
+    <Compile Include="Dto\EquipmentDto.cs" />
     <Compile Include="Helpers\ConsoleClosure.cs" />
     <Compile Include="HttpServer\AppNancyBootstraper.cs" />
     <Compile Include="HttpServer\HttpServerFactory.cs" />

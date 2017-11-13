@@ -35,7 +35,7 @@ export class DetailsComponent implements OnInit {
     }
 
     public createDetail() {
-        const detail: Detail = {
+       const detail: Detail = {
             title: this.title,
             description: this.description,
             cost: this.cost,
@@ -50,6 +50,15 @@ export class DetailsComponent implements OnInit {
                 detail.id = id;
                 this.details.push(detail);
             });
+    }
+
+    public deleteDetail(detail: Detail) {
+        this._api.deleteDetail(detail.id)
+            .catch(resp => {
+                alert(`Не удалось удалить деталь по причине: ${JSON.stringify(resp.json())}`);
+                return Observable.empty();
+            })
+            .subscribe(_ => this.details.splice(this.details.indexOf(detail), 1));
     }
 
 }

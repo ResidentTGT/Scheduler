@@ -15,6 +15,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { DetailsComponent } from './components/details/details.component';
 import { BackendApiService } from './services/backend-api.service';
 import { EquipmentsComponent } from './components/equipments/equipments.component';
+import { EquipmentTypePipe } from './pipes/equipment-type.pipe';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -28,7 +29,8 @@ const appRoutes: Routes = [
         RootComponent,
         HeaderComponent,
         DetailsComponent,
-        EquipmentsComponent
+        EquipmentsComponent,
+        EquipmentTypePipe
     ],
     imports: [
         RouterModule.forRoot(appRoutes),

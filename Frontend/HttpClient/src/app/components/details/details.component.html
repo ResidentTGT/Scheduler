@@ -1,3 +1,60 @@
-<p>
-  details works!
-</p>
+<div class="layout">
+    <div class="table">
+        <div class="table-header">
+            <div class="id">
+                Id
+            </div>
+            <div class="title">
+                Наименование
+            </div>
+            <div class="description">
+                Описание
+            </div>
+            <div class="cost">
+                Стоимость
+            </div>
+            <div class="is-purchased">
+                Покупное
+            </div>
+            <div class="routeId">
+                Маршрут
+            </div>
+        </div>
+        <mat-list>
+            <mat-list-item *ngFor="let detail of details">
+                <span class="id">
+                    {{detail.id}}
+                </span>
+                <span class="title">
+                    {{detail.title}}
+                </span>
+                <span class="description">
+                    {{detail.description}}
+                </span>
+                <span class="cost">
+                    {{detail.cost}}
+                </span>
+                <span class="is-purchased">
+                    {{detail.isPurchased?"да":"нет"}}
+                </span>
+                <span class="routeId">
+                    {{detail.routeId}}
+                </span>
+            </mat-list-item>
+        </mat-list>
+    </div>
+
+    <div class="form-container">
+        <mat-slide-toggle [(ngModel)]="isPurchased">Покупное</mat-slide-toggle>
+        <mat-form-field>
+            <input matInput [(ngModel)]="title" placeholder="Наименование">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="description" placeholder="Описание">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="cost" placeholder="Стоимость">
+        </mat-form-field>
+        <button mat-button (click)="createDetail()">Создать деталь</button>
+    </div>
+</div>

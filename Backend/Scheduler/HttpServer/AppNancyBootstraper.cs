@@ -35,6 +35,7 @@ namespace Scheduler.HttpServer
             pipelines.AfterRequest += ctx =>
             {
                 ctx.Response.WithHeader("Access-Control-Allow-Origin", "*");
+                ctx.Response.WithHeader("Access-Control-Allow-Headers", "Content-Type");
             };
         }
     }

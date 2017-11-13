@@ -1,5 +1,8 @@
 ﻿using Nancy;
+using Nancy.ModelBinding;
 using Scheduler.Database;
+using Scheduler.Dto;
+using Scheduler.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +26,7 @@ namespace Scheduler.HttpServer
         {
             Get["/"] = Index;
             Get["/details"] = GetDetails;
+            Post["/create-detail"] = CreateDetail;
         }
 
         private object Index(dynamic parameters)
@@ -33,7 +37,17 @@ namespace Scheduler.HttpServer
         private object GetDetails(dynamic parameters)
         {
             var details = _dbManager.GetDetails();
-            return details;
+            var dtoDetails = details.Select(d => DtoConverter.ConvertDetail(d)).ToList();
+
+            return dtoDetails;
+        }
+
+        private object CreateDetail(dynamic parameters)
+        {
+            var requestBody = this.Bind<DetailDto>();
+            var detailId = _dbManager.CreateDetail(DtoConverter.ConvertDetail(requestBody));
+
+            return detailId;
         }
     }
 }

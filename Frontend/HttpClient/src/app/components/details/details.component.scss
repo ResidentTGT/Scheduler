@@ -1,0 +1,66 @@
+:host {
+    .layout {
+        display: flex;
+    }
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        margin: 15px 30px;
+        color:rgb(63, 81, 181)
+    }
+    .table-header {
+        display: flex;
+        color: black;
+        padding: 0 16px;
+        width: calc(1100px - 32px);
+        background-color: rgb(245, 245, 245);
+        font-size: 18px;
+        border-bottom: 1px solid rgb(63, 81, 181);
+        div {
+            margin: 10px;
+        }
+    }
+    mat-list {
+        font-size: 14px;
+        mat-list-item {
+            height: auto;
+            border-bottom: 1px solid rgb(63, 81, 181);
+        }
+        width: 1100px;
+        background-color: rgb(245, 245, 245);
+    }
+    span {
+        font-family: 'Roboto-Light';
+        margin: 15px 10px;
+    }
+    .id {
+        width: 50px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    .title {
+        width: 300px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    .description {
+        width: 300px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    .cost {
+        width: 100px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    .is-purchased {
+        width: 82px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    .routeId {
+        width: 82px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+}

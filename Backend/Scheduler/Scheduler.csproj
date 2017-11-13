@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\DbManager.cs" />
+    <Compile Include="Dto\DtoConverter.cs" />
     <Compile Include="Database\SchedulerContext.cs" />
     <Compile Include="Helpers\ConsoleClosure.cs" />
     <Compile Include="HttpServer\AppNancyBootstraper.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Model\Route.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Dto\DetailDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,11 +1,9 @@
 @import '~@angular/material/_theming.scss';
 :host {
     z-index: 900;
-    @include mat-elevation(4);
 }
 
 .title {
-    font-weight: 500;
     font-size: 17px;
     img {
         height: 24px;
@@ -15,13 +13,13 @@
 }
 
 .active {
-    background-color: rgb(201, 46, 42);
+    background-color: rgb(79, 97, 197);
 }
 
 a {
-    // font-weight: 400;
+    color: white;
+    font-family: 'Roboto-Light';
     opacity: 0.87;
-    font-size: 15px;
+    font-size: 17px;
     margin: 0 6px;
-    font-weight: 400;
 }

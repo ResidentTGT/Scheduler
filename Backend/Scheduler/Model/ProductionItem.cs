@@ -21,12 +21,8 @@ namespace Scheduler.Model
 
         public bool IsNode { get; set; } = false;
 
-        public List<int> DetailsIds { get; set; }
+        public virtual List<ProductionItemQuantum> ProductionItemQuantums { get; set; }
 
-        public List<int> DetailsCounts { get; set; }
-
-        public virtual List<Detail> Details { get; set; }
-
-        public virtual List<Order> Orders { get; set; }
+        public virtual List<OrderQuantum> OrderQuantums { get; set; }
     }
 }

@@ -15,21 +15,38 @@ namespace Scheduler.Database
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Equipment>()
-                .HasMany(e => e.Operations)
-                .WithRequired(o => o.Equipment);
+            modelBuilder.Entity<Operation>()
+               .HasRequired(e => e.Equipment)
+               .WithMany(o => o.Operations);
+
+            modelBuilder.Entity<Operation>()
+               .HasRequired(e => e.Detail)
+               .WithMany(o => o.Operations);
+
 
             modelBuilder.Entity<Order>()
-                .HasMany(o => o.ProductionItems)
-                .WithMany(pi => pi.Orders);
+                .HasMany(o => o.OrderQuantums)
+                .WithRequired(poi => poi.Order);
+
 
             modelBuilder.Entity<ProductionItem>()
-                .HasMany(p => p.Details)
-                .WithMany(d => d.ProductionItems);
+                .HasMany(p => p.ProductionItemQuantums)
+                .WithRequired(d => d.ProductionItem);
+
+
+            modelBuilder.Entity<OrderQuantum>()
+                .HasRequired(oq => oq.ProductionItem)
+                .WithMany(pi => pi.OrderQuantums);
+
 
             modelBuilder.Entity<Detail>()
                 .HasOptional(d => d.Route)
                 .WithOptionalDependent(r => r.Detail);
+
+            modelBuilder.Entity<ProductionItemQuantum>()
+                .HasRequired(piq => piq.Detail)
+                .WithMany(pi => pi.ProductionItemQuantums);
+
 
             modelBuilder.Entity<Route>()
                 .HasMany(r => r.Operations)
@@ -44,9 +61,13 @@ namespace Scheduler.Database
 
         public virtual DbSet<Detail> Details { get; set; }
 
+        public virtual DbSet<ProductionItemQuantum> ProductionItemQuantums { get; set; }
+
         public virtual DbSet<ProductionItem> ProductionItems { get; set; }
 
         public virtual DbSet<Order> Orders { get; set; }
+
+        public virtual DbSet<OrderQuantum> OrderQuantums { get; set; }
 
         public virtual DbSet<Route> Routes { get; set; }
 

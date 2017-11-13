@@ -29,10 +29,6 @@ namespace Scheduler.Model
 
         public DateTime PlannedEndDate { get; set; }
 
-        public List<int> ProductionItemsIds { get; set; }
-
-        public List<int> ProductionItemsCounts { get; set; }
-
-        public virtual List<ProductionItem> ProductionItems { get; set; }
+        public virtual List<OrderQuantum> OrderQuantums { get; set; }
     }
 }

@@ -14,10 +14,12 @@ import { RootComponent } from './components/root/root.component';
 import { HeaderComponent } from './components/header/header.component';
 import { DetailsComponent } from './components/details/details.component';
 import { BackendApiService } from './services/backend-api.service';
+import { EquipmentsComponent } from './components/equipments/equipments.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/', pathMatch: 'full' },
     { path: 'details', component: DetailsComponent },
+    { path: 'equipment', component: EquipmentsComponent },
     // { path: '**', component: PageNotFoundComponent },
 ];
 
@@ -25,7 +27,8 @@ const appRoutes: Routes = [
     declarations: [
         RootComponent,
         HeaderComponent,
-        DetailsComponent
+        DetailsComponent,
+        EquipmentsComponent
     ],
     imports: [
         RouterModule.forRoot(appRoutes),

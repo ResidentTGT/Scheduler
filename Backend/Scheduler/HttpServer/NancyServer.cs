@@ -47,7 +47,7 @@ namespace Scheduler.HttpServer
             var requestBody = this.Bind<DetailDto>();
             var detailId = _dbManager.CreateDetail(DtoConverter.ConvertDetail(requestBody));
 
-            return detailId;
+            return Response.AsJson(detailId);
         }
     }
 }

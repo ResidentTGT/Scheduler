@@ -36,14 +36,11 @@ export class DetailsComponent implements OnInit {
 
     public createDetail() {
         const detail: Detail = {
-            id: 0,
             title: this.title,
             description: this.description,
             cost: this.cost,
             isPurchased: this.isPurchased,
-            routeId: 0
         };
-
         this._api.createDetail(detail)
             .catch(resp => {
                 alert(`Не удалось добавить деталь по причине: ${JSON.stringify(resp.json())}`);

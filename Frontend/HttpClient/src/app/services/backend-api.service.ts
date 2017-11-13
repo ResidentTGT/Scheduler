@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import { environment as env } from '../../environments/environment';
 import { Detail } from '../models/detail';
 import { RequestOptions, Headers } from '@angular/http';
+import { Equipment } from '../models/equipment';
 
 
 @Injectable()
@@ -22,6 +23,21 @@ export class BackendApiService {
         const options = new RequestOptions({ headers: headers });
 
         return this.http.post(`${env.backendUrl}create-detail`, JSON.stringify(detail), options)
+            .map(resp => resp.json() as number);
+
+    }
+
+    getEquipments(): Observable<Equipment[]> {
+        return this.http
+            .get(`${env.backendUrl}equipments`)
+            .map(response => response.json() as Equipment[]);
+    }
+
+    createEquipment(equipment: Equipment): Observable<number> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const options = new RequestOptions({ headers: headers });
+
+        return this.http.post(`${env.backendUrl}create-equipment`, JSON.stringify(equipment), options)
             .map(resp => resp.json() as number);
 
     }

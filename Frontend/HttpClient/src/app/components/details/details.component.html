@@ -1,9 +1,6 @@
 <div class="layout">
     <div class="table">
         <div class="table-header">
-            <div class="id">
-                Id
-            </div>
             <div class="title">
                 Наименование
             </div>
@@ -22,9 +19,6 @@
         </div>
         <mat-list>
             <mat-list-item *ngFor="let detail of details">
-                <span class="id">
-                    {{detail.id}}
-                </span>
                 <span class="title">
                     {{detail.title}}
                 </span>
@@ -40,6 +34,9 @@
                 <span class="routeId">
                     {{detail.routeId}}
                 </span>
+                <button routerLink="/" mat-button>
+                    <i class="material-icons">face</i>
+                </button>
             </mat-list-item>
         </mat-list>
     </div>

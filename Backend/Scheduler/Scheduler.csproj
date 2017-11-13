@@ -66,8 +66,17 @@
     <Compile Include="HttpServer\HttpServerFactory.cs" />
     <Compile Include="HttpServer\NancyServer.cs" />
     <Compile Include="Log\Logger.cs" />
+    <Compile Include="Migrations\201711130032136_InitialDB.cs" />
+    <Compile Include="Migrations\201711130032136_InitialDB.Designer.cs">
+      <DependentUpon>201711130032136_InitialDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\Detail.cs" />
+    <Compile Include="Model\ProductionItem.cs" />
     <Compile Include="Model\Equipment.cs" />
     <Compile Include="Model\Operation.cs" />
+    <Compile Include="Model\Order.cs" />
+    <Compile Include="Model\Route.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -86,6 +95,11 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201711130032136_InitialDB.resx">
+      <DependentUpon>201711130032136_InitialDB.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -36,5 +36,7 @@ namespace Scheduler.Model
 
         public Equipment Equipment { get; set; }
         public int? EquipmentId { get; set; }
+
+        public virtual List<Route> Routes { get; set; }
     }
 }

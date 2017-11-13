@@ -1,0 +1,36 @@
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+$roboto-font-path: '../node_modules/roboto-fontface/fonts';
+@import "node_modules/roboto-fontface/css/roboto/sass/roboto-fontface.scss";
+
+@import '~@angular/material/theming';
+@include mat-core();
+$jeton-primary: mat-palette($mat-red, 600, 500, 300);
+$jeton-accent: mat-palette($mat-blue-grey, 400, 600, 900);
+$jeton-warn: mat-palette($mat-orange, 500, 900);
+$jeton-theme: mat-dark-theme($jeton-primary, $jeton-accent, $jeton-warn);
+@include angular-material-theme($jeton-theme);
+
+
+body {
+    font-family: 'Roboto-Light';
+    // background-color: #FAFAFA;
+    // background-color: rgba(0,0,0,.87);
+    background-color: map-get($mat-dark-theme-background, background);
+    color: white;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin: 0;
+}
+
+mat-toolbar.site-header {
+    min-height: 56px;
+
+    mat-toolbar-row {
+        height: 56px;
+    }
+}
+
+html {
+    height: 100%;
+}

@@ -1,0 +1,19 @@
+$header-height:56px;
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+
+.header {
+    height: #{$header-height};
+    width: 100%;
+}
+
+main {
+    flex: 1;
+    height: calc(100% - #{$header-height});
+    max-height: calc(100% - #{$header-height});
+    position: relative;
+}

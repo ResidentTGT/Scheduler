@@ -64,6 +64,8 @@
     <Compile Include="Dto\DtoConverter.cs" />
     <Compile Include="Database\SchedulerContext.cs" />
     <Compile Include="Dto\EquipmentDto.cs" />
+    <Compile Include="Dto\OrderDto.cs" />
+    <Compile Include="Dto\OrderQuantumDto.cs" />
     <Compile Include="Helpers\ConsoleClosure.cs" />
     <Compile Include="HttpServer\AppNancyBootstraper.cs" />
     <Compile Include="HttpServer\HttpServerFactory.cs" />
@@ -72,6 +74,10 @@
     <Compile Include="Migrations\201711130852206_InitialDB.cs" />
     <Compile Include="Migrations\201711130852206_InitialDB.Designer.cs">
       <DependentUpon>201711130852206_InitialDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711162040513_AddedItemsCountFieldInOrder.cs" />
+    <Compile Include="Migrations\201711162040513_AddedItemsCountFieldInOrder.Designer.cs">
+      <DependentUpon>201711162040513_AddedItemsCountFieldInOrder.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Detail.cs" />
@@ -105,6 +111,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201711130852206_InitialDB.resx">
       <DependentUpon>201711130852206_InitialDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711162040513_AddedItemsCountFieldInOrder.resx">
+      <DependentUpon>201711162040513_AddedItemsCountFieldInOrder.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -33,6 +33,10 @@ namespace Scheduler.HttpServer
             Get["/equipments"] = GetEquipments;
             Post["/create-equipment"] = CreateEquipment;
             Get["/delete-equipment"] = DeleteEquipment;
+
+            Get["/orders"] = GetOrders;
+            //Post["/create-order"] = CreateOrder;
+            //Get["/delete-order"] = DeleteOrder;
         }
 
         private object Index(dynamic parameters)
@@ -40,6 +44,7 @@ namespace Scheduler.HttpServer
             return View["wwwroot/index.html"];
         }
 
+        #region DetailsApi
         private object GetDetails(dynamic parameters)
         {
             var details = _dbManager.GetDetails();
@@ -62,7 +67,9 @@ namespace Scheduler.HttpServer
 
             return HttpStatusCode.OK;
         }
+        #endregion
 
+        #region EquipmentApi
         private object GetEquipments(dynamic parameters)
         {
             var equipments = _dbManager.GetEquipments();
@@ -84,6 +91,16 @@ namespace Scheduler.HttpServer
             _dbManager.DeleteEquipment(Request.Query["id"]);
 
             return HttpStatusCode.OK;
+        }
+        #endregion
+
+
+        private object GetOrders(dynamic parameters)
+        {
+            var orders = _dbManager.GetOrders();
+            var dtoOrders = orders.Select(d => DtoConverter.ConvertOrder(d)).ToList();
+
+            return dtoOrders;
         }
     }
 }

@@ -17,10 +17,11 @@ namespace Scheduler.Database
             _context = new SchedulerContext();
         }
 
+        #region Details
         public IEnumerable<Detail> GetDetails()
         {
             var details = _context.Details;
-            return details;
+            return details as IEnumerable<Detail>;
         }
 
         public int CreateDetail(Detail detail)
@@ -36,11 +37,13 @@ namespace Scheduler.Database
             _context.Details.Remove(_context.Details.First(d => d.Id == id));
             _context.SaveChanges();
         }
+        #endregion
 
+        #region EquipmentMethods
         public IEnumerable<Equipment> GetEquipments()
         {
             var equipments = _context.Equipments;
-            return equipments;
+            return equipments as IEnumerable<Equipment>;
         }
 
         public int CreateEquipment(Equipment equipment)
@@ -56,5 +59,27 @@ namespace Scheduler.Database
             _context.Equipments.Remove(_context.Equipments.First(d => d.Id == id));
             _context.SaveChanges();
         }
+        #endregion
+
+        #region Orders
+        public IEnumerable<Order> GetOrders()
+        {
+            var orders = _context.Orders;
+            return orders as IEnumerable<Order>;
+        }
+        public int CreateOrder(Order Order)
+        {
+            _context.Orders.Add(Order);
+            _context.SaveChanges();
+
+            return Order.Id;
+        }
+
+        public void DeleteOrder(int id)
+        {
+            _context.Orders.Remove(_context.Orders.First(d => d.Id == id));
+            _context.SaveChanges();
+        }
+        #endregion
     }
 }

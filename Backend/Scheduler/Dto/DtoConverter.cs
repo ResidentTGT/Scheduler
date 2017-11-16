@@ -39,6 +39,8 @@ namespace Scheduler.Dto
             return detail;
         }
 
+        #region EquipmentConvert
+
         internal static EquipmentDto ConvertEquipment(Equipment equipment)
         {
             var equipmentDto = new EquipmentDto()
@@ -51,6 +53,46 @@ namespace Scheduler.Dto
 
             return equipmentDto;
         }
+        #endregion
+
+        #region OrderConvert
+        internal static OrderDto ConvertOrder(Order order)
+        {
+            var orderDto = new OrderDto()
+            {
+                Id = order.Id,
+                Description = order.Description,
+                Name = order.Name,
+                PlannedBeginDate = order.PlannedBeginDate,
+                PlannedEndDate = order.PlannedEndDate,
+                State = order.State,
+                OrderQuantumsDtos = order.OrderQuantums.Select(d => ConvertOrderQuantum(d)).ToList()
+            };
+
+            return orderDto;
+        }
+
+
+        #endregion
+
+        #region OrderQuantumConvert
+        internal static OrderQuantumDto ConvertOrderQuantum(OrderQuantum orderQuantum)
+        {
+            var orderQuantumDto = new OrderQuantumDto()
+            {
+                Id = orderQuantum.Id,
+                Count = orderQuantum.Count,
+                ItemsCountInOnePart = orderQuantum.ItemsCountInOnePart,
+                OrderId = orderQuantum.OrderId,
+                ProductionItemId = orderQuantum.ProductionItemId,
+                ProductionItemTitle = orderQuantum.ProductionItem.Title
+            };
+
+            return orderQuantumDto;
+        }
+
+
+        #endregion
 
     }
 }

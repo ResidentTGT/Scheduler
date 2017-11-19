@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     MatButtonModule, MatToolbarModule, MatIconModule, MatPaginatorModule, MatListModule, MatProgressSpinnerModule, MatSlideToggleModule,
     MatGridListModule, MatDatepickerModule, MatFormFieldModule, MatNativeDateModule, MatInputModule, MatSliderModule, MatSliderChange,
-    MatSelectModule, MatCardModule, MatDialogModule
+    MatSelectModule, MatCardModule, MatDialogModule, MAT_DATE_LOCALE
 } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
@@ -22,6 +22,8 @@ import { CreateProductionItemComponent } from './components/create-production-it
 import { OperationsComponent } from './components/operations/operations.component';
 import { CreateOperationComponent } from './components/create-operation/create-operation.component';
 import { OperationTypePipe } from './pipes/operation-type.pipe';
+import { CreateOrderComponent } from './components/create-order/create-order.component';
+import { OrderStatePipe } from './pipes/order-state.pipe';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -45,7 +47,9 @@ const appRoutes: Routes = [
         CreateProductionItemComponent,
         OperationsComponent,
         CreateOperationComponent,
-        OperationTypePipe
+        OperationTypePipe,
+        CreateOrderComponent,
+        OrderStatePipe
     ],
     imports: [
         RouterModule.forRoot(appRoutes),
@@ -70,8 +74,12 @@ const appRoutes: Routes = [
         MatCardModule,
         MatDialogModule
     ],
-    providers: [BackendApiService],
+    providers: [BackendApiService, { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' }],
     bootstrap: [RootComponent],
-    entryComponents: [CreateProductionItemComponent, CreateOperationComponent]
+    entryComponents: [
+        CreateProductionItemComponent,
+        CreateOperationComponent,
+        CreateOrderComponent
+    ]
 })
 export class AppModule { }

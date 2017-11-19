@@ -1,0 +1,58 @@
+$table-width:1100px;
+:host {
+    .layout {
+        display: flex;
+    }
+    .delete-button {
+        min-width: 40px;
+    }
+    .table-header {
+        display: flex;
+        color: black;
+        padding: 0 16px;
+        width: calc($table-width - 32px);
+        background-color: rgb(245, 245, 245);
+        font-size: 16px;
+        border-bottom: 1px solid rgb(63, 81, 181);
+        div {
+            margin: 10px;
+        }
+    }
+    mat-list {
+        mat-list-item {
+            height: auto;
+            font-size: 14px;
+            border-bottom: 1px solid rgb(63, 81, 181);
+        }
+        width: $table-width;
+        background-color: rgb(245, 245, 245);
+    }
+    span {
+        font-family: 'Roboto-Light';
+        margin: 15px 10px;
+    }
+    .name {
+        width: 200px;
+    }
+    .description {
+        width: 100px;
+    }
+    .planned-dates {
+        width: 130px;
+    }
+    .state {
+        width: 80px;
+    }
+    .order-quantums {
+        width: 350px;
+    }
+    .word-limitation {
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    .order-quantums-list {
+        max-width: 350px;
+        max-height: 100px;
+        overflow-y: auto;
+    }
+}

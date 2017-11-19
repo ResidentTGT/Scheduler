@@ -9,6 +9,7 @@ import { ProductionItem } from '../models/production-item';
 import { Operation } from '../models/operation';
 import { Conveyor } from '../models/conveyor';
 import { Workshop } from '../models/workshop';
+import { Order } from '../models/order';
 
 
 @Injectable()
@@ -104,4 +105,24 @@ export class BackendApiService {
             .get(`${env.backendUrl}workshops`)
             .map(response => response.json() as Workshop[]);
     }
+
+    getOrders(): Observable<Order[]> {
+        return this.http
+            .get(`${env.backendUrl}orders`)
+            .map(response => response.json().map(e => Order.fromJSON(e)));
+    }
+
+    createOrder(order: Order): Observable<number> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const options = new RequestOptions({ headers: headers });
+
+        return this.http.post(`${env.backendUrl}create-order`, JSON.stringify(order), options)
+            .map(resp => resp.json() as number);
+    }
+
+    deleteOrder(id: number | {}) {
+        return this.http
+            .get(`${env.backendUrl}delete-order?id=${id}`);
+    }
+
 }

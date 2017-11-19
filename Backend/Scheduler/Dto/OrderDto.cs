@@ -17,10 +17,10 @@ namespace Scheduler.Dto
 
         public OrderState State { get; set; }
 
-        public DateTime PlannedBeginDate { get; set; }
+        public DateTime? PlannedBeginDate { get; set; }
 
-        public DateTime PlannedEndDate { get; set; }
+        public DateTime? PlannedEndDate { get; set; }
 
-        public List<OrderQuantumDto> OrderQuantumsDtos { get; set; }
+        public List<OrderQuantumDto> OrderQuantums { get; set; }
     }
 }

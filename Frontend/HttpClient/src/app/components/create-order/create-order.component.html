@@ -1,0 +1,60 @@
+<div class="form-container">
+    <mat-form-field>
+        <input matInput [(ngModel)]="name" placeholder="Название">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="description" placeholder="Описание">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="plannedBeginDate" [matDatepicker]="pickerFrom" placeholder="План. время начала">
+        <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+        <mat-datepicker #pickerFrom></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="plannedEndDate" [matDatepicker]="pickerTo" placeholder="План. время конца">
+        <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+        <mat-datepicker #pickerTo></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select placeholder="Состояние заказа" [(ngModel)]="state">
+            <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption">
+                {{ typeOption|orderState }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-divider></mat-divider>
+
+    <mat-form-field>
+        <mat-select placeholder="Продукция" [(ngModel)]="productionItem">
+            <mat-option *ngFor="let productionItem of productionItems" [value]="productionItem">
+                {{ productionItem.title }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="productionItemsCount" placeholder="Количество продукции">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="itemsCountInOnePart" placeholder="Кол-во продукции в части партии">
+    </mat-form-field>
+    <button mat-button (click)="addProductionItemPart()">Добавить часть заказа</button>
+
+    <mat-list class="order-quantums-list">
+        <mat-list-item *ngFor="let orderQuantum of orderQuantums">                     
+            <p matLine>
+                <span>{{orderQuantum.productionItemTitle}}</span>
+                <span> {{orderQuantum.count}} </span>
+                <span> {{orderQuantum.itemsCountInOnePart}} </span>
+            </p>
+        </mat-list-item>
+    </mat-list>
+
+
+    <mat-divider></mat-divider>
+
+    <button mat-button (click)="createOrder()">Создать заказ</button>
+
+</div>
+
+<button mat-button (click)="closeDialog()">Закрыть</button>

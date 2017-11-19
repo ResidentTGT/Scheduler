@@ -25,9 +25,9 @@ namespace Scheduler.Model
 
         public OrderState State { get; set; }
 
-        public DateTime PlannedBeginDate { get; set; }
+        public DateTime? PlannedBeginDate { get; set; }
 
-        public DateTime PlannedEndDate { get; set; }
+        public DateTime? PlannedEndDate { get; set; }
 
         public virtual List<OrderQuantum> OrderQuantums { get; set; }
     }

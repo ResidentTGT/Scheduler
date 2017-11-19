@@ -38,6 +38,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework.Toolkit, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.Toolkit.1.0.5\lib\net45\EntityFramework.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.Toolkit.Core, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.Toolkit.Core.1.0.4\lib\net45\EntityFramework.Toolkit.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Nancy, Version=1.4.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Nancy.1.4.4\lib\net40\Nancy.dll</HintPath>
     </Reference>
@@ -86,6 +92,10 @@
     </Compile>
     <Compile Include="Migrations\201711191849311_AddConveyorAndWorkshop\.cs" />
     <Compile Include="Migrations\201711191849311_AddConveyorAndWorkshop\.Designer.cs" />
+    <Compile Include="Migrations\201711192206389_FixOrderDate.cs" />
+    <Compile Include="Migrations\201711192206389_FixOrderDate.Designer.cs">
+      <DependentUpon>201711192206389_FixOrderDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
     <Compile Include="Model\Detail.cs" />
@@ -126,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711191849311_AddConveyorAndWorkshop\.resx">
       <DependentUpon>.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711192206389_FixOrderDate.resx">
+      <DependentUpon>201711192206389_FixOrderDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

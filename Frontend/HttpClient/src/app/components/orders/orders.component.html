@@ -1,3 +1,54 @@
-<p>
-  orders works!
-</p>
+<div class="layout">
+    <div class="table">
+        <div class="table-header">
+            <div class="name word-limitation">
+                Название
+            </div>
+            <div class="description word-limitation">
+                Описание
+            </div>
+            <div class="order-quantums word-limitation">
+                Состав продукции
+            </div>
+            <div class="state word-limitation">
+                Состояние
+            </div>
+            <div class="planned-dates word-limitation">
+                План. времена начала и конца
+            </div>
+        </div>
+        <mat-list>
+            <mat-list-item *ngFor="let order of orders">
+                <span class="name word-limitation">
+                    {{order.name}}
+                </span>
+                <span class="description word-limitation">
+                    {{order.description}}
+                </span>
+                <span class="order-quantums word-limitation">
+                    <mat-list class="order-quantums-list">
+                        <mat-list-item *ngFor="let orderQuantum of order.orderQuantums">
+                            <p matLine>
+                                <span>{{orderQuantum.productionItemTitle}}</span>
+                                <span> {{orderQuantum.count}} </span>
+                                <span> {{orderQuantum.itemsCountInOnePart}} </span>
+                            </p>
+                        </mat-list-item>
+                    </mat-list>
+                </span>
+                <span class="state word-limitation">
+                    {{order.state|orderState}}
+                </span>
+                <span class="planned-dates word-limitation">
+                    {{order.plannedBeginDate|date:"dd.MM.y"}} {{order.plannedEndDate|date:"dd.MM.y"}}
+                </span>
+                <button mat-button class="delete-button" (click)="deleteOrder(order)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <div>
+        <button mat-button color="warn" (click)="openDialog()">Создать заказ</button>
+    </div>
+</div>

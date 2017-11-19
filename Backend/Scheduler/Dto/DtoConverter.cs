@@ -89,10 +89,25 @@ namespace Scheduler.Dto
                 PlannedBeginDate = order.PlannedBeginDate,
                 PlannedEndDate = order.PlannedEndDate,
                 State = order.State,
-                OrderQuantumsDtos = order.OrderQuantums.Select(d => ConvertOrderQuantum(d)).ToList()
+                OrderQuantums = order.OrderQuantums != null ? order.OrderQuantums.Select(d => ConvertOrderQuantum(d)).ToList() : null
             };
 
             return orderDto;
+        }
+        internal Order ConvertOrder(OrderDto orderDto)
+        {
+            var order = new Order()
+            {
+
+                Description = orderDto.Description,
+                Name = orderDto.Name,
+                PlannedBeginDate = orderDto.PlannedBeginDate,
+                PlannedEndDate = orderDto.PlannedEndDate,
+                State = orderDto.State,
+                OrderQuantums = orderDto.OrderQuantums != null ? orderDto.OrderQuantums.Select(d => ConvertOrderQuantum(d)).ToList() : null
+            };
+
+            return order;
         }
         #endregion
 
@@ -110,6 +125,17 @@ namespace Scheduler.Dto
             };
 
             return orderQuantumDto;
+        }
+        internal OrderQuantum ConvertOrderQuantum(OrderQuantumDto orderQuantumDto)
+        {
+            var orderQuantum = new OrderQuantum()
+            {
+                Count = orderQuantumDto.Count,
+                ItemsCountInOnePart = orderQuantumDto.ItemsCountInOnePart,
+                ProductionItemId = orderQuantumDto.ProductionItemId,
+            };
+
+            return orderQuantum;
         }
 
 

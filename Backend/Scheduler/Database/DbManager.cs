@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace Scheduler.Database
 {
@@ -75,15 +76,15 @@ namespace Scheduler.Database
         #region Orders
         public IEnumerable<Order> GetOrders()
         {
-            var orders = _context.Orders.Include("OrderQuantums");
+            var orders = _context.Orders.Include(o => o.OrderQuantums.Select(op => op.ProductionItem)).ToList();
             return orders as IEnumerable<Order>;
         }
-        public int CreateOrder(Order Order)
+        public int CreateOrder(Order order)
         {
-            _context.Orders.Add(Order);
+            _context.Orders.Add(order);
             _context.SaveChanges();
 
-            return Order.Id;
+            return order.Id;
         }
 
         public void DeleteOrder(int id)

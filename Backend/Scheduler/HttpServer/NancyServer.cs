@@ -37,8 +37,8 @@ namespace Scheduler.HttpServer
             Get["/delete-equipment"] = DeleteEquipment;
 
             Get["/orders"] = GetOrders;
-            //Post["/create-order"] = CreateOrder;
-            //Get["/delete-order"] = DeleteOrder;
+            Post["/create-order"] = CreateOrder;
+            Get["/delete-order"] = DeleteOrder;
 
             Get["/production-items"] = GetProductionItems;
             Post["/create-production-item"] = CreateProductionItem;
@@ -115,6 +115,19 @@ namespace Scheduler.HttpServer
 
             return dtoOrders;
         }
+        private object DeleteOrder(dynamic parameters)
+        {
+            _dbManager.DeleteOrder(Request.Query["id"]);
+
+            return HttpStatusCode.OK;
+        }
+        private object CreateOrder(dynamic parameters)
+        {
+            var requestBody = this.Bind<OrderDto>();
+            var orderId = _dbManager.CreateOrder(_dtoConverter.ConvertOrder(requestBody));
+
+            return Response.AsJson(orderId);
+        }
         #endregion
 
         #region ProductionItemApi
@@ -168,6 +181,7 @@ namespace Scheduler.HttpServer
         }
         #endregion
 
+        #region ConveyorsAndWorkshops
         private object GetConveyors(dynamic parameters)
         {
             var conveyors = _dbManager.GetConveyors().ToList();
@@ -183,5 +197,6 @@ namespace Scheduler.HttpServer
 
             return dtoWorkshops;
         }
+        #endregion
     }
 }

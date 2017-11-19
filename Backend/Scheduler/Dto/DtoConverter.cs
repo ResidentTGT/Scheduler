@@ -1,4 +1,5 @@
-﻿using Scheduler.Model;
+﻿using Scheduler.Database;
+using Scheduler.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,16 @@ using System.Threading.Tasks;
 
 namespace Scheduler.Dto
 {
-    internal static class DtoConverter
+    internal class DtoConverter
     {
+        private DbManager _dbManager;
 
-        internal static DetailDto ConvertDetail(Detail detail)
+        public DtoConverter()
+        {
+            _dbManager = new DbManager();
+        }
+
+        internal DetailDto ConvertDetail(Detail detail)
         {
             var detailDto = new DetailDto()
             {
@@ -25,7 +32,7 @@ namespace Scheduler.Dto
             return detailDto;
         }
 
-        internal static Detail ConvertDetail(DetailDto detailDto)
+        internal Detail ConvertDetail(DetailDto detailDto)
         {
             var detail = new Detail()
             {
@@ -41,7 +48,7 @@ namespace Scheduler.Dto
 
         #region EquipmentConvert
 
-        internal static EquipmentDto ConvertEquipment(Equipment equipment)
+        internal EquipmentDto ConvertEquipment(Equipment equipment)
         {
             var equipmentDto = new EquipmentDto()
             {
@@ -56,7 +63,7 @@ namespace Scheduler.Dto
         #endregion
 
         #region OrderConvert
-        internal static OrderDto ConvertOrder(Order order)
+        internal OrderDto ConvertOrder(Order order)
         {
             var orderDto = new OrderDto()
             {
@@ -71,12 +78,10 @@ namespace Scheduler.Dto
 
             return orderDto;
         }
-
-
         #endregion
 
         #region OrderQuantumConvert
-        internal static OrderQuantumDto ConvertOrderQuantum(OrderQuantum orderQuantum)
+        internal OrderQuantumDto ConvertOrderQuantum(OrderQuantum orderQuantum)
         {
             var orderQuantumDto = new OrderQuantumDto()
             {
@@ -94,5 +99,64 @@ namespace Scheduler.Dto
 
         #endregion
 
+
+        #region ProductionItemConvert
+        internal ProductionItemDto ConvertProductionItem(ProductionItem productionItem)
+        {
+            var productionItemDto = new ProductionItemDto()
+            {
+                Id = productionItem.Id,
+                Title = productionItem.Title,
+                Description = productionItem.Description,
+                IsNode = productionItem.IsNode,
+                ParentProductionItemId = productionItem.ParentProductionItemId,
+                ParentProductionItemTitle = productionItem.ParentProductionItemId.HasValue ? _dbManager.GetProductionItemById(productionItem.ParentProductionItemId).Title : "",
+                ProductionItemQuantumsDtos = productionItem.ProductionItemQuantums.Select(d => ConvertProductionItemQuantum(d)).ToList()
+            };
+
+            return productionItemDto;
+        }
+
+        internal ProductionItem ConvertProductionItem(ProductionItemDto productionItemDto)
+        {
+            var productionItem = new ProductionItem()
+            {
+                Title = productionItemDto.Title,
+                Description = productionItemDto.Description,
+                IsNode = productionItemDto.IsNode,
+                ParentProductionItemId = productionItemDto.ParentProductionItemId,
+
+                //ProductionItemQuantums = productionItemDto.ProductionItemQuantumsDtos.Select(d => ConvertProductionItemQuantum(d)).ToList()
+            };
+
+            return productionItem;
+        }
+        #endregion
+
+        #region ProductionItemQuantumConvert
+        internal ProductionItemQuantumDto ConvertProductionItemQuantum(ProductionItemQuantum productionItemQuantum)
+        {
+            var productionItemQuantumDto = new ProductionItemQuantumDto()
+            {
+                Count = productionItemQuantum.Count,
+                DetailId = productionItemQuantum.DetailId,
+                Id = productionItemQuantum.Id,
+                ProductionItemId = productionItemQuantum.ProductionItemId
+            };
+
+            return productionItemQuantumDto;
+        }
+
+        internal ProductionItemQuantum ConvertProductionItemQuantum(ProductionItemQuantumDto productionItemQuantumDto)
+        {
+            var productionItemQuantum = new ProductionItemQuantum()
+            {
+                Count = productionItemQuantumDto.Count,
+                DetailId = productionItemQuantumDto.DetailId,
+            };
+
+            return productionItemQuantum;
+        }
+        #endregion
     }
 }

@@ -14,10 +14,12 @@ namespace Scheduler.HttpServer
     public class NancyServer : NancyModule
     {
         private DbManager _dbManager;
+        private DtoConverter _dtoConverter;
 
         public NancyServer() : base("/")
         {
             _dbManager = new DbManager();
+            _dtoConverter = new DtoConverter();
 
             ConfigureRoutes();
         }
@@ -37,6 +39,10 @@ namespace Scheduler.HttpServer
             Get["/orders"] = GetOrders;
             //Post["/create-order"] = CreateOrder;
             //Get["/delete-order"] = DeleteOrder;
+
+            Get["/production-items"] = GetProductionItems;
+            Post["/create-production-item"] = CreateProductionItem;
+            Get["/delete-production-item"] = DeleteProductionItem;
         }
 
         private object Index(dynamic parameters)
@@ -48,7 +54,7 @@ namespace Scheduler.HttpServer
         private object GetDetails(dynamic parameters)
         {
             var details = _dbManager.GetDetails();
-            var dtoDetails = details.Select(d => DtoConverter.ConvertDetail(d)).ToList();
+            var dtoDetails = details.Select(d => _dtoConverter.ConvertDetail(d)).ToList();
 
             return dtoDetails;
         }
@@ -56,7 +62,7 @@ namespace Scheduler.HttpServer
         private object CreateDetail(dynamic parameters)
         {
             var requestBody = this.Bind<DetailDto>();
-            var detailId = _dbManager.CreateDetail(DtoConverter.ConvertDetail(requestBody));
+            var detailId = _dbManager.CreateDetail(_dtoConverter.ConvertDetail(requestBody));
 
             return Response.AsJson(detailId);
         }
@@ -73,7 +79,7 @@ namespace Scheduler.HttpServer
         private object GetEquipments(dynamic parameters)
         {
             var equipments = _dbManager.GetEquipments();
-            var dtoEquipments = equipments.Select(e => DtoConverter.ConvertEquipment(e)).ToList();
+            var dtoEquipments = equipments.Select(e => _dtoConverter.ConvertEquipment(e)).ToList();
 
             return dtoEquipments;
         }
@@ -94,13 +100,39 @@ namespace Scheduler.HttpServer
         }
         #endregion
 
-
+        #region OrderApi
         private object GetOrders(dynamic parameters)
         {
             var orders = _dbManager.GetOrders();
-            var dtoOrders = orders.Select(d => DtoConverter.ConvertOrder(d)).ToList();
+            var dtoOrders = orders.Select(d => _dtoConverter.ConvertOrder(d)).ToList();
 
             return dtoOrders;
         }
+        #endregion
+
+        #region ProductionItemApi
+        private object GetProductionItems(dynamic parameters)
+        {
+            var productionItems = _dbManager.GetProductionItems();
+            var dtoProductionItems = productionItems.Select(d => _dtoConverter.ConvertProductionItem(d)).ToList();
+
+            return dtoProductionItems;
+        }
+
+        private object CreateProductionItem(dynamic parameters)
+        {
+            var requestBody = this.Bind<ProductionItemDto>();
+            var productionItemId = _dbManager.CreateProductionItem(_dtoConverter.ConvertProductionItem(requestBody));
+
+            return Response.AsJson(productionItemId);
+        }
+
+        private object DeleteProductionItem(dynamic parameters)
+        {
+            _dbManager.DeleteProductionItem(Request.Query["id"]);
+
+            return HttpStatusCode.OK;
+        }
+        #endregion
     }
 }

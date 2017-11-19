@@ -1,0 +1,39 @@
+<div class="layout">
+    <div class="table">
+        <div class="table-header">
+            <div class="title">
+                Наименование
+            </div>
+            <div class="description">
+                Описание
+            </div>
+            <div class="is-node">
+                Узел
+            </div>
+            <div class="parent-production-item-title">
+                Наименование родителя
+            </div>
+
+        </div>
+        <mat-list>
+            <mat-list-item *ngFor="let productionItem of productionItems">
+                <span class="title">
+                    {{productionItem.title}}
+                </span>
+                <span class="description">
+                    {{productionItem.description}}
+                </span>
+                <span class="is-node">
+                    {{productionItem.isNode?"да":"нет"}}
+                </span>
+                <span class="parent-production-item-title">
+                    {{productionItem.parentProductionItemTitle}}
+                </span>
+                <button mat-button class="delete-button" (click)="deleteProductionItem(productionItem)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <div><button mat-button color="warn" (click)="openDialog()">Создать продукцию</button></div>
+</div>

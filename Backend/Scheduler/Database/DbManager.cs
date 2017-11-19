@@ -81,5 +81,34 @@ namespace Scheduler.Database
             _context.SaveChanges();
         }
         #endregion
+
+        #region ProductionItems
+        public IEnumerable<ProductionItem> GetProductionItems()
+        {
+            var productionItems = _context.ProductionItems;
+            return productionItems as IEnumerable<ProductionItem>;
+        }
+
+        public ProductionItem GetProductionItemById(int? id)
+        {
+            var productionItem = _context.ProductionItems.First(pi => pi.Id == id);
+            return productionItem;
+        }
+
+        public int CreateProductionItem(ProductionItem productionItem)
+        {
+            _context.ProductionItems.Add(productionItem);
+            _context.SaveChanges();
+
+            return productionItem.Id;
+        }
+
+        public void DeleteProductionItem(int id)
+        {
+            _context.ProductionItems.Remove(_context.ProductionItems.First(d => d.Id == id));
+            _context.ProductionItems.Where(pi => pi.ParentProductionItemId == id).ToList().ForEach(p => p.ParentProductionItemId = null);
+            _context.SaveChanges();
+        }
+        #endregion
     }
 }

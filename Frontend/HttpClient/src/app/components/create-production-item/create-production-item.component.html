@@ -1,0 +1,20 @@
+<div class="form-container">
+    <mat-form-field>
+        <input matInput [(ngModel)]="title" placeholder="Наименование">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="description" placeholder="Описание">
+    </mat-form-field>
+    <mat-slide-toggle [(ngModel)]="isNode">Является узлом</mat-slide-toggle>
+    <mat-form-field>
+        <mat-select [(ngModel)]="productionItemId" placeholder="Родительский элемент">
+          <mat-option  *ngFor="let productionItem of productionItems" [value]="productionItem.id">
+            {{ productionItem.title }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+    <button mat-button (click)="createProductionItem()">Создать продукцию</button>
+</div>
+
+<button mat-button (click)="closeDialog()">Закрыть</button>

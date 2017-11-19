@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     MatButtonModule, MatToolbarModule, MatIconModule, MatPaginatorModule, MatListModule, MatProgressSpinnerModule, MatSlideToggleModule,
     MatGridListModule, MatDatepickerModule, MatFormFieldModule, MatNativeDateModule, MatInputModule, MatSliderModule, MatSliderChange,
-    MatSelectModule, MatCardModule
+    MatSelectModule, MatCardModule, MatDialogModule
 } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
@@ -17,12 +17,15 @@ import { BackendApiService } from './services/backend-api.service';
 import { EquipmentsComponent } from './components/equipments/equipments.component';
 import { EquipmentTypePipe } from './pipes/equipment-type.pipe';
 import { OrdersComponent } from './components/orders/orders.component';
+import { ProductionItemsComponent } from './components/production-items/production-items.component';
+import { CreateProductionItemComponent } from './components/create-production-item/create-production-item.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/', pathMatch: 'full' },
     { path: 'details', component: DetailsComponent },
     { path: 'equipment', component: EquipmentsComponent },
     { path: 'orders', component: OrdersComponent },
+    { path: 'production-items', component: ProductionItemsComponent },
     // { path: '**', component: PageNotFoundComponent },
 ];
 
@@ -33,7 +36,9 @@ const appRoutes: Routes = [
         DetailsComponent,
         EquipmentsComponent,
         EquipmentTypePipe,
-        OrdersComponent
+        OrdersComponent,
+        ProductionItemsComponent,
+        CreateProductionItemComponent
     ],
     imports: [
         RouterModule.forRoot(appRoutes),
@@ -56,9 +61,10 @@ const appRoutes: Routes = [
         MatSelectModule,
         FormsModule,
         MatCardModule,
-
+        MatDialogModule
     ],
     providers: [BackendApiService],
-    bootstrap: [RootComponent]
+    bootstrap: [RootComponent],
+    entryComponents: [CreateProductionItemComponent]
 })
 export class AppModule { }

@@ -1,0 +1,54 @@
+$table-width:870px;
+:host {
+    .layout {
+        display: flex;
+    }
+    .delete-button {
+        min-width: 40px;
+    }
+    .table-header {
+        display: flex;
+        color: black;
+        padding: 0 16px;
+        width: calc($table-width - 32px);
+        background-color: rgb(245, 245, 245);
+        font-size: 16px;
+        border-bottom: 1px solid rgb(63, 81, 181);
+        div {
+            margin: 10px;
+        }
+    }
+    mat-list {
+        mat-list-item {
+            height: auto;
+            font-size: 14px;
+            border-bottom: 1px solid rgb(63, 81, 181);
+        }
+        width: $table-width;
+        background-color: rgb(245, 245, 245);
+    }
+    span {
+        font-family: 'Roboto-Light';
+        margin: 15px 10px;
+    }
+    .title {
+        width: 250px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    .description {
+        width: 200px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    .is-node {
+        width: 60px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+    .parent-production-item-title {
+        width: 190px;
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+}

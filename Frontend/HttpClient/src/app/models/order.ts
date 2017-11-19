@@ -1,4 +1,4 @@
-import { OrderQuantum } from './orderQuantum';
+import { OrderQuantum } from './order-quantum';
 
 export class Order {
     public id: number;

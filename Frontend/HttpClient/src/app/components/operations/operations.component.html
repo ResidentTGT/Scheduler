@@ -1,0 +1,58 @@
+<div class="layout">
+    <div class="table">
+        <div class="table-header">
+            <div class="title word-limitation">
+                Название
+            </div>
+            <div class="description word-limitation">
+                Описание
+            </div>
+            <div class="main-time word-limitation">
+                Осн. время
+            </div>
+            <div class="add-time word-limitation">
+                Доп. время
+            </div>
+            <div class="type word-limitation">
+                Тип
+            </div>
+            <div class="equipment word-limitation">
+                Оборудование
+            </div>
+            <div class="detail word-limitation">
+                Деталь
+            </div>
+        </div>
+        <mat-list>
+            <mat-list-item *ngFor="let operation of operations">
+                <span class="title word-limitation">
+                    {{operation.name}}
+                </span>
+                <span class="description word-limitation">
+                    {{operation.description}}
+                </span>
+                <span class="main-time word-limitation">
+                    {{operation.mainTime}}
+                </span>
+                <span class="add-time word-limitation">
+                    {{operation.additionalTime}}
+                </span>
+                <span class="type word-limitation">
+                    {{operation.type|operationType}}
+                </span>
+                <span class="equipment word-limitation">
+                    {{operation.equipment.type|equipmentType}}: {{operation.equipment.name}}
+                </span>
+                <span class="detail word-limitation">
+                    {{operation.detail.title}}
+                </span>
+                <button mat-button class="delete-button" (click)="deleteOperation(operation)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <div>
+        <button mat-button color="warn" (click)="openDialog()">Создать операцию</button>
+    </div>
+</div>

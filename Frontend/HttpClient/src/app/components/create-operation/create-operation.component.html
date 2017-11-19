@@ -1,0 +1,40 @@
+<div class="form-container">
+    <mat-form-field>
+        <input matInput [(ngModel)]="name" placeholder="Наименование">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="description" placeholder="Описание">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="mainTime" placeholder="Основное время">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="additionalTime" placeholder="Дополнительное время">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select placeholder="Тип операции" [(ngModel)]="type">
+            <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption">
+                {{ typeOption|operationType }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select [(ngModel)]="equipment" placeholder="Оборудование">
+            <mat-option *ngFor="let equipment of equipments" [value]="equipment">
+                {{ equipment.name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select [(ngModel)]="detail" placeholder="Деталь">
+            <mat-option *ngFor="let detail of details" [value]="detail">
+                {{ detail.title }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+
+    <button mat-button (click)="createOperation()">Создать операцию</button>
+</div>
+
+<button mat-button (click)="closeDialog()">Закрыть</button>

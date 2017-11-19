@@ -43,6 +43,13 @@ namespace Scheduler.HttpServer
             Get["/production-items"] = GetProductionItems;
             Post["/create-production-item"] = CreateProductionItem;
             Get["/delete-production-item"] = DeleteProductionItem;
+
+            Get["/operations"] = GetOperations;
+            Post["/create-operation"] = CreateOperation;
+            Get["/delete-operation"] = DeleteOperation;
+
+            Get["/conveyors"] = GetConveyors;
+            Get["/workshops"] = GetWorkshops;
         }
 
         private object Index(dynamic parameters)
@@ -78,7 +85,7 @@ namespace Scheduler.HttpServer
         #region EquipmentApi
         private object GetEquipments(dynamic parameters)
         {
-            var equipments = _dbManager.GetEquipments();
+            var equipments = _dbManager.GetEquipments().ToList();
             var dtoEquipments = equipments.Select(e => _dtoConverter.ConvertEquipment(e)).ToList();
 
             return dtoEquipments;
@@ -86,8 +93,8 @@ namespace Scheduler.HttpServer
 
         private object CreateEquipment(dynamic parameters)
         {
-            var requestBody = this.Bind<Equipment>();
-            var equipmentId = _dbManager.CreateEquipment(requestBody);
+            var requestBody = this.Bind<EquipmentDto>();
+            var equipmentId = _dbManager.CreateEquipment(_dtoConverter.ConvertEquipment(requestBody));
 
             return Response.AsJson(equipmentId);
         }
@@ -134,5 +141,47 @@ namespace Scheduler.HttpServer
             return HttpStatusCode.OK;
         }
         #endregion
+
+        #region Operations
+
+        private object GetOperations(dynamic parameters)
+        {
+            var operations = _dbManager.GetOperations().ToList();
+            var dtoOperations = operations.Select(d => _dtoConverter.ConvertOperation(d)).ToList();
+
+            return dtoOperations;
+        }
+
+        private object CreateOperation(dynamic parameters)
+        {
+            var requestBody = this.Bind<OperationDto>();
+            var operationId = _dbManager.CreateOperation(_dtoConverter.ConvertOperation(requestBody));
+
+            return Response.AsJson(operationId);
+        }
+
+        private object DeleteOperation(dynamic parameters)
+        {
+            _dbManager.DeleteOperation(Request.Query["id"]);
+
+            return HttpStatusCode.OK;
+        }
+        #endregion
+
+        private object GetConveyors(dynamic parameters)
+        {
+            var conveyors = _dbManager.GetConveyors().ToList();
+            var dtoConveyors = conveyors.Select(d => _dtoConverter.ConvertConveyor(d)).ToList();
+
+            return dtoConveyors;
+        }
+
+        private object GetWorkshops(dynamic parameters)
+        {
+            var workshops = _dbManager.GetWorkshops().ToList();
+            var dtoWorkshops = workshops.Select(d => _dtoConverter.ConvertWorkshop(d)).ToList();
+
+            return dtoWorkshops;
+        }
     }
 }

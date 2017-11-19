@@ -1,13 +1,7 @@
-$table-width:800px;
+$table-width:1050px;
 :host {
     .layout {
         display: flex;
-    }
-    .form-container {
-        display: flex;
-        flex-direction: column;
-        margin: 15px 30px;
-        color: rgb(63, 81, 181)
     }
     .delete-button {
         min-width: 40px;
@@ -37,16 +31,25 @@ $table-width:800px;
         font-family: 'Roboto-Light';
         margin: 15px 10px;
     }
-    .name {
-        width: 200px;
+    .title {
+        width: 150px;
     }
     .description {
-        width: 200px;
+        width: 150px;
     }
-    .type {
+    .main-time {
         width: 100px;
     }
-    .equipment-system {
+    .add-time {
+        width: 100px;
+    }
+    .type {
+        width: 80px;
+    }
+    .equipment {
+        width: 110px;
+    }
+    .detail {
         width: 100px;
     }
     .word-limitation {

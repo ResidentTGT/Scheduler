@@ -55,10 +55,26 @@ namespace Scheduler.Dto
                 Description = equipment.Description,
                 Id = equipment.Id,
                 Name = equipment.Name,
-                Type = equipment.Type
+                Type = equipment.Type,
+                Conveyor = equipment.Conveyor != null ? ConvertConveyor(equipment.Conveyor) : null,
+                Workshop = equipment.Workshop != null ? ConvertWorkshop(equipment.Workshop) : null
             };
 
             return equipmentDto;
+        }
+
+        internal Equipment ConvertEquipment(EquipmentDto equipmentDto)
+        {
+            var equipment = new Equipment()
+            {
+                Description = equipmentDto.Description,
+                Name = equipmentDto.Name,
+                Type = equipmentDto.Type,
+                ConveyorId = equipmentDto.Conveyor != null ? equipmentDto.Conveyor.Id : null,
+                WorkshopId = equipmentDto.Workshop != null ? equipmentDto.Workshop.Id : null
+            };
+
+            return equipment;
         }
         #endregion
 
@@ -156,6 +172,80 @@ namespace Scheduler.Dto
             };
 
             return productionItemQuantum;
+        }
+        #endregion
+
+        #region OperationConvert
+        internal OperationDto ConvertOperation(Operation operation)
+        {
+            var operationDto = new OperationDto()
+            {
+                Id = operation.Id,
+                Name = operation.Name,
+                MainTime = operation.MainTime.Ticks,
+                AdditionalTime = operation.AdditionalTime.Ticks,
+                Description = operation.Description,
+                Type = operation.Type,
+                Detail = ConvertDetail(operation.Detail),
+                Equipment = ConvertEquipment(operation.Equipment)
+            };
+
+            return operationDto;
+        }
+
+        internal Operation ConvertOperation(OperationDto operationDto)
+        {
+            var operation = new Operation()
+            {
+                Name = operationDto.Name,
+                MainTime = new TimeSpan(operationDto.MainTime),
+                AdditionalTime = new TimeSpan(operationDto.AdditionalTime),
+                Description = operationDto.Description,
+                Type = operationDto.Type,
+                DetailId = operationDto.Detail.Id,
+                EquipmentId = operationDto.Equipment.Id
+            };
+
+            return operation;
+        }
+        #endregion
+
+        #region ConvertConveyorsAndWorkshops
+        internal WorkshopDto ConvertWorkshop(Workshop workshop)
+        {
+            var workshopDto = new WorkshopDto()
+            {
+                Id = workshop.Id,
+                Name = workshop.Name
+            };
+
+            return workshopDto;
+        }
+        internal Workshop ConvertWorkshop(WorkshopDto workshopDto)
+        {
+            var workshop = new Workshop()
+            {
+                Name = workshopDto.Name
+            };
+            return workshop;
+        }
+        internal ConveyorDto ConvertConveyor(Conveyor conveyor)
+        {
+            var conveyorDto = new ConveyorDto()
+            {
+                Id = conveyor.Id,
+                Name = conveyor.Name
+            };
+
+            return conveyorDto;
+        }
+        internal Conveyor ConvertConveyor(ConveyorDto conveyorDto)
+        {
+            var conveyor = new Conveyor()
+            {
+                Name = conveyorDto.Name
+            };
+            return conveyor;
         }
         #endregion
     }

@@ -1,8 +1,13 @@
+import { Workshop } from './workshop';
+import { Conveyor } from './conveyor';
+
 export class Equipment {
     public id?: number | {};
     public name: string;
     public description: string;
     public type: EquipmentType;
+    public workshop: Workshop;
+    public conveyor: Conveyor;
 
     static fromJSON(obj: any) {
         if (!obj) {
@@ -13,7 +18,7 @@ export class Equipment {
             new Equipment(),
             obj,
             {
-               type: EquipmentType[obj.type]
+                type: EquipmentType[obj.type]
             }
         );
     }

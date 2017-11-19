@@ -52,6 +52,14 @@ namespace Scheduler.Database
                 .HasMany(r => r.Operations)
                 .WithMany(o => o.Routes);
 
+            modelBuilder.Entity<Workshop>()
+                .HasMany(r => r.Equipments)
+                .WithOptional(o => o.Workshop);
+
+            modelBuilder.Entity<Conveyor>()
+                .HasMany(r => r.Equipments)
+                .WithOptional(o => o.Conveyor);
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -70,6 +78,10 @@ namespace Scheduler.Database
         public virtual DbSet<OrderQuantum> OrderQuantums { get; set; }
 
         public virtual DbSet<Route> Routes { get; set; }
+
+        public virtual DbSet<Workshop> Workshops { get; set; }
+
+        public virtual DbSet<Conveyor> Conveyors { get; set; }
 
     }
 

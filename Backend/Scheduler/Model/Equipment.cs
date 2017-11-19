@@ -27,6 +27,12 @@ namespace Scheduler.Model
 
         public EquipmentType Type { get; set; }
 
+        public int? WorkshopId { get; set; }
+        public Workshop Workshop { get; set; }
+
+        public int? ConveyorId { get; set; }
+        public Conveyor Conveyor { get; set; }
+
         public virtual ICollection<Operation> Operations { get; set; }
     }
 }

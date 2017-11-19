@@ -7,6 +7,9 @@
             <div class="description">
                 Описание
             </div>
+            <div class="equipment-system">
+                Система
+            </div>
             <div class="type">
                 Тип
             </div>
@@ -14,13 +17,16 @@
         </div>
         <mat-list>
             <mat-list-item *ngFor="let equipment of equipments">
-                <span class="name">
+                <span class="name word-limitation">
                     {{equipment.name}}
                 </span>
-                <span class="description">
+                <span class="description word-limitation">
                     {{equipment.description}}
                 </span>
-                <span class="type">
+                <span class="equipment-system word-limitation">
+                    {{equipment.conveyor?.name||equipment.workshop?.name}}
+                </span>
+                <span class="type word-limitation">
                     {{equipment.type|equipmentType}}
                 </span>
                 <button mat-button class="delete-button" (click)="deleteEquipment(equipment)">
@@ -33,7 +39,7 @@
     <div class="form-container">
 
         <mat-form-field>
-            <input matInput [(ngModel)]="name" placeholder="Наименование">
+            <input matInput [(ngModel)]="name " placeholder="Наименование">
         </mat-form-field>
         <mat-form-field>
             <input matInput [(ngModel)]="description" placeholder="Описание">
@@ -42,6 +48,20 @@
             <mat-select placeholder="Тип оборудования" [(ngModel)]="type">
                 <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption">
                     {{ typeOption|equipmentType }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select [(ngModel)]="workshop" placeholder="Цех">
+                <mat-option *ngFor="let workshop of workshops" [value]="workshop">
+                    {{ workshop.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select [(ngModel)]="conveyor" placeholder="Конвейер">
+                <mat-option *ngFor="let conveyor of conveyors" [value]="conveyor">
+                    {{ conveyor.name }}
                 </mat-option>
             </mat-select>
         </mat-form-field>

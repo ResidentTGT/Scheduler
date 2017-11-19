@@ -16,5 +16,9 @@ namespace Scheduler.Dto
         public string Description { get; set; }
 
         public EquipmentType Type { get; set; }
+
+        public WorkshopDto Workshop { get; set; }
+
+        public ConveyorDto Conveyor { get; set; }
     }
 }

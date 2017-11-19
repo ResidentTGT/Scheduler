@@ -19,6 +19,9 @@ import { EquipmentTypePipe } from './pipes/equipment-type.pipe';
 import { OrdersComponent } from './components/orders/orders.component';
 import { ProductionItemsComponent } from './components/production-items/production-items.component';
 import { CreateProductionItemComponent } from './components/create-production-item/create-production-item.component';
+import { OperationsComponent } from './components/operations/operations.component';
+import { CreateOperationComponent } from './components/create-operation/create-operation.component';
+import { OperationTypePipe } from './pipes/operation-type.pipe';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -26,6 +29,7 @@ const appRoutes: Routes = [
     { path: 'equipment', component: EquipmentsComponent },
     { path: 'orders', component: OrdersComponent },
     { path: 'production-items', component: ProductionItemsComponent },
+    { path: 'operations', component: OperationsComponent },
     // { path: '**', component: PageNotFoundComponent },
 ];
 
@@ -38,7 +42,10 @@ const appRoutes: Routes = [
         EquipmentTypePipe,
         OrdersComponent,
         ProductionItemsComponent,
-        CreateProductionItemComponent
+        CreateProductionItemComponent,
+        OperationsComponent,
+        CreateOperationComponent,
+        OperationTypePipe
     ],
     imports: [
         RouterModule.forRoot(appRoutes),
@@ -65,6 +72,6 @@ const appRoutes: Routes = [
     ],
     providers: [BackendApiService],
     bootstrap: [RootComponent],
-    entryComponents: [CreateProductionItemComponent]
+    entryComponents: [CreateProductionItemComponent, CreateOperationComponent]
 })
 export class AppModule { }

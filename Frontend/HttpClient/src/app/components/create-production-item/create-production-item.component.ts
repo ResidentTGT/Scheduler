@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ProductionItem } from '../../models/production-item';
 import { BackendApiService } from '../../services/backend-api.service';
 import { Observable } from 'rxjs/Rx';
+import { Detail } from '../../models/detail';
 
 @Component({
     selector: 'sch-create-production-item',
@@ -33,7 +34,7 @@ export class CreateProductionItemComponent implements OnInit {
             description: this.description,
             isNode: this.isNode,
             parentProductionItemId: this.productionItemId,
-            parentProductionItemTitle: this.productionItems.find(p => p.id === this.productionItemId).title
+            parentProductionItemTitle: this.productionItemId ? this.productionItems.find(p => p.id === this.productionItemId).title : null
         };
         this._api.createProductionItem(productionItem)
             .catch(resp => {

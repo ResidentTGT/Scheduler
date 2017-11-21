@@ -107,7 +107,7 @@ namespace Scheduler.Dto
                 PlannedBeginDate = orderDto.PlannedBeginDate,
                 PlannedEndDate = orderDto.PlannedEndDate,
                 State = orderDto.State,
-                OrderQuantums = orderDto.OrderQuantums != null ? orderDto.OrderQuantums.Select(d => ConvertOrderQuantum(d)).ToList() : null
+                OrderQuantums = orderDto.OrderQuantums != null ? orderDto.OrderQuantums.Select(d => ConvertOrderQuantum(d)).ToList() : null,
             };
 
             return order;
@@ -123,7 +123,7 @@ namespace Scheduler.Dto
                 Count = orderQuantum.Count,
                 ItemsCountInOnePart = orderQuantum.ItemsCountInOnePart,
                 OrderId = orderQuantum.OrderId,
-                ProductionItem = orderQuantum.ProductionItem != null ? ConvertProductionItem(orderQuantum.ProductionItem) : null
+                ProductionItem = orderQuantum.ProductionItem != null ? ConvertProductionItem(orderQuantum.ProductionItem) : null,
             };
 
             return orderQuantumDto;
@@ -134,8 +134,9 @@ namespace Scheduler.Dto
             {
                 Count = orderQuantumDto.Count,
                 ItemsCountInOnePart = orderQuantumDto.ItemsCountInOnePart,
-                ProductionItem = ConvertProductionItem(orderQuantumDto.ProductionItem),
             };
+            if (orderQuantumDto.ProductionItem.Id != null)
+                orderQuantum.ProductionItemId = (int)orderQuantumDto.ProductionItem.Id;
 
             return orderQuantum;
         }

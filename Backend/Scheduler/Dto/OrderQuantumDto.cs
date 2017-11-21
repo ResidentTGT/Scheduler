@@ -8,7 +8,7 @@ namespace Scheduler.Dto
 {
     public class OrderQuantumDto
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         public ProductionItemDto ProductionItem { get; set; }
 

@@ -71,9 +71,10 @@ export class CreateProductionItemComponent implements OnInit {
             count: this.detailsCount,
             detail: this.detail
         };
-        this.detail = null;
+       
         this.productionItemQuantums.push(productionItemQuantum);
         this.viewDetails.splice(this.viewDetails.indexOf(this.detail), 1);
+        this.detail = null;
     }
 
     closeDialog() {

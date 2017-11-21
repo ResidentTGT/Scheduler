@@ -8,15 +8,15 @@ export class OrderStatePipe implements PipeTransform {
 
     transform(type: any): string {
         switch (type) {
-            case 'InProcess' || OrderState.InProcess: {
+            case 'InProcess': {
                 type = 'В процессе';
                 break;
             }
-            case 'Ready' || OrderState.Ready: {
+            case 'Ready': {
                 type = 'Готов';
                 break;
             }
-            case 'Undefined' || OrderState.Undefined: {
+            case 'Undefined': {
                 type = 'Не определено';
                 break;
             }

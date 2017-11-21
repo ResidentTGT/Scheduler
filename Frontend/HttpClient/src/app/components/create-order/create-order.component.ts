@@ -15,7 +15,7 @@ import { OrderQuantum } from '../../models/order-quantum';
 export class CreateOrderComponent implements OnInit {
     public name: string;
     public description: string;
-    public state: OrderState = OrderState.Undefined;
+    public state: string = OrderState[OrderState.Undefined];
     public plannedBeginDate: Date;
     public plannedEndDate: Date;
 
@@ -47,7 +47,7 @@ export class CreateOrderComponent implements OnInit {
             name: this.name,
             plannedBeginDate: this.plannedBeginDate,
             plannedEndDate: this.plannedEndDate,
-            state: this.state,
+            state: this.state || OrderState[this.state],
             orderQuantums: this.orderQuantums
         };
 

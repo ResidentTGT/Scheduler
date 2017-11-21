@@ -20,7 +20,6 @@ export class OrderStatePipe implements PipeTransform {
                 type = 'Не определено';
                 break;
             }
-
         }
         return type;
     }

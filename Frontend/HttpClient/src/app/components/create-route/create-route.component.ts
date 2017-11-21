@@ -78,7 +78,7 @@ export class CreateRouteComponent implements OnInit {
 
     public addOperation() {
         this.addedOperations.push(this.operation);
-        this.viewOperations.splice(this.operations.indexOf(this.operation), 1);
+        this.viewOperations.splice(this.viewOperations.indexOf(this.operation), 1);
 
         this.operation = null;
     }

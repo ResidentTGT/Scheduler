@@ -92,9 +92,15 @@ namespace Scheduler.Database
                 .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail)))
                 .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums));
 
-
             return orders as IEnumerable<Order>;
         }
+
+        public Order GetOrderById(int id)
+        {
+            var order = _context.Orders.First(o => o.Id == id);
+            return order;
+        }
+
         public int CreateOrder(Order order)
         {
             var orderQuantums = new List<OrderQuantum>();
@@ -186,6 +192,18 @@ namespace Scheduler.Database
         {
             var operation = _context.Operations.First(o => o.Id == id);
             return operation;
+        }
+
+        public IEnumerable<Operation> GetOperationsByProductionItemId(int id)
+        {
+            var operations = _context.ProductionItems
+                .First(p => p.Id == id)
+                .ProductionItemQuantums
+                .Select(piq => piq.Detail)
+                .SelectMany(d => d.Operations)
+                .Where(o => o.Type == OperationType.Assembling);
+
+            return operations;
         }
 
         public int CreateOperation(Operation operation)

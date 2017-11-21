@@ -28,6 +28,8 @@ namespace Scheduler.HttpServer
         {
             Get["/"] = Index;
 
+            Get["calculate-order?id={id}"] = CalculateOrder;
+
             Get["/details"] = GetDetails;
             Get["/details-without-routes"] = GetDetailsWithoutRoutes;
             Post["/create-detail"] = CreateDetail;
@@ -61,6 +63,11 @@ namespace Scheduler.HttpServer
         private object Index(dynamic parameters)
         {
             return View["wwwroot/index.html"];
+        }
+
+        private object CalculateOrder(dynamic parameters)
+        {
+            throw new NotImplementedException();
         }
 
         #region DetailsApi

@@ -1,0 +1,43 @@
+<div class="form-container">
+    <mat-form-field>
+        <input matInput [(ngModel)]="name" placeholder="Название">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="description" placeholder="Описание">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-select placeholder="Деталь" (change)="filterOperations(detail)" [(ngModel)]="detail">
+            <mat-option *ngFor="let detail of details" [value]="detail">
+                {{ detail.title }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-divider></mat-divider>
+
+    <mat-form-field>
+        <mat-select placeholder="Операция" [disabled]="!detail" [(ngModel)]="operation">
+            <mat-option *ngFor="let operation of viewOperations" [value]="operation">
+                {{ operation.name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <button mat-button  (click)="addOperation()" [disabled]="!operation">Добавить операцию</button>
+
+    <mat-list class="operations-list">
+        <mat-list-item *ngFor="let operation of addedOperations">
+            <p matLine>
+                <span>{{ operation.name }}</span>
+                <span>{{ operation.equipment.conveyor?.name||operation.equipment.workshop?.name }}</span>
+            </p>
+        </mat-list-item>
+    </mat-list>
+
+    <mat-divider></mat-divider>
+
+    <button mat-button (click)="createRoute()" [disabled]="!name||!addedOperations.length">Создать маршрут</button>
+
+</div>
+
+<button mat-button (click)="closeDialog()">Закрыть</button>

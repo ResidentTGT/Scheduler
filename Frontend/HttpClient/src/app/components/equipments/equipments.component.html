@@ -27,7 +27,7 @@
                     {{equipment.conveyor?.name||equipment.workshop?.name}}
                 </span>
                 <span class="type word-limitation">
-                    {{equipment.type|equipmentType}}
+                    {{equipment.type.toString()|equipmentType}}
                 </span>
                 <button mat-button class="delete-button" (click)="deleteEquipment(equipment)">
                     <mat-icon>delete</mat-icon>
@@ -52,19 +52,19 @@
             </mat-select>
         </mat-form-field>
         <mat-form-field>
-            <mat-select [(ngModel)]="workshop" placeholder="Цех">
+            <mat-select [(ngModel)]="workshop" [disabled]="conveyor" placeholder="Цех">
                 <mat-option *ngFor="let workshop of workshops" [value]="workshop">
                     {{ workshop.name }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field>
-            <mat-select [(ngModel)]="conveyor" placeholder="Конвейер">
+            <mat-select [(ngModel)]="conveyor" [disabled]="workshop" placeholder="Конвейер">
                 <mat-option *ngFor="let conveyor of conveyors" [value]="conveyor">
                     {{ conveyor.name }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button mat-button (click)="createEquipment()">Добавить оборудование</button>
+        <button mat-button [disabled]="checkInput()" (click)="createEquipment()">Добавить оборудование</button>
     </div>
 </div>

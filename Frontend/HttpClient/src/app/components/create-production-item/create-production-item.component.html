@@ -8,13 +8,36 @@
     <mat-slide-toggle [(ngModel)]="isNode">Является узлом</mat-slide-toggle>
     <mat-form-field>
         <mat-select [(ngModel)]="productionItemId" placeholder="Родительский элемент">
-          <mat-option  *ngFor="let productionItem of productionItems" [value]="productionItem.id">
-            {{ productionItem.title }}
-          </mat-option>
+            <mat-option *ngFor="let productionItem of productionItems" [value]="productionItem.id">
+                {{ productionItem.title }}
+            </mat-option>
         </mat-select>
-      </mat-form-field>
-      
-    <button mat-button (click)="createProductionItem()">Создать продукцию</button>
+    </mat-form-field>
+
+    <mat-divider></mat-divider>
+    <mat-form-field>
+        <mat-select placeholder="Деталь" [(ngModel)]="detail">
+            <mat-option *ngFor="let detail of viewDetails" [value]="detail">
+                {{ detail.title }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="detailsCount" placeholder="Количество деталей">
+    </mat-form-field> 
+    <button mat-button (click)="addDetail()" [disabled]="!detailsCount||!detail">Добавить часть продукции</button>
+<mat-divider></mat-divider>
+    <mat-list class="production-item-quantums-list">
+        <mat-list-item *ngFor="let productionItem of productionItemQuantums">                     
+            <p matLine>
+                <span>{{productionItem.detail.title}}</span>
+                <span> {{productionItem.count}} </span>
+            </p>
+        </mat-list-item>
+    </mat-list>
+
+
+    <button mat-button (click)="createProductionItem()" [disabled]="!title||!productionItemQuantums.length">Создать продукцию</button>
 </div>
 
 <button mat-button (click)="closeDialog()">Закрыть</button>

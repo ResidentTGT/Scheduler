@@ -22,7 +22,7 @@ namespace Scheduler.Dto
 
         public bool IsNode { get; set; } = false;
 
-        public List<ProductionItemQuantumDto> ProductionItemQuantumsDtos { get; set; }
+        public List<ProductionItemQuantumDto> ProductionItemQuantums { get; set; }
 
     }
 }

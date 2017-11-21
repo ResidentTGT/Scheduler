@@ -77,12 +77,13 @@ export class CreateOrderComponent implements OnInit {
         const orderQuantum: OrderQuantum = {
             count: this.productionItemsCount,
             itemsCountInOnePart: this.itemsCountInOnePart,
-            productionItemId: this.productionItem.id,
-            productionItemTitle: this.productionItem.title
+            productionItem: this.productionItem
         };
         this.orderQuantums.push(orderQuantum);
-    }
 
+        this.productionItems.splice(this.productionItems.indexOf(this.productionItem), 1);
+        this.productionItem = null;
+    }
 
     closeDialog() {
         this.matDialogRef.close();

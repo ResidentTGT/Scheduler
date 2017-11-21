@@ -24,6 +24,8 @@ import { CreateOperationComponent } from './components/create-operation/create-o
 import { OperationTypePipe } from './pipes/operation-type.pipe';
 import { CreateOrderComponent } from './components/create-order/create-order.component';
 import { OrderStatePipe } from './pipes/order-state.pipe';
+import { RoutesComponent } from './components/routes/routes.component';
+import { CreateRouteComponent } from './components/create-route/create-route.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -32,6 +34,7 @@ const appRoutes: Routes = [
     { path: 'orders', component: OrdersComponent },
     { path: 'production-items', component: ProductionItemsComponent },
     { path: 'operations', component: OperationsComponent },
+    { path: 'routes', component: RoutesComponent },
     // { path: '**', component: PageNotFoundComponent },
 ];
 
@@ -49,7 +52,9 @@ const appRoutes: Routes = [
         CreateOperationComponent,
         OperationTypePipe,
         CreateOrderComponent,
-        OrderStatePipe
+        OrderStatePipe,
+        RoutesComponent,
+        CreateRouteComponent
     ],
     imports: [
         RouterModule.forRoot(appRoutes),
@@ -79,7 +84,8 @@ const appRoutes: Routes = [
     entryComponents: [
         CreateProductionItemComponent,
         CreateOperationComponent,
-        CreateOrderComponent
+        CreateOrderComponent,
+        CreateRouteComponent
     ]
 })
 export class AppModule { }

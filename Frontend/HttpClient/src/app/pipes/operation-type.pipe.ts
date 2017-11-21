@@ -2,25 +2,25 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { OperationType } from '../models/operation';
 
 @Pipe({
-  name: 'operationType'
+    name: 'operationType'
 })
 export class OperationTypePipe implements PipeTransform {
 
     transform(type: any): string {
         switch (type) {
-            case 'Transport' || OperationType.Transport: {
+            case 'Transport': {
                 type = 'Транспорт';
                 break;
             }
-            case 'Machining' || OperationType.Machining: {
+            case 'Machining': {
                 type = 'Обработка';
                 break;
             }
-            case 'Undefined' || OperationType.Undefined: {
+            case 'Undefined': {
                 type = 'Не определено';
                 break;
             }
-            case 'Assembling' || OperationType.Assembling: {
+            case 'Assembling': {
                 type = 'Сборка';
                 break;
             }

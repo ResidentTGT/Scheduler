@@ -32,9 +32,9 @@
                     {{detail.isPurchased?"да":"нет"}}
                 </span>
                 <span class="routeId">
-                    {{detail.routeId}}
+                    {{detail.routeName}}
                 </span>
-                <button  mat-button class="delete-button" (click)="deleteDetail(detail)">
+                <button mat-button class="delete-button" (click)="deleteDetail(detail)">
                     <mat-icon>delete</mat-icon>
                 </button>
             </mat-list-item>
@@ -52,6 +52,6 @@
         <mat-form-field>
             <input matInput [(ngModel)]="cost" placeholder="Стоимость">
         </mat-form-field>
-        <button mat-button (click)="createDetail()">Создать деталь</button>
+        <button mat-button [disabled]="!title||title===''" (click)="createDetail()">Создать деталь</button>
     </div>
 </div>

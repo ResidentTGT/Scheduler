@@ -10,6 +10,7 @@ import { Operation } from '../models/operation';
 import { Conveyor } from '../models/conveyor';
 import { Workshop } from '../models/workshop';
 import { Order } from '../models/order';
+import { Route } from '../models/route';
 
 
 @Injectable()
@@ -20,6 +21,12 @@ export class BackendApiService {
     getDetails(): Observable<Detail[]> {
         return this.http
             .get(`${env.backendUrl}details`)
+            .map(response => response.json() as Detail[]);
+    }
+
+    getDetailsWithoutRoutes(): Observable<Detail[]> {
+        return this.http
+            .get(`${env.backendUrl}details-without-routes`)
             .map(response => response.json() as Detail[]);
     }
 
@@ -123,6 +130,25 @@ export class BackendApiService {
     deleteOrder(id: number | {}) {
         return this.http
             .get(`${env.backendUrl}delete-order?id=${id}`);
+    }
+
+    getRoutes(): Observable<Route[]> {
+        return this.http
+            .get(`${env.backendUrl}routes`)
+            .map(response => response.json() as Route[]);
+    }
+
+    createRoute(route: Route): Observable<number> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const options = new RequestOptions({ headers: headers });
+
+        return this.http.post(`${env.backendUrl}create-route`, JSON.stringify(route), options)
+            .map(resp => resp.json() as number);
+    }
+
+    deleteRoute(id: number | {}) {
+        return this.http
+            .get(`${env.backendUrl}delete-route?id=${id}`);
     }
 
 }

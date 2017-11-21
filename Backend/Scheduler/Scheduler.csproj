@@ -76,25 +76,16 @@
     <Compile Include="Dto\OrderQuantumDto.cs" />
     <Compile Include="Dto\ProductionItemDto.cs" />
     <Compile Include="Dto\ProductionItemQuantumDto.cs" />
+    <Compile Include="Dto\RouteDto.cs" />
     <Compile Include="Dto\WorkshopDto.cs" />
     <Compile Include="Helpers\ConsoleClosure.cs" />
     <Compile Include="HttpServer\AppNancyBootstraper.cs" />
     <Compile Include="HttpServer\HttpServerFactory.cs" />
     <Compile Include="HttpServer\NancyServer.cs" />
     <Compile Include="Log\Logger.cs" />
-    <Compile Include="Migrations\201711130852206_InitialDB.cs" />
-    <Compile Include="Migrations\201711130852206_InitialDB.Designer.cs">
-      <DependentUpon>201711130852206_InitialDB.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711162040513_AddedItemsCountFieldInOrder.cs" />
-    <Compile Include="Migrations\201711162040513_AddedItemsCountFieldInOrder.Designer.cs">
-      <DependentUpon>201711162040513_AddedItemsCountFieldInOrder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711191849311_AddConveyorAndWorkshop\.cs" />
-    <Compile Include="Migrations\201711191849311_AddConveyorAndWorkshop\.Designer.cs" />
-    <Compile Include="Migrations\201711192206389_FixOrderDate.cs" />
-    <Compile Include="Migrations\201711192206389_FixOrderDate.Designer.cs">
-      <DependentUpon>201711192206389_FixOrderDate.cs</DependentUpon>
+    <Compile Include="Migrations\201711210849299_InitialDb.cs" />
+    <Compile Include="Migrations\201711210849299_InitialDb.Designer.cs">
+      <DependentUpon>201711210849299_InitialDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
@@ -128,17 +119,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201711130852206_InitialDB.resx">
-      <DependentUpon>201711130852206_InitialDB.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711162040513_AddedItemsCountFieldInOrder.resx">
-      <DependentUpon>201711162040513_AddedItemsCountFieldInOrder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711191849311_AddConveyorAndWorkshop\.resx">
-      <DependentUpon>.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711192206389_FixOrderDate.resx">
-      <DependentUpon>201711192206389_FixOrderDate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711210849299_InitialDb.resx">
+      <DependentUpon>201711210849299_InitialDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

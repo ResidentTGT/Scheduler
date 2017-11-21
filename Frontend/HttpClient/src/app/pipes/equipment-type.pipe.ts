@@ -8,19 +8,19 @@ export class EquipmentTypePipe implements PipeTransform {
 
     transform(type: any): string {
         switch (type) {
-            case 'Transport' || EquipmentType.Transport: {
+            case 'Transport': {
                 type = 'Транспорт';
                 break;
             }
-            case 'MachiningTool' || EquipmentType.MachiningTool: {
+            case 'MachiningTool': {
                 type = 'Станок';
                 break;
             }
-            case 'Undefined' || EquipmentType.Undefined: {
+            case 'Undefined': {
                 type = 'Не определено';
                 break;
             }
-            case 'AssemblyWorkplace' || EquipmentType.AssemblyWorkplace: {
+            case 'AssemblyWorkplace': {
                 type = 'Сборочное место';
                 break;
             }

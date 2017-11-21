@@ -39,10 +39,6 @@ namespace Scheduler.Database
                 .WithMany(pi => pi.OrderQuantums);
 
 
-            modelBuilder.Entity<Detail>()
-                .HasOptional(d => d.Route)
-                .WithOptionalDependent(r => r.Detail);
-
             modelBuilder.Entity<ProductionItemQuantum>()
                 .HasRequired(piq => piq.Detail)
                 .WithMany(pi => pi.ProductionItemQuantums);

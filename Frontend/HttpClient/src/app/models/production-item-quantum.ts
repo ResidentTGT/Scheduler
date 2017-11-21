@@ -1,6 +1,8 @@
+import { Detail } from './detail';
+
 export class ProductionItemQuantum {
-    public id: number;
-    public detailId: number;
-    public productionItemId: number;
+    public id?: number;
+    public detail: Detail;
+    public productionItemId?: number;
     public count: number;
 }

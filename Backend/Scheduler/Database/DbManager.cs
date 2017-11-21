@@ -21,7 +21,13 @@ namespace Scheduler.Database
         #region Details
         public IEnumerable<Detail> GetDetails()
         {
-            var details = _context.Details.Include("Route").Include("ProductionItems").Include("ProductionItemQuantums").Include("Operations");
+            var details = _context.Details.Include("Route").Include("ProductionItems").Include("ProductionItemQuantums").Include("Operations").ToList();
+            return details as IEnumerable<Detail>;
+        }
+
+        public IEnumerable<Detail> GetDetailsWithoutRoutes()
+        {
+            var details = _context.Details.Where(d => d.Route == null).Include("Route").Include("ProductionItems").Include("ProductionItemQuantums").Include("Operations");
             return details as IEnumerable<Detail>;
         }
 
@@ -35,7 +41,12 @@ namespace Scheduler.Database
 
         public void DeleteDetail(int id)
         {
-            _context.Details.Remove(_context.Details.First(d => d.Id == id));
+            var detail = _context.Details.First(d => d.Id == id);
+
+            if (detail.Route != null)
+                _context.Routes.Remove(detail.Route);
+            _context.Details.Remove(detail);
+
             _context.SaveChanges();
         }
 
@@ -76,11 +87,26 @@ namespace Scheduler.Database
         #region Orders
         public IEnumerable<Order> GetOrders()
         {
-            var orders = _context.Orders.Include(o => o.OrderQuantums.Select(op => op.ProductionItem)).ToList();
+            var orders = _context.Orders
+                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem))
+                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail)))
+                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums));
+
+
             return orders as IEnumerable<Order>;
         }
         public int CreateOrder(Order order)
         {
+            var orderQuantums = new List<OrderQuantum>();
+            foreach (var orderQuantum in order.OrderQuantums)
+                _context.OrderQuantums.Add(new OrderQuantum()
+                {
+                    Count = orderQuantum.Count,
+                    ItemsCountInOnePart = orderQuantum.ItemsCountInOnePart,
+                    ProductionItemId = orderQuantum.ProductionItemId
+                });
+            order.OrderQuantums = orderQuantums;
+
             _context.Orders.Add(order);
             _context.SaveChanges();
 
@@ -97,7 +123,7 @@ namespace Scheduler.Database
         #region ProductionItems
         public IEnumerable<ProductionItem> GetProductionItems()
         {
-            var productionItems = _context.ProductionItems.Include("ProductionItemQuantums").Include("OrderQuantums");
+            var productionItems = _context.ProductionItems.Include(p => p.ProductionItemQuantums.Select(po => po.Detail)).Include("OrderQuantums");
             return productionItems as IEnumerable<ProductionItem>;
         }
 
@@ -109,6 +135,16 @@ namespace Scheduler.Database
 
         public int CreateProductionItem(ProductionItem productionItem)
         {
+            var productionItemQuantums = new List<ProductionItemQuantum>();
+
+            foreach (var productionItemQuantum in productionItem.ProductionItemQuantums)
+                _context.ProductionItemQuantums.Add(new ProductionItemQuantum()
+                {
+                    Count = productionItemQuantum.Count,
+                    DetailId = productionItemQuantum.Detail.Id,
+                });
+            productionItem.ProductionItemQuantums = productionItemQuantums;
+
             _context.ProductionItems.Add(productionItem);
             _context.SaveChanges();
 
@@ -126,8 +162,30 @@ namespace Scheduler.Database
         #region Operations
         public IEnumerable<Operation> GetOperations()
         {
-            var operations = _context.Operations.Include("Detail").Include("Equipment").Include("Routes");
+            var operations = _context.Operations
+                .Include(o => o.Detail)
+                .Include(o => o.Equipment)
+                .Include(o => o.Equipment.Conveyor)
+                .Include(o => o.Equipment.Workshop)
+                .Include(o => o.Routes);
             return operations as IEnumerable<Operation>;
+        }
+
+        public IEnumerable<Operation> GetOperationsByDetailId(int detailId)
+        {
+            var operations = _context.Operations.Where(o => o.DetailId == detailId)
+                .Include(o => o.Detail)
+                .Include(o => o.Equipment)
+                .Include(o => o.Equipment.Conveyor)
+                .Include(o => o.Equipment.Workshop)
+                .Include(o => o.Routes);
+            return operations as IEnumerable<Operation>;
+        }
+
+        public Operation GetOperationById(int id)
+        {
+            var operation = _context.Operations.First(o => o.Id == id);
+            return operation;
         }
 
         public int CreateOperation(Operation operation)
@@ -145,6 +203,51 @@ namespace Scheduler.Database
         }
         #endregion
 
+        #region Routes
+        public IEnumerable<Route> GetRoutes()
+        {
+            var routes = _context.Routes
+                .Include("Detail")
+                .Include(r => r.Operations.Select(o => o.Equipment.Workshop))
+                .Include(r => r.Operations.Select(o => o.Equipment.Conveyor))
+                .Include(r => r.Operations.Select(o => o.Equipment));
+
+            return routes as IEnumerable<Route>;
+        }
+
+        public Route GetRouteById(int id)
+        {
+            var route = _context.Routes.First(r => r.Id == id);
+            return route;
+        }
+
+        public int CreateRoute(Route route)
+        {
+            var operIds = route.Operations.ToList().Select(o => o.Id).ToList();
+            route.Operations = new List<Operation>();
+            _context.Routes.Add(route);
+
+            foreach (var operId in operIds)
+            {
+                route.Operations.Add(GetOperationById(operId));
+            }
+
+            _context.SaveChanges();
+
+            return route.Id;
+        }
+
+
+
+        public void DeleteRoute(int id)
+        {
+            _context.Routes.Remove(_context.Routes.First(d => d.Id == id));
+            _context.SaveChanges();
+        }
+        #endregion
+
+
+        #region ConveyorsAndWorkshops
         public IEnumerable<Conveyor> GetConveyors()
         {
             var conveyors = _context.Conveyors;
@@ -156,5 +259,6 @@ namespace Scheduler.Database
             var workshops = _context.Workshops;
             return workshops as IEnumerable<Workshop>;
         }
+        #endregion
     }
 }

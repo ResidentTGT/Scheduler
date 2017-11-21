@@ -1,7 +1,8 @@
+import { ProductionItem } from './production-item';
+
 export class OrderQuantum {
     public id?: number | {};
-    public productionItemId?: number|{};
-    public productionItemTitle: string;
+    public productionItem?: ProductionItem;
     public orderId?: number;
     public count: number;
     public itemsCountInOnePart: number;

@@ -17,7 +17,7 @@ export class EquipmentsComponent implements OnInit {
 
     name: '';
     description: '';
-    type: EquipmentType = EquipmentType.Undefined;
+    type: string = EquipmentType[0];
     typeOptions: string[] = [];
     public workshop: Workshop;
     public conveyor: Conveyor;
@@ -50,7 +50,7 @@ export class EquipmentsComponent implements OnInit {
         const equipment: Equipment = {
             name: this.name,
             description: this.description,
-            type: this.type,
+            type: this.type || EquipmentType[this.type],
             workshop: this.workshop,
             conveyor: this.conveyor,
         };
@@ -92,6 +92,13 @@ export class EquipmentsComponent implements OnInit {
                 return Observable.empty();
             })
             .subscribe();
+    }
+
+    public checkInput() {
+        if (this.name === '' || !this.name
+            || (!this.conveyor && !this.workshop)) {
+            return true;
+        }
     }
 
 }

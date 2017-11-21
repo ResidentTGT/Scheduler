@@ -16,7 +16,7 @@ namespace Scheduler.Dto
         {
             _dbManager = new DbManager();
         }
-
+        #region ConvertDetails
         internal DetailDto ConvertDetail(Detail detail)
         {
             var detailDto = new DetailDto()
@@ -25,7 +25,7 @@ namespace Scheduler.Dto
                 Description = detail.Description,
                 Id = detail.Id,
                 IsPurchased = detail.IsPurchased,
-                RouteId = detail.RouteId,
+                RouteName = detail.Route != null ? detail.Route.Name : null,
                 Title = detail.Title
             };
 
@@ -39,12 +39,15 @@ namespace Scheduler.Dto
                 Cost = detailDto.Cost,
                 Description = detailDto.Description,
                 IsPurchased = detailDto.IsPurchased,
-                RouteId = detailDto.RouteId,
+
                 Title = detailDto.Title
             };
+            if (detailDto.Id.HasValue)
+                detail.Id = (int)detailDto.Id;
 
             return detail;
         }
+        #endregion
 
         #region EquipmentConvert
 
@@ -120,8 +123,7 @@ namespace Scheduler.Dto
                 Count = orderQuantum.Count,
                 ItemsCountInOnePart = orderQuantum.ItemsCountInOnePart,
                 OrderId = orderQuantum.OrderId,
-                ProductionItemId = orderQuantum.ProductionItemId,
-                ProductionItemTitle = orderQuantum.ProductionItem.Title
+                ProductionItem = orderQuantum.ProductionItem != null ? ConvertProductionItem(orderQuantum.ProductionItem) : null
             };
 
             return orderQuantumDto;
@@ -132,7 +134,7 @@ namespace Scheduler.Dto
             {
                 Count = orderQuantumDto.Count,
                 ItemsCountInOnePart = orderQuantumDto.ItemsCountInOnePart,
-                ProductionItemId = orderQuantumDto.ProductionItemId,
+                ProductionItem = ConvertProductionItem(orderQuantumDto.ProductionItem),
             };
 
             return orderQuantum;
@@ -153,7 +155,7 @@ namespace Scheduler.Dto
                 IsNode = productionItem.IsNode,
                 ParentProductionItemId = productionItem.ParentProductionItemId,
                 ParentProductionItemTitle = productionItem.ParentProductionItemId.HasValue ? _dbManager.GetProductionItemById(productionItem.ParentProductionItemId).Title : "",
-                ProductionItemQuantumsDtos = productionItem.ProductionItemQuantums.Select(d => ConvertProductionItemQuantum(d)).ToList()
+                ProductionItemQuantums = productionItem.ProductionItemQuantums != null ? productionItem.ProductionItemQuantums.Select(d => ConvertProductionItemQuantum(d)).ToList() : null
             };
 
             return productionItemDto;
@@ -166,9 +168,8 @@ namespace Scheduler.Dto
                 Title = productionItemDto.Title,
                 Description = productionItemDto.Description,
                 IsNode = productionItemDto.IsNode,
-                ParentProductionItemId = productionItemDto.ParentProductionItemId,
-
-                //ProductionItemQuantums = productionItemDto.ProductionItemQuantumsDtos.Select(d => ConvertProductionItemQuantum(d)).ToList()
+                ParentProductionItemId = productionItemDto.ParentProductionItemId.HasValue ? productionItemDto.ParentProductionItemId : null,
+                ProductionItemQuantums = productionItemDto.ProductionItemQuantums != null ? productionItemDto.ProductionItemQuantums.Select(d => ConvertProductionItemQuantum(d)).ToList() : null
             };
 
             return productionItem;
@@ -181,7 +182,7 @@ namespace Scheduler.Dto
             var productionItemQuantumDto = new ProductionItemQuantumDto()
             {
                 Count = productionItemQuantum.Count,
-                DetailId = productionItemQuantum.DetailId,
+                Detail = ConvertDetail(productionItemQuantum.Detail),
                 Id = productionItemQuantum.Id,
                 ProductionItemId = productionItemQuantum.ProductionItemId
             };
@@ -194,7 +195,7 @@ namespace Scheduler.Dto
             var productionItemQuantum = new ProductionItemQuantum()
             {
                 Count = productionItemQuantumDto.Count,
-                DetailId = productionItemQuantumDto.DetailId,
+                Detail = ConvertDetail(productionItemQuantumDto.Detail),
             };
 
             return productionItemQuantum;
@@ -212,8 +213,8 @@ namespace Scheduler.Dto
                 AdditionalTime = operation.AdditionalTime.Ticks,
                 Description = operation.Description,
                 Type = operation.Type,
-                Detail = ConvertDetail(operation.Detail),
-                Equipment = ConvertEquipment(operation.Equipment)
+                Detail = operation.Detail != null ? ConvertDetail(operation.Detail) : null,
+                Equipment = operation.Equipment != null ? ConvertEquipment(operation.Equipment) : null
             };
 
             return operationDto;
@@ -223,6 +224,7 @@ namespace Scheduler.Dto
         {
             var operation = new Operation()
             {
+
                 Name = operationDto.Name,
                 MainTime = new TimeSpan(operationDto.MainTime),
                 AdditionalTime = new TimeSpan(operationDto.AdditionalTime),
@@ -231,8 +233,39 @@ namespace Scheduler.Dto
                 DetailId = operationDto.Detail.Id,
                 EquipmentId = operationDto.Equipment.Id
             };
+            if (operationDto.Id.HasValue)
+                operation.Id = (int)operationDto.Id;
 
             return operation;
+        }
+        #endregion
+
+        #region RouteConvert
+        internal RouteDto ConvertRoute(Route route)
+        {
+            var routeDto = new RouteDto()
+            {
+                Id = route.Id,
+                Description = route.Description,
+                Detail = ConvertDetail(route.Detail),
+                Name = route.Name,
+                Operations = route.Operations.Select(o => ConvertOperation(o)).ToList()
+            };
+
+            return routeDto;
+        }
+
+        internal Route ConvertRoute(RouteDto routeDto)
+        {
+            var route = new Route()
+            {
+                Description = routeDto.Description,
+                Id = (int)routeDto.Detail.Id,
+                Name = routeDto.Name,
+                Operations = routeDto.Operations.ToList().Select(o => ConvertOperation(o)).ToList()
+            };
+
+            return route;
         }
         #endregion
 
@@ -274,5 +307,7 @@ namespace Scheduler.Dto
             return conveyor;
         }
         #endregion
+
+
     }
 }

@@ -18,8 +18,7 @@ namespace Scheduler.Model
 
         public bool? IsPurchased { get; set; }
 
-        public Route Route { get; set; }
-        public int? RouteId { get; set; }
+        public virtual Route Route { get; set; }
 
         public virtual List<ProductionItem> ProductionItems { get; set; }
 

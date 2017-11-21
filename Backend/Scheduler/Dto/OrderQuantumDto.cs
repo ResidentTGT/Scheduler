@@ -10,9 +10,7 @@ namespace Scheduler.Dto
     {
         public int Id { get; set; }
 
-        public int ProductionItemId { get; set; }
-
-        public string ProductionItemTitle { get; set; }
+        public ProductionItemDto ProductionItem { get; set; }
 
         public int OrderId { get; set; }
 

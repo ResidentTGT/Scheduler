@@ -7,6 +7,9 @@
             <div class="description">
                 Описание
             </div>
+            <div class="production-item-quantums">
+                Части продукции
+            </div>
             <div class="is-node">
                 Узел
             </div>
@@ -22,6 +25,16 @@
                 </span>
                 <span class="description">
                     {{productionItem.description}}
+                </span>
+                <span class="production-item-quantums word-limitation">
+                    <mat-list class="production-item-quantums-list">
+                        <mat-list-item *ngFor="let productionItemQuantum of productionItem.productionItemQuantums">
+                            <p matLine>
+                                <span>{{productionItemQuantum.detail.title}}</span>
+                                <span>{{productionItemQuantum.count}}</span>
+                            </p>
+                        </mat-list-item>
+                    </mat-list>
                 </span>
                 <span class="is-node">
                     {{productionItem.isNode?"да":"нет"}}

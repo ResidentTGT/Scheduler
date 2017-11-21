@@ -1,0 +1,49 @@
+<div class="layout">
+    <div class="table">
+        <div class="table-header">
+            <div class="name word-limitation">
+                Название
+            </div>
+            <div class="description word-limitation">
+                Описание
+            </div>
+            <div class="detail word-limitation">
+                Деталь
+            </div>
+            <div class="operations word-limitation">
+                Операции
+            </div>
+
+        </div>
+        <mat-list>
+            <mat-list-item *ngFor="let route of routes">
+                <span class="name word-limitation">
+                    {{route.name}}
+                </span>
+                <span class="description word-limitation">
+                    {{route.description}}
+                </span>
+                <span class="detail word-limitation">
+                    {{route.detail.title}}
+                </span>
+                <span class="operations word-limitation">
+                    <mat-list class="operations-list">
+                        <mat-list-item *ngFor="let operation of route.operations">
+                            <p matLine>
+                                <span>{{operation.name}}</span>
+                                <span> {{ operation.equipment.conveyor?.name||operation.equipment.workshop?.name }}</span>
+                            </p>
+                        </mat-list-item>
+                    </mat-list>
+                </span>
+
+                <button mat-button class="delete-button" (click)="deleteRoute(route)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <div>
+        <button mat-button color="warn" (click)="openDialog()">Создать маршрут</button>
+    </div>
+</div>

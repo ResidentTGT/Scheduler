@@ -29,6 +29,7 @@ namespace Scheduler.HttpServer
             Get["/"] = Index;
 
             Get["/details"] = GetDetails;
+            Get["/details-without-routes"] = GetDetailsWithoutRoutes;
             Post["/create-detail"] = CreateDetail;
             Get["/delete-detail"] = DeleteDetail;
 
@@ -45,8 +46,13 @@ namespace Scheduler.HttpServer
             Get["/delete-production-item"] = DeleteProductionItem;
 
             Get["/operations"] = GetOperations;
+            Get["/operations?detailId={detailId}"] = GetOperationsByDetailId;
             Post["/create-operation"] = CreateOperation;
             Get["/delete-operation"] = DeleteOperation;
+
+            Get["/routes"] = GetRoutes;
+            Post["/create-route"] = CreateRoute;
+            Get["/delete-route"] = DeleteRoute;
 
             Get["/conveyors"] = GetConveyors;
             Get["/workshops"] = GetWorkshops;
@@ -61,6 +67,14 @@ namespace Scheduler.HttpServer
         private object GetDetails(dynamic parameters)
         {
             var details = _dbManager.GetDetails();
+            var dtoDetails = details.Select(d => _dtoConverter.ConvertDetail(d)).ToList();
+
+            return dtoDetails;
+        }
+
+        private object GetDetailsWithoutRoutes(dynamic parameters)
+        {
+            var details = _dbManager.GetDetailsWithoutRoutes();
             var dtoDetails = details.Select(d => _dtoConverter.ConvertDetail(d)).ToList();
 
             return dtoDetails;
@@ -165,6 +179,15 @@ namespace Scheduler.HttpServer
             return dtoOperations;
         }
 
+        private object GetOperationsByDetailId(dynamic parameters)
+        {
+            int detailId = Request.Query["detailId"];
+            var operations = _dbManager.GetOperationsByDetailId(detailId).ToList();
+            var dtoOperations = operations.Select(d => _dtoConverter.ConvertOperation(d)).ToList();
+
+            return dtoOperations;
+        }
+
         private object CreateOperation(dynamic parameters)
         {
             var requestBody = this.Bind<OperationDto>();
@@ -176,6 +199,32 @@ namespace Scheduler.HttpServer
         private object DeleteOperation(dynamic parameters)
         {
             _dbManager.DeleteOperation(Request.Query["id"]);
+
+            return HttpStatusCode.OK;
+        }
+        #endregion
+
+        #region Routes
+
+        private object GetRoutes(dynamic parameters)
+        {
+            var routes = _dbManager.GetRoutes().ToList();
+            var dtoRoutes = routes.Select(d => _dtoConverter.ConvertRoute(d)).ToList();
+
+            return dtoRoutes;
+        }
+
+        private object CreateRoute(dynamic parameters)
+        {
+            var requestBody = this.Bind<RouteDto>();
+            var routeId = _dbManager.CreateRoute(_dtoConverter.ConvertRoute(requestBody));
+
+            return Response.AsJson(routeId);
+        }
+
+        private object DeleteRoute(dynamic parameters)
+        {
+            _dbManager.DeleteRoute(Request.Query["id"]);
 
             return HttpStatusCode.OK;
         }

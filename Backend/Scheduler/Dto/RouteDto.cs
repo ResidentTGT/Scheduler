@@ -6,18 +6,16 @@ using System.Threading.Tasks;
 
 namespace Scheduler.Dto
 {
-    public class DetailDto
+    public class RouteDto
     {
         public int? Id { get; set; }
 
-        public string Title { get; set; }
+        public string Name { get; set; }
 
         public string Description { get; set; }
 
-        public int? Cost { get; set; }
+        public List<OperationDto> Operations { get; set; }
 
-        public bool? IsPurchased { get; set; }
-
-        public string RouteName { get; set; }
+        public DetailDto Detail { get; set; }
     }
 }

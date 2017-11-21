@@ -19,7 +19,7 @@ export class CreateOperationComponent implements OnInit {
     public name: string;
     public description: string;
     public additionalTime: number;
-    public type: OperationType;
+    public type: string = OperationType[OperationType.Undefined];
     public equipment: Equipment;
     public detail: Detail;
 
@@ -51,7 +51,7 @@ export class CreateOperationComponent implements OnInit {
             equipment: this.equipment,
             mainTime: this.mainTime,
             name: this.name,
-            type: this.type,
+            type: this.type || OperationType[this.type],
         };
 
         this._api.createOperation(operation)
@@ -89,6 +89,11 @@ export class CreateOperationComponent implements OnInit {
 
     closeDialog() {
         this.matDialogRef.close();
+    }
+    checkInput() {
+        if (!this.name || !this.equipment || !this.detail || !this.mainTime) {
+            return true;
+        }
     }
 
 }

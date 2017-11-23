@@ -67,7 +67,7 @@ namespace Scheduler.Database
         public int CreateEquipment(Equipment equipment)
         {
             _context.Equipments.Add(equipment);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
 
             return equipment.Id;
         }
@@ -80,6 +80,11 @@ namespace Scheduler.Database
         public Equipment GetEquipmentById(int? id)
         {
             var equipment = _context.Equipments.First(pi => pi.Id == id);
+            return equipment;
+        }
+        public Equipment GetEquipmentByOperationId(int id)
+        {
+            var equipment = _context.Operations.Include(o => o.Equipment.Conveyor).First(o => o.Id == id).Equipment;
             return equipment;
         }
         #endregion
@@ -97,7 +102,8 @@ namespace Scheduler.Database
 
         public Order GetOrderById(int id)
         {
-            var order = _context.Orders.First(o => o.Id == id);
+            var order = _context.Orders
+                .Include(o => o.OrderQuantums.Select(oq => oq.ProductionItem)).First(o => o.Id == id);
             return order;
         }
 
@@ -114,7 +120,7 @@ namespace Scheduler.Database
             order.OrderQuantums = orderQuantums;
 
             _context.Orders.Add(order);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
 
             return order.Id;
         }
@@ -123,6 +129,13 @@ namespace Scheduler.Database
         {
             _context.Orders.Remove(_context.Orders.First(d => d.Id == id));
             _context.SaveChanges();
+        }
+
+        public void SetOrderState(int id, OrderState state)
+        {
+            var order = _context.Orders.First(o => o.Id == id);
+            order.State = state;
+            _context.SaveChangesAsync();
         }
         #endregion
 
@@ -197,11 +210,11 @@ namespace Scheduler.Database
         public IEnumerable<Operation> GetOperationsByProductionItemId(int id)
         {
             var operations = _context.ProductionItems
+                .Include(pi => pi.ProductionItemQuantums.Select(piq => piq.Detail))
                 .First(p => p.Id == id)
                 .ProductionItemQuantums
                 .Select(piq => piq.Detail)
-                .SelectMany(d => d.Operations)
-                .Where(o => o.Type == OperationType.Assembling);
+                .SelectMany(d => d.Operations);
 
             return operations;
         }
@@ -209,7 +222,7 @@ namespace Scheduler.Database
         public int CreateOperation(Operation operation)
         {
             _context.Operations.Add(operation);
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
 
             return operation.Id;
         }
@@ -217,7 +230,7 @@ namespace Scheduler.Database
         public void DeleteOperation(int id)
         {
             _context.Operations.Remove(_context.Operations.First(d => d.Id == id));
-            _context.SaveChanges();
+            _context.SaveChangesAsync();
         }
         #endregion
 
@@ -272,10 +285,22 @@ namespace Scheduler.Database
             return conveyors as IEnumerable<Conveyor>;
         }
 
+        public Conveyor GetConveyorById(int id)
+        {
+            var conveyor = _context.Conveyors.First(c => c.Id == id);
+            return conveyor;
+        }
+
         public IEnumerable<Workshop> GetWorkshops()
         {
             var workshops = _context.Workshops;
             return workshops as IEnumerable<Workshop>;
+        }
+
+        public Conveyor GetConveyorByEquipmentId(int id)
+        {
+            var conveyor = _context.Equipments.First(c => c.Id == id).Conveyor;
+            return conveyor;
         }
         #endregion
     }

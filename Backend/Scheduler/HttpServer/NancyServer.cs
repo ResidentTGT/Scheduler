@@ -1,5 +1,6 @@
 ﻿using Nancy;
 using Nancy.ModelBinding;
+using Scheduler.Core;
 using Scheduler.Database;
 using Scheduler.Dto;
 using Scheduler.Model;
@@ -28,8 +29,6 @@ namespace Scheduler.HttpServer
         {
             Get["/"] = Index;
 
-            Get["calculate-order?id={id}"] = CalculateOrder;
-
             Get["/details"] = GetDetails;
             Get["/details-without-routes"] = GetDetailsWithoutRoutes;
             Post["/create-detail"] = CreateDetail;
@@ -42,6 +41,7 @@ namespace Scheduler.HttpServer
             Get["/orders"] = GetOrders;
             Post["/create-order"] = CreateOrder;
             Get["/delete-order"] = DeleteOrder;
+            Get["/calculate-order"] = CalculateOrder;      
 
             Get["/production-items"] = GetProductionItems;
             Post["/create-production-item"] = CreateProductionItem;
@@ -67,7 +67,10 @@ namespace Scheduler.HttpServer
 
         private object CalculateOrder(dynamic parameters)
         {
-            throw new NotImplementedException();
+            var calculation = new Calculation();
+            calculation.CalculateOrderById(Request.Query["id"]);
+
+            return Response.AsJson(HttpStatusCode.OK);
         }
 
         #region DetailsApi

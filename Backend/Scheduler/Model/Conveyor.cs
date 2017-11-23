@@ -12,6 +12,10 @@ namespace Scheduler.Model
 
         public string Name { get; set; }
 
+        public TimeSpan TransportTime { get; set; }
+
+        public TimeSpan ReadjustingTime { get; set; }
+
         public virtual ICollection<Equipment> Equipments { get; set; }
     }
 }

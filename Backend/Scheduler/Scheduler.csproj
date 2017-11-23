@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assembling\OperationProcess.cs" />
     <Compile Include="Assembling\OrderQuantumAssemblingTime.cs" />
     <Compile Include="Core\Calculation.cs" />
     <Compile Include="Database\DbManager.cs" />
@@ -89,6 +90,10 @@
     <Compile Include="Migrations\201711210849299_InitialDb.cs" />
     <Compile Include="Migrations\201711210849299_InitialDb.Designer.cs">
       <DependentUpon>201711210849299_InitialDb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711231840474_AddTimesToConveyor.cs" />
+    <Compile Include="Migrations\201711231840474_AddTimesToConveyor.Designer.cs">
+      <DependentUpon>201711231840474_AddTimesToConveyor.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
@@ -124,6 +129,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201711210849299_InitialDb.resx">
       <DependentUpon>201711210849299_InitialDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711231840474_AddTimesToConveyor.resx">
+      <DependentUpon>201711231840474_AddTimesToConveyor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -66,9 +66,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assembling\OperationProcess.cs" />
-    <Compile Include="Assembling\OrderQuantumAssemblingTime.cs" />
+    <Compile Include="Core\Assembling\OperationProcess.cs" />
+    <Compile Include="Core\Assembling\OrderQuantumAssemblingTime.cs" />
     <Compile Include="Core\Calculation.cs" />
+    <Compile Include="Core\Grouping\GroupingDetails.cs" />
     <Compile Include="Database\DbManager.cs" />
     <Compile Include="Dto\ConveyorDto.cs" />
     <Compile Include="Dto\DtoConverter.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="Dto\ProductionItemQuantumDto.cs" />
     <Compile Include="Dto\RouteDto.cs" />
     <Compile Include="Dto\WorkshopDto.cs" />
-    <Compile Include="Assembling\AssemblingTime.cs" />
+    <Compile Include="Core\Assembling\AssemblingTime.cs" />
     <Compile Include="Helpers\ConsoleClosure.cs" />
     <Compile Include="HttpServer\AppNancyBootstraper.cs" />
     <Compile Include="HttpServer\HttpServerFactory.cs" />

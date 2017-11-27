@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scheduler.Assembling
+namespace Scheduler.Core.Assembling
 {
 
     public class AssemblingTime

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Scheduler.Model;
-using Scheduler.Assembling;
+using Scheduler.Core.Assembling;
 using Scheduler.Log;
 
 namespace Scheduler.Core
@@ -39,6 +39,8 @@ namespace Scheduler.Core
             Logger.Log($"Начат расчет времен сборок партий изделий на конвейере для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
             var assemblingTimes = assemblingTime.CalculateAssemblingTimes(order);
             Logger.Log($"Закончен расчет времен сборок партий изделий на конвейере для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
+
+            
 
         }
     }

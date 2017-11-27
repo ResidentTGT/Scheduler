@@ -94,8 +94,10 @@ namespace Scheduler.Database
         {
             var orders = _context.Orders
                 .Include(o => o.OrderQuantums.Select(op => op.ProductionItem))
+                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums))
                 .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail)))
-                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums));
+                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations)))
+                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations.Select(oper => oper.Equipment))));
 
             return orders as IEnumerable<Order>;
         }
@@ -103,7 +105,14 @@ namespace Scheduler.Database
         public Order GetOrderById(int id)
         {
             var order = _context.Orders
-                .Include(o => o.OrderQuantums.Select(oq => oq.ProductionItem)).First(o => o.Id == id);
+                .Include(o => o.OrderQuantums.Select(oq => oq.ProductionItem))
+                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums))
+                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail)))
+                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations)))
+                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations.Select(oper => oper.Equipment))))
+                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations.Select(oper => oper.Equipment.Workshop))))
+                 .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations.Select(oper => oper.Equipment.Conveyor))))
+                .First(o => o.Id == id);
             return order;
         }
 
@@ -142,7 +151,10 @@ namespace Scheduler.Database
         #region ProductionItems
         public IEnumerable<ProductionItem> GetProductionItems()
         {
-            var productionItems = _context.ProductionItems.Include(p => p.ProductionItemQuantums.Select(po => po.Detail)).Include("OrderQuantums");
+            var productionItems = _context.ProductionItems
+                .Include(p => p.ProductionItemQuantums.Select(po => po.Detail)
+                .Select(d => d.Operations.Select(o => o.Equipment).Select(e => e.Workshop)))
+                .Include("OrderQuantums");
             return productionItems as IEnumerable<ProductionItem>;
         }
 

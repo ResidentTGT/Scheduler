@@ -70,6 +70,7 @@
     <Compile Include="Core\Assembling\OrderQuantumAssemblingTime.cs" />
     <Compile Include="Core\Calculation.cs" />
     <Compile Include="Core\Grouping\GroupingDetails.cs" />
+    <Compile Include="Core\Grouping\ProductionItemQuantumsGroup.cs" />
     <Compile Include="Database\DbManager.cs" />
     <Compile Include="Dto\ConveyorDto.cs" />
     <Compile Include="Dto\DtoConverter.cs" />
@@ -95,6 +96,10 @@
     <Compile Include="Migrations\201711231840474_AddTimesToConveyor.cs" />
     <Compile Include="Migrations\201711231840474_AddTimesToConveyor.Designer.cs">
       <DependentUpon>201711231840474_AddTimesToConveyor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711271827181_AddedWorkshopSequenceToDetail.cs" />
+    <Compile Include="Migrations\201711271827181_AddedWorkshopSequenceToDetail.Designer.cs">
+      <DependentUpon>201711271827181_AddedWorkshopSequenceToDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
@@ -133,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711231840474_AddTimesToConveyor.resx">
       <DependentUpon>201711231840474_AddTimesToConveyor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711271827181_AddedWorkshopSequenceToDetail.resx">
+      <DependentUpon>201711271827181_AddedWorkshopSequenceToDetail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

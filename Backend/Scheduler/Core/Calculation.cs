@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Scheduler.Model;
 using Scheduler.Core.Assembling;
 using Scheduler.Log;
+using Scheduler.Core.Grouping;
 
 namespace Scheduler.Core
 {
@@ -40,7 +41,14 @@ namespace Scheduler.Core
             var assemblingTimes = assemblingTime.CalculateAssemblingTimes(order);
             Logger.Log($"Закончен расчет времен сборок партий изделий на конвейере для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
 
-            
+            var grouping = new GroupingDetails(_dbManager);
+            //Установка последовательности следования деталей по цехам, пока нет интерефейса для этого
+            grouping.SetWorkshopSequenceForDetails(order);
+
+            Logger.Log($"Начато группирование деталей по маршрутам их следования для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
+            grouping.GroupDetails(order);
+            Logger.Log($"Закончено группирование деталей по маршрутам их следования для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
+
 
         }
     }

@@ -25,5 +25,21 @@ namespace Scheduler.Model
         public virtual List<ProductionItemQuantum> ProductionItemQuantums { get; set; }
 
         public virtual List<Operation> Operations { get; set; }
+
+        public List<int> WorkshopSequence
+        {
+            get
+            {
+                return String.IsNullOrEmpty(WorkshopSequenceStr)
+                    ? new List<int>()
+                    : WorkshopSequenceStr.Split(',').Select(w => Convert.ToInt32(w)).ToList();
+            }
+            set
+            {
+                WorkshopSequenceStr = String.Join(",", value.Select(v => Convert.ToString(v)));
+            }
+        }
+
+        public string WorkshopSequenceStr { get; set; }
     }
 }

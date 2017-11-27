@@ -26,7 +26,8 @@ namespace Scheduler.Dto
                 Id = detail.Id,
                 IsPurchased = detail.IsPurchased,
                 RouteName = detail.Route != null ? detail.Route.Name : null,
-                Title = detail.Title
+                Title = detail.Title,
+                WorkshopSequence = detail.WorkshopSequence
             };
 
             return detailDto;
@@ -39,7 +40,7 @@ namespace Scheduler.Dto
                 Cost = detailDto.Cost,
                 Description = detailDto.Description,
                 IsPurchased = detailDto.IsPurchased,
-
+                WorkshopSequence = detailDto.WorkshopSequence != null ? detailDto.WorkshopSequence : new List<int>(),
                 Title = detailDto.Title
             };
             if (detailDto.Id.HasValue)

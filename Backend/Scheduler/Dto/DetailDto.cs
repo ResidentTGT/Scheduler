@@ -19,5 +19,7 @@ namespace Scheduler.Dto
         public bool? IsPurchased { get; set; }
 
         public string RouteName { get; set; }
+
+        public List<int> WorkshopSequence { get; set; }
     }
 }

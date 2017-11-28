@@ -63,6 +63,15 @@ namespace Scheduler.Core.Grouping
                         workshopSequence.Add((int)oper.Equipment.WorkshopId);
                     }
                     productionItemQuantum.Detail.WorkshopSequence = workshopSequence.ToList();
+
+                    var operations = new List<Operation>();
+                    foreach (var workshopId in productionItemQuantum.Detail.WorkshopSequence)
+                    {
+                        var opers = productionItemQuantum.Detail.Operations.Where(w => w.Equipment.WorkshopId == workshopId);
+                        foreach (var oper in opers)
+                            operations.Add(oper);
+                    }
+                    productionItemQuantum.Detail.Operations = operations;
                 }
             }
         }

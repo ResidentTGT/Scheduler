@@ -20,5 +20,9 @@ namespace Scheduler.Model
         public int ProductionItemId { get; set; }
 
         public int Count { get; set; }
+
+        public List<TimeSpan> StartTimes { get; set; }
+        public List<TimeSpan> EndTimes { get; set; }
+        public List<TimeSpan> MachiningDurations { get; set; }
     }
 }

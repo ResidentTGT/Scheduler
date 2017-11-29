@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Scheduler.Core.DecisiveRules
+namespace Scheduler.Core.CountingTime
 {
-    public static class Timing
+    public static class DetailsTiming
     {
         public static TimeSpan CountGroupMachiningTime(ProductionItemQuantumsGroup productionItemQuantumsGroup, bool isFinally)
         {
@@ -81,17 +81,18 @@ namespace Scheduler.Core.DecisiveRules
                 groupTime += maxEndTime;
                 if (isFinally)
                     productionItemQuantumsGroup.WorkshopDurations.Add(maxEndTime);
-
+                else
+                {
+                    foreach (var d in productionItemQuantums)
+                    {
+                        d.EndTimes.Clear();
+                        d.StartTimes.Clear();
+                        d.MachiningDurations.Clear();
+                    }
+                }
 
                 Logger.Log($"Закончен расчет времени группы деталей для цеха с id '{productionItemQuantumsGroup.WorkshopSequence[i]}', " +
-                    $"суммарное время: {productionItemQuantums.Last().EndTimes.Max()}", LogLevel.Info);
-
-                foreach (var d in productionItemQuantums)
-                {
-                    d.EndTimes.Clear();
-                    d.StartTimes.Clear();
-                    d.MachiningDurations.Clear();
-                }
+                    $"суммарное время: {maxEndTime}", LogLevel.Info);
             }
             return groupTime;
         }

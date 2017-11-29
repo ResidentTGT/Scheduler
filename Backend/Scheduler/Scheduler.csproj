@@ -69,10 +69,12 @@
     <Compile Include="Core\Assembling\OperationProcess.cs" />
     <Compile Include="Core\Assembling\OrderQuantumAssemblingTime.cs" />
     <Compile Include="Core\Calculation.cs" />
+    <Compile Include="Core\CountingTime\GroupsTiming.cs" />
     <Compile Include="Core\DecisiveRules\Lukr.cs" />
     <Compile Include="Core\DecisiveRules\Spt.cs" />
-    <Compile Include="Core\DecisiveRules\Timing.cs" />
+    <Compile Include="Core\CountingTime\DetailsTiming.cs" />
     <Compile Include="Core\DeterminingOrder\DeterminingDetailsOrder.cs" />
+    <Compile Include="Core\DeterminingOrder\DeterminingGroupsOrder.cs" />
     <Compile Include="Core\Grouping\GroupingDetails.cs" />
     <Compile Include="Core\Grouping\ProductionItemQuantumsGroup.cs" />
     <Compile Include="Database\DbManager.cs" />

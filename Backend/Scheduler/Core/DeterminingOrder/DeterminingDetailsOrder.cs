@@ -1,4 +1,5 @@
-﻿using Scheduler.Core.DecisiveRules;
+﻿using Scheduler.Core.CountingTime;
+using Scheduler.Core.DecisiveRules;
 using Scheduler.Core.Grouping;
 using Scheduler.Database;
 using Scheduler.Log;
@@ -33,7 +34,7 @@ namespace Scheduler.Core.DeterminingOrder
                     Lukr.SortDetails(productionItemQuantumsGroup);
                     Logger.Log($"Сортировка деталей по правилу LUKR закончена.", LogLevel.Trace);
                     Logger.Log($"Определение суммарного времени обработки группы по правилу LUKR начато.", LogLevel.Trace);
-                    var time = Timing.CountGroupMachiningTime(productionItemQuantumsGroup, false);
+                    var time = DetailsTiming.CountGroupMachiningTime(productionItemQuantumsGroup, false);
                     Logger.Log($"Определение суммарного времени обработки группы по правилу LUKR закончено. Получившееся время: {time}", LogLevel.Trace);
                     dictDecisiveRulesTimes.Add("LUKR", time);
 
@@ -41,7 +42,7 @@ namespace Scheduler.Core.DeterminingOrder
                     Spt.SortDetails(productionItemQuantumsGroup);
                     Logger.Log($"Сортировка деталей по правилу SPT закончена.", LogLevel.Trace);
                     Logger.Log($"Определение суммарного времени обработки группы по правилу SPT начато.", LogLevel.Trace);
-                    time = Timing.CountGroupMachiningTime(productionItemQuantumsGroup, false);
+                    time = DetailsTiming.CountGroupMachiningTime(productionItemQuantumsGroup, false);
                     Logger.Log($"Определение суммарного времени обработки группы по правилу SPT закончено. Получившееся время: {time}", LogLevel.Trace);
                     dictDecisiveRulesTimes.Add("SPT", time);
 
@@ -75,7 +76,7 @@ namespace Scheduler.Core.DeterminingOrder
             Logger.Log($"Сортировка деталей по правилу {rule} закончена.", LogLevel.Info);
 
             Logger.Log($"Определение суммарного времени обработки группы по лучшему правилу {rule} начато.", LogLevel.Trace);
-            var time = Timing.CountGroupMachiningTime(productionItemQuantumsGroup, true);
+            var time = DetailsTiming.CountGroupMachiningTime(productionItemQuantumsGroup, true);
             Logger.Log($"Определение суммарного времени обработки группы по лучшему правилу {rule} закончено. Получившееся время: {time}", LogLevel.Trace);
         }
     }

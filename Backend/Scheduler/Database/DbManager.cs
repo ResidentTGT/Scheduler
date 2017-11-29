@@ -67,7 +67,7 @@ namespace Scheduler.Database
         public int CreateEquipment(Equipment equipment)
         {
             _context.Equipments.Add(equipment);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             return equipment.Id;
         }
@@ -129,7 +129,7 @@ namespace Scheduler.Database
             order.OrderQuantums = orderQuantums;
 
             _context.Orders.Add(order);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             return order.Id;
         }
@@ -144,7 +144,7 @@ namespace Scheduler.Database
         {
             var order = _context.Orders.First(o => o.Id == id);
             order.State = state;
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
         #endregion
 
@@ -234,7 +234,7 @@ namespace Scheduler.Database
         public int CreateOperation(Operation operation)
         {
             _context.Operations.Add(operation);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             return operation.Id;
         }
@@ -242,7 +242,7 @@ namespace Scheduler.Database
         public void DeleteOperation(int id)
         {
             _context.Operations.Remove(_context.Operations.First(d => d.Id == id));
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
         #endregion
 

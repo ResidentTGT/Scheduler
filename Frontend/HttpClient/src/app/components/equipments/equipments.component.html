@@ -46,20 +46,20 @@
         </mat-form-field>
         <mat-form-field>
             <mat-select placeholder="Тип оборудования" [(ngModel)]="type">
-                <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption">
+                <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption" (click)="workshop=null;conveyor=null">
                     {{ typeOption|equipmentType }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field>
-            <mat-select [(ngModel)]="workshop" [disabled]="conveyor" placeholder="Цех">
+            <mat-select [(ngModel)]="workshop"  [disabled]="conveyor||type!=='MachiningTool'" placeholder="Цех">
                 <mat-option *ngFor="let workshop of workshops" [value]="workshop">
                     {{ workshop.name }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field>
-            <mat-select [(ngModel)]="conveyor" [disabled]="workshop" placeholder="Конвейер">
+            <mat-select [(ngModel)]="conveyor" [disabled]="workshop||type!=='AssemblyWorkplace'" placeholder="Конвейер">
                 <mat-option *ngFor="let conveyor of conveyors" [value]="conveyor">
                     {{ conveyor.name }}
                 </mat-option>

@@ -25,7 +25,9 @@ export class CreateOperationComponent implements OnInit {
 
     public operations: Operation[] = [];
     public equipments: Equipment[] = [];
+    public sortedEquipments: Equipment[] = [];
     public details: Detail[] = [];
+    public sortedDetails: Detail[] = [];
 
     public typeOptions: string[] = [];
 
@@ -86,10 +88,23 @@ export class CreateOperationComponent implements OnInit {
             .subscribe();
     }
 
+    private changeSortedEquipments() {
+
+        if (this.type === 'Machining') {
+            this.sortedEquipments = this.equipments.filter(e => e.workshop != null);
+        }
+        if (this.type === 'Assembling') {
+            this.sortedEquipments = this.equipments.filter(e => e.conveyor != null);
+        }
+        if (this.type === 'Transport') {
+            this.sortedEquipments = this.equipments.filter(e => e.conveyor == null && e.workshop == null);
+        }
+    }
 
     closeDialog() {
         this.matDialogRef.close();
     }
+
     checkInput() {
         if (!this.name || !this.equipment || !this.detail || !this.mainTime) {
             return true;

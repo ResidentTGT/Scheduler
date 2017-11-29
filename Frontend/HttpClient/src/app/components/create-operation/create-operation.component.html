@@ -12,21 +12,21 @@
         <input matInput [(ngModel)]="additionalTime" placeholder="Дополнительное время">
     </mat-form-field>
     <mat-form-field>
-        <mat-select placeholder="Тип операции" [(ngModel)]="type">
+        <mat-select placeholder="Тип операции" [(ngModel)]="type" (change)=changeSortedEquipments()>
             <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption">
                 {{ typeOption|operationType }}
             </mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field>
-        <mat-select [(ngModel)]="equipment" placeholder="Оборудование">
-            <mat-option *ngFor="let equipment of equipments" [value]="equipment">
+        <mat-select [(ngModel)]="equipment" placeholder="Оборудование" [disabled]="type==''||type=='Undefined'">
+            <mat-option *ngFor="let equipment of sortedEquipments" [value]="equipment">
                 {{ equipment.name }}
             </mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field>
-        <mat-select [(ngModel)]="detail" placeholder="Деталь">
+        <mat-select [(ngModel)]="detail" placeholder="Деталь" [disabled]="equipment==null">
             <mat-option *ngFor="let detail of details" [value]="detail">
                 {{ detail.title }}
             </mat-option>

@@ -15,7 +15,6 @@ import { OrderQuantum } from '../../models/order-quantum';
 export class CreateOrderComponent implements OnInit {
     public name: string;
     public description: string;
-    public state: string = OrderState[OrderState.Undefined];
     public plannedBeginDate: Date;
     public plannedEndDate: Date;
 
@@ -47,7 +46,7 @@ export class CreateOrderComponent implements OnInit {
             name: this.name,
             plannedBeginDate: this.plannedBeginDate,
             plannedEndDate: this.plannedEndDate,
-            state: this.state || OrderState[this.state],
+            state: 'Undefined' || OrderState[OrderState[0]],
             orderQuantums: this.orderQuantums
         };
 
@@ -58,6 +57,7 @@ export class CreateOrderComponent implements OnInit {
             })
             .subscribe(id => {
                 order.id = id;
+                debugger;
                 this.orders.push(order);
                 this.closeDialog();
             });

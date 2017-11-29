@@ -43,7 +43,7 @@ namespace Scheduler.Core
             Logger.Log($"Закончен расчет времен сборок партий изделий на конвейере для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
 
             var grouping = new GroupingDetails(_dbManager);
-            //Установка последовательности следования деталей по цехам, пока нет интерефейса для этого
+            //Установка последовательности следования деталей по цехам, пока нет интерфейса для этого
             grouping.SetWorkshopSequenceForDetails(order);
 
             Logger.Log($"Начато группирование деталей по маршрутам их следования для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
@@ -54,6 +54,11 @@ namespace Scheduler.Core
             Logger.Log($"Начато определение порядка обработки деталей на станках для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
             determiningDetailsOrder.DetermineDetailsOrderInGroups(order);
             Logger.Log($"Закончено определение порядка обработки деталей на станках для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
+
+            var determiningGroupsOrder = new DeterminingGroupsOrder(_dbManager);
+            Logger.Log($"Начато определение порядка обработки групп для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
+            determiningGroupsOrder.DetermineGroupsOrder(order);
+            Logger.Log($"Закончено определение порядка обработки групп для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
 
 
         }

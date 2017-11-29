@@ -96,7 +96,7 @@ export class EquipmentsComponent implements OnInit {
 
     public checkInput() {
         if (this.name === '' || !this.name
-            || (!this.conveyor && !this.workshop)) {
+            || ((!this.conveyor && !this.workshop) && this.type !== 'Transport')) {
             return true;
         }
     }

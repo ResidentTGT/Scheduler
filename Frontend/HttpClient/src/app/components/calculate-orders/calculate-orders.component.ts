@@ -33,5 +33,4 @@ export class CalculateOrdersComponent implements OnInit {
         this._api.calculateOrder(this.orders[0].id).subscribe();
     }
 
-
 }

@@ -15,6 +15,19 @@ namespace Scheduler.Core.DecisiveRules
             productionItemQuantumsGroup.ProductionItemQuantums = productionItemQuantumsGroup.ProductionItemQuantums.OrderBy(r => SumDurations(r.Detail)).ToList();
         }
 
+        internal static void SortGroups(ProductionItem productionItem)
+        {
+            productionItem.ProductionItemQuantumsGroups = productionItem.ProductionItemQuantumsGroups.OrderBy(r => SumWorkshopDurations(r.WorkshopDurations)).ToList();
+        }
+
+        private static TimeSpan SumWorkshopDurations(List<TimeSpan> workshopDurations)
+        {
+            TimeSpan sum = new TimeSpan();
+            foreach (var time in workshopDurations)
+                sum += time;
+            return sum;
+        }
+
         private static TimeSpan SumDurations(Detail detail)
         {
             TimeSpan sum = new TimeSpan();

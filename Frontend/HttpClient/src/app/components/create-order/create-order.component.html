@@ -15,13 +15,6 @@
         <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
         <mat-datepicker #pickerTo></mat-datepicker>
     </mat-form-field>
-    <mat-form-field>
-        <mat-select placeholder="Состояние заказа" [(ngModel)]="state">
-            <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption">
-                {{ typeOption|orderState }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
 
     <mat-divider></mat-divider>
 

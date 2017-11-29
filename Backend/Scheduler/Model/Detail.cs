@@ -24,7 +24,7 @@ namespace Scheduler.Model
 
         public virtual List<ProductionItemQuantum> ProductionItemQuantums { get; set; }
 
-        public virtual List<Operation> Operations { get; set; }
+        public virtual List<Operation> Operations { get; set; } 
 
         public List<int> WorkshopSequence
         {

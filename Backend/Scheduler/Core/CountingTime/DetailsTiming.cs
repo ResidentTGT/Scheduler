@@ -11,7 +11,7 @@ namespace Scheduler.Core.CountingTime
 {
     public static class DetailsTiming
     {
-        public static TimeSpan CountGroupMachiningTime(ProductionItemQuantumsGroup productionItemQuantumsGroup, bool isFinally)
+        public static TimeSpan CountGroupMachiningTime(ProductionItemQuantumsGroup productionItemQuantumsGroup, bool isFinally, int itemsCountInOnePart)
         {
             var productionItemQuantums = productionItemQuantumsGroup.ProductionItemQuantums;
 
@@ -32,13 +32,13 @@ namespace Scheduler.Core.CountingTime
                     {
                         if (k == 0)
                         {
-                            durations.Add(new TimeSpan(opers[k].MainTime.Ticks * productionItemQuantums[j].Count));
+                            durations.Add(new TimeSpan(opers[k].MainTime.Ticks * productionItemQuantums[j].Count * itemsCountInOnePart));
                             startTimes.Add(new TimeSpan(0));
                             endTimes.Add(startTimes[k] + durations[k]);
                         }
                         else
                         {
-                            durations.Add(new TimeSpan(opers[k].MainTime.Ticks * productionItemQuantums[j].Count));
+                            durations.Add(new TimeSpan(opers[k].MainTime.Ticks * productionItemQuantums[j].Count* itemsCountInOnePart));
                             var startTime = startTimes[k - 1] + opers[k].MainTime;
                             var endTime = startTime + durations[k];
                             if (endTime < endTimes[k - 1] + opers[k].MainTime)

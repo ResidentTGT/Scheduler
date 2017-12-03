@@ -70,6 +70,7 @@
     <Compile Include="Core\Assembling\OrderQuantumAssemblingTime.cs" />
     <Compile Include="Core\Calculation.cs" />
     <Compile Include="Core\CountingTime\GroupsTiming.cs" />
+    <Compile Include="Core\CountingTime\OrderQuantumsTiming.cs" />
     <Compile Include="Core\DecisiveRules\Lukr.cs" />
     <Compile Include="Core\DecisiveRules\Spt.cs" />
     <Compile Include="Core\CountingTime\DetailsTiming.cs" />

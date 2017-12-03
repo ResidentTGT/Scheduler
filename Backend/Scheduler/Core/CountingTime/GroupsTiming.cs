@@ -10,11 +10,11 @@ namespace Scheduler.Core.CountingTime
 {
     internal static class GroupsTiming
     {
-        public static TimeSpan CountProductionItemMachiningTime(ProductionItem productionItem, bool isFinally)
+        public static TimeSpan CountProductionItemMachiningTime(OrderQuantum orderQuantum, bool isFinally)
         {
-            Logger.Log($"Начат расчет времени части партии изделия: {productionItem.Title}", LogLevel.Info);
+            Logger.Log($"Начат расчет времени части партии изделия: {orderQuantum.ProductionItem.Title}", LogLevel.Info);
 
-            var groups = productionItem.ProductionItemQuantumsGroups;
+            var groups = orderQuantum.ProductionItem.ProductionItemQuantumsGroups;
 
             var productionItemTime = new TimeSpan(0);
 
@@ -64,7 +64,11 @@ namespace Scheduler.Core.CountingTime
 
             productionItemTime = groups.Last().WorkshopEndTimes.Max();
 
-            if (!isFinally)
+            if (isFinally)
+            {
+                orderQuantum.MachiningFullPartTime = productionItemTime;
+            }
+            else
             {
                 foreach (var group in groups)
                 {
@@ -73,7 +77,7 @@ namespace Scheduler.Core.CountingTime
                 }
             }
 
-            Logger.Log($"Закончен расчет времени части партии изделия: {productionItem.Title}. Суммарное время: {productionItemTime}.", LogLevel.Info);
+            Logger.Log($"Закончен расчет времени части партии изделия: {orderQuantum.ProductionItem.Title}. Суммарное время: {productionItemTime}.", LogLevel.Info);
 
             return productionItemTime;
         }

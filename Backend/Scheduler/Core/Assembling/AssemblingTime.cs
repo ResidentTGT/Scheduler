@@ -21,7 +21,7 @@ namespace Scheduler.Core.Assembling
 
         public List<OrderQuantumAssemblingTime> CalculateAssemblingTimes(Order order)
         {
-          
+
             var orderQuantumAssemblingTimes = new List<OrderQuantumAssemblingTime>();
 
             foreach (var orderQuantum in order.OrderQuantums)
@@ -51,14 +51,17 @@ namespace Scheduler.Core.Assembling
 
                 orderQuantumAssemblingTimes.Add(orderQuantumAssemblingTime);
 
-            }           
+                orderQuantum.AssemblingFullPartTime = orderQuantumAssemblingTime.ProductionsItemsPartTime;
+                orderQuantum.AssemblingFullBatchTime = orderQuantumAssemblingTime.FullBatchTime;
+                orderQuantum.AssemblingRemainingFromPartsTime = orderQuantumAssemblingTime.RemainingFromPartsTime;
+            }
 
             return orderQuantumAssemblingTimes;
         }
 
         public TimeSpan CalculateAssemblingTimeForProductsCount(List<Operation> operations, int count)
         {
-            var conveyor = _dbManager.GetEquipmentByOperationId((int)operations.First().Id).Conveyor; 
+            var conveyor = _dbManager.GetEquipmentByOperationId((int)operations.First().Id).Conveyor;
 
             var currentOperations = new List<OperationProcess>();
             foreach (var oper in operations)

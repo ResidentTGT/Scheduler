@@ -31,7 +31,7 @@ namespace Scheduler.Core.DeterminingOrder
                 Lukr.SortGroups(orderQuantum.ProductionItem);
                 Logger.Log($"Сортировка групп по правилу LUKR закончена.", LogLevel.Trace);
                 Logger.Log($"Определение суммарного времени обработки части партии издлий по правилу LUKR начато.", LogLevel.Trace);
-                var time = GroupsTiming.CountProductionItemMachiningTime(orderQuantum.ProductionItem, false);
+                var time = GroupsTiming.CountProductionItemMachiningTime(orderQuantum, false);
                 Logger.Log($"Определение суммарного времени обработки части партии издлий по правилу LUKR закончено. Получившееся время: {time}", LogLevel.Trace);
                 dictDecisiveRulesTimes.Add("LUKR", time);
 
@@ -39,19 +39,19 @@ namespace Scheduler.Core.DeterminingOrder
                 Lukr.SortGroups(orderQuantum.ProductionItem);
                 Logger.Log($"Сортировка групп по правилу SPT закончена.", LogLevel.Trace);
                 Logger.Log($"Определение суммарного времени обработки части партии издлий по правилу SPT начато.", LogLevel.Trace);
-                time = GroupsTiming.CountProductionItemMachiningTime(orderQuantum.ProductionItem, false);
+                time = GroupsTiming.CountProductionItemMachiningTime(orderQuantum, false);
                 Logger.Log($"Определение суммарного времени обработки части партии издлий по правилу SPT закончено. Получившееся время: {time}", LogLevel.Trace);
                 dictDecisiveRulesTimes.Add("SPT", time);
 
                 Logger.Log($"Выбор и сортировка групп по лучшему правилу начаты.", LogLevel.Info);
-                SortByLowestTime(orderQuantum.ProductionItem, dictDecisiveRulesTimes);
+                SortByLowestTime(orderQuantum, dictDecisiveRulesTimes);
                 Logger.Log($"Выбор и сортировка групп по лучшему правилу закончены.", LogLevel.Info);
 
                 Logger.Log($"Закончено определение порядка следования групп.", LogLevel.Info);
             }
         }
 
-        private void SortByLowestTime(ProductionItem productionItem, Dictionary<string, TimeSpan> dictDecisiveRulesTimes)
+        private void SortByLowestTime(OrderQuantum orderQuantum, Dictionary<string, TimeSpan> dictDecisiveRulesTimes)
         {
             var rule = dictDecisiveRulesTimes.OrderBy(d => d.Value).First().Key;
             Logger.Log($"Правило с наименьшим временем: {rule}", LogLevel.Info);
@@ -60,10 +60,10 @@ namespace Scheduler.Core.DeterminingOrder
             switch (rule)
             {
                 case "LUKR":
-                    Lukr.SortGroups(productionItem);
+                    Lukr.SortGroups(orderQuantum.ProductionItem);
                     break;
                 case "SPT":
-                    Spt.SortGroups(productionItem);
+                    Spt.SortGroups(orderQuantum.ProductionItem);
                     break;
                 default:
                     break;
@@ -71,7 +71,7 @@ namespace Scheduler.Core.DeterminingOrder
             Logger.Log($"Сортировка групп по правилу {rule} закончена.", LogLevel.Info);
 
             Logger.Log($"Определение суммарного времени обработки части партии изделия по лучшему правилу {rule} начато.", LogLevel.Trace);
-            var time = GroupsTiming.CountProductionItemMachiningTime(productionItem, true);
+            var time = GroupsTiming.CountProductionItemMachiningTime(orderQuantum, true);
             Logger.Log($"Определение суммарного времени обработки части партии изделия по лучшему правилу {rule} закончено. Получившееся время: {time}", LogLevel.Trace);
         }
     }

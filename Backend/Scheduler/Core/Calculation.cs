@@ -10,6 +10,7 @@ using Scheduler.Core.Assembling;
 using Scheduler.Log;
 using Scheduler.Core.Grouping;
 using Scheduler.Core.DeterminingOrder;
+using Scheduler.Core.CountingTime;
 
 namespace Scheduler.Core
 {
@@ -59,6 +60,10 @@ namespace Scheduler.Core
             Logger.Log($"Начато определение порядка обработки групп для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
             determiningGroupsOrder.DetermineGroupsOrder(order);
             Logger.Log($"Закончено определение порядка обработки групп для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
+
+            Logger.Log($"Начат подсчет времен для части заказов (партий изделий) для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
+            OrderQuantumsTiming.CountTimeForOrderQuantums(order);
+            Logger.Log($"Закончен подсчет времен для части заказов (партий изделий) для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
 
 
         }

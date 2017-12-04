@@ -1,4 +1,5 @@
 import { ProductionItemQuantum } from './production-item-quantum';
+import { ProductionItemQuantumsGroup } from './production-item-quantums-group';
 
 export class ProductionItem {
     public id?: number | {};
@@ -8,4 +9,5 @@ export class ProductionItem {
     public parentProductionItemTitle: string;
     public isNode: Boolean;
     public productionItemQuantums?: ProductionItemQuantum[];
+    public productionItemQuantumsGroups?: ProductionItemQuantumsGroup[];
 }

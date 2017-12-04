@@ -12,7 +12,8 @@ namespace Scheduler.Core.DecisiveRules
     {
         internal static void SortDetails(ProductionItemQuantumsGroup productionItemQuantumsGroup)
         {
-            productionItemQuantumsGroup.ProductionItemQuantums = productionItemQuantumsGroup.ProductionItemQuantums.OrderBy(r => r.Detail.Operations.First().MainTime).ToList();
+            productionItemQuantumsGroup.ProductionItemQuantums = productionItemQuantumsGroup.ProductionItemQuantums
+                .OrderBy(r => r.Detail.Operations.First(o => o.Equipment.Workshop != null).MainTime).ToList();
         }
 
         internal static void SortGroups(ProductionItem productionItem)

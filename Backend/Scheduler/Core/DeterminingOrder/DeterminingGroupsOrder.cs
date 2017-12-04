@@ -43,9 +43,9 @@ namespace Scheduler.Core.DeterminingOrder
                 Logger.Log($"Определение суммарного времени обработки части партии издлий по правилу SPT закончено. Получившееся время: {time}", LogLevel.Trace);
                 dictDecisiveRulesTimes.Add("SPT", time);
 
-                Logger.Log($"Выбор и сортировка групп по лучшему правилу начаты.", LogLevel.Info);
+                Logger.Log($"Выбор и сортировка групп по лучшему правилу начаты.", LogLevel.Trace);
                 SortByLowestTime(orderQuantum, dictDecisiveRulesTimes);
-                Logger.Log($"Выбор и сортировка групп по лучшему правилу закончены.", LogLevel.Info);
+                Logger.Log($"Выбор и сортировка групп по лучшему правилу закончены.", LogLevel.Trace);
 
                 Logger.Log($"Закончено определение порядка следования групп.", LogLevel.Info);
             }
@@ -54,9 +54,9 @@ namespace Scheduler.Core.DeterminingOrder
         private void SortByLowestTime(OrderQuantum orderQuantum, Dictionary<string, TimeSpan> dictDecisiveRulesTimes)
         {
             var rule = dictDecisiveRulesTimes.OrderBy(d => d.Value).First().Key;
-            Logger.Log($"Правило с наименьшим временем: {rule}", LogLevel.Info);
+            Logger.Log($"Правило с наименьшим временем: {rule}", LogLevel.Trace);
 
-            Logger.Log($"Сортировка групп по правилу {rule} начата.", LogLevel.Info);
+            Logger.Log($"Сортировка групп по правилу {rule} начата.", LogLevel.Trace);
             switch (rule)
             {
                 case "LUKR":
@@ -68,7 +68,7 @@ namespace Scheduler.Core.DeterminingOrder
                 default:
                     break;
             }
-            Logger.Log($"Сортировка групп по правилу {rule} закончена.", LogLevel.Info);
+            Logger.Log($"Сортировка групп по правилу {rule} закончена.", LogLevel.Trace);
 
             Logger.Log($"Определение суммарного времени обработки части партии изделия по лучшему правилу {rule} начато.", LogLevel.Trace);
             var time = GroupsTiming.CountProductionItemMachiningTime(orderQuantum, true);

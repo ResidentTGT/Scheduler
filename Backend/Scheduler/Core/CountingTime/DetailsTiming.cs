@@ -63,7 +63,9 @@ namespace Scheduler.Core.CountingTime
                             var prevDetailOper = productionItemQuantums[j - 1].Detail.Operations.FirstOrDefault(o => o.EquipmentId == opers[p].EquipmentId);
                             if (prevDetailOper != null)
                             {
-                                var diff = productionItemQuantums[j - 1].EndTimes[productionItemQuantums[j - 1].Detail.Operations.IndexOf(prevDetailOper)] - productionItemQuantums[j].StartTimes[p];
+                                var diff = productionItemQuantums[j - 1]
+                                    .EndTimes[productionItemQuantums[j - 1].Detail.Operations.Where(o => o.Equipment.WorkshopId == productionItemQuantumsGroup.WorkshopSequence[i]).ToList().IndexOf(prevDetailOper)] 
+                                    - productionItemQuantums[j].StartTimes[p];
                                 if (diff > maxDiff)
                                     maxDiff = diff;
                             }

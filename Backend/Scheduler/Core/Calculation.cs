@@ -11,6 +11,7 @@ using Scheduler.Log;
 using Scheduler.Core.Grouping;
 using Scheduler.Core.DeterminingOrder;
 using Scheduler.Core.CountingTime;
+using System.Diagnostics;
 
 namespace Scheduler.Core
 {
@@ -25,8 +26,11 @@ namespace Scheduler.Core
             _dtoConverter = new DtoConverter();
         }
 
-        internal void CalculateOrderById(int orderId)
+        internal Order CalculateOrderById(int orderId)
         {
+            var timer = new Stopwatch();
+            timer.Start();
+
             Logger.Log($"Расчет заказа id: {orderId} начат.", LogLevel.Info);
 
             Logger.Log($"Получение заказа из базы...", LogLevel.Info);
@@ -65,7 +69,12 @@ namespace Scheduler.Core
             OrderQuantumsTiming.CountTimeForOrderQuantums(order);
             Logger.Log($"Закончен подсчет времен для части заказов (партий изделий) для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
 
+             _dbManager.SetOrderState(order.Id, OrderState.Ready);
 
+            timer.Stop();
+            Logger.Log($"Расчет заказа завершен. Занятое время: {timer.Elapsed}.", LogLevel.Info);
+
+            return order;
         }
     }
 }

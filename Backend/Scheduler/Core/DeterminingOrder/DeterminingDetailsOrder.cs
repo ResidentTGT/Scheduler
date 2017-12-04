@@ -46,9 +46,9 @@ namespace Scheduler.Core.DeterminingOrder
                     Logger.Log($"Определение суммарного времени обработки группы по правилу SPT закончено. Получившееся время: {time}", LogLevel.Trace);
                     dictDecisiveRulesTimes.Add("SPT", time);
 
-                    Logger.Log($"Выбор и сортировка деталей по лучшему правилу начаты.", LogLevel.Info);
+                    Logger.Log($"Выбор и сортировка деталей по лучшему правилу начаты.", LogLevel.Trace);
                     SortByLowestTime(productionItemQuantumsGroup, dictDecisiveRulesTimes, orderQuantum.ItemsCountInOnePart);
-                    Logger.Log($"Выбор и сортировка деталей по лучшему правилу закончены.", LogLevel.Info);
+                    Logger.Log($"Выбор и сортировка деталей по лучшему правилу закончены.", LogLevel.Trace);
 
                     Logger.Log($"Закончено определение порядка обработки деталей с последовательностью следования по цехам '{String.Join(", ", productionItemQuantumsGroup.WorkshopSequence)}'", LogLevel.Info);
                 }
@@ -59,9 +59,9 @@ namespace Scheduler.Core.DeterminingOrder
         private void SortByLowestTime(ProductionItemQuantumsGroup productionItemQuantumsGroup, Dictionary<string, TimeSpan> dictDecisiveRulesTimes, int itemsCountInOnePart)
         {
             var rule = dictDecisiveRulesTimes.OrderBy(d => d.Value).First().Key;
-            Logger.Log($"Правило с наименьшим временем: {rule}", LogLevel.Info);
+            Logger.Log($"Правило с наименьшим временем: {rule}", LogLevel.Trace);
 
-            Logger.Log($"Сортировка деталей по правилу {rule} начата.", LogLevel.Info);
+            Logger.Log($"Сортировка деталей по правилу {rule} начата.", LogLevel.Trace);
             switch (rule)
             {
                 case "LUKR":
@@ -73,7 +73,7 @@ namespace Scheduler.Core.DeterminingOrder
                 default:
                     break;
             }
-            Logger.Log($"Сортировка деталей по правилу {rule} закончена.", LogLevel.Info);
+            Logger.Log($"Сортировка деталей по правилу {rule} закончена.", LogLevel.Trace);
 
             Logger.Log($"Определение суммарного времени обработки группы по лучшему правилу {rule} начато.", LogLevel.Trace);
             var time = DetailsTiming.CountGroupMachiningTime(productionItemQuantumsGroup, true, itemsCountInOnePart);

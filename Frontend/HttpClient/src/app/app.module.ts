@@ -27,6 +27,7 @@ import { OrderStatePipe } from './pipes/order-state.pipe';
 import { RoutesComponent } from './components/routes/routes.component';
 import { CreateRouteComponent } from './components/create-route/create-route.component';
 import { CalculateOrdersComponent } from './components/calculate-orders/calculate-orders.component';
+import { ViewOrderQuantumsComponent } from './components/view-calculate-results/view-order-quantums/view-order-quantums.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -57,7 +58,8 @@ const appRoutes: Routes = [
         OrderStatePipe,
         RoutesComponent,
         CreateRouteComponent,
-        CalculateOrdersComponent
+        CalculateOrdersComponent,
+        ViewOrderQuantumsComponent
     ],
     imports: [
         RouterModule.forRoot(appRoutes),

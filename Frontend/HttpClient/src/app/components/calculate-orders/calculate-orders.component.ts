@@ -11,7 +11,9 @@ import { Observable } from 'rxjs/Rx';
 })
 export class CalculateOrdersComponent implements OnInit {
 
-    private orders: Order[] = [];
+    public orders: Order[] = [];
+
+    public calculatedOrder: Order;
 
     constructor(private _api: BackendApiService) { }
 
@@ -30,7 +32,11 @@ export class CalculateOrdersComponent implements OnInit {
     }
 
     private calculateOrder() {
-        this._api.calculateOrder(this.orders[0].id).subscribe();
+        this._api.calculateOrder(this.orders[0].id).subscribe(
+            order => {
+                this.calculatedOrder = order;
+                alert('Заказ расчитан.');
+            });
     }
 
 }

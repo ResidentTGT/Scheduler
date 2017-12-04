@@ -1,4 +1,5 @@
-﻿using Scheduler.Model;
+﻿using Scheduler.Core.Grouping;
+using Scheduler.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,5 +25,6 @@ namespace Scheduler.Dto
 
         public List<ProductionItemQuantumDto> ProductionItemQuantums { get; set; }
 
+        public List<ProductionItemQuantumsGroupDto> ProductionItemQuantumsGroups { get; set; }
     }
 }

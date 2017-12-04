@@ -41,7 +41,7 @@ namespace Scheduler.HttpServer
             Get["/orders"] = GetOrders;
             Post["/create-order"] = CreateOrder;
             Get["/delete-order"] = DeleteOrder;
-            Get["/calculate-order"] = CalculateOrder;      
+            Get["/calculate-order"] = CalculateOrder;
 
             Get["/production-items"] = GetProductionItems;
             Post["/create-production-item"] = CreateProductionItem;
@@ -68,9 +68,9 @@ namespace Scheduler.HttpServer
         private object CalculateOrder(dynamic parameters)
         {
             var calculation = new Calculation();
-            calculation.CalculateOrderById(Request.Query["id"]);
+            var order = calculation.CalculateOrderById(Request.Query["id"]);
 
-            return Response.AsJson(HttpStatusCode.OK);
+            return _dtoConverter.ConvertOrderForViewing(order);
         }
 
         #region DetailsApi

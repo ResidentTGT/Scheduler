@@ -5,4 +5,8 @@ export class ProductionItemQuantum {
     public detail: Detail;
     public productionItemId?: number;
     public count: number;
+
+    public startTimes?: Date[];
+    public endTimes?: Date[];
+    public machiningDurations?: Date[];
 }

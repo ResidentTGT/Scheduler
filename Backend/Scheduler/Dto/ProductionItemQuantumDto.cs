@@ -15,5 +15,9 @@ namespace Scheduler.Dto
         public int ProductionItemId { get; set; }
 
         public int Count { get; set; }
+
+        public List<long> StartTimes { get; set; }
+        public List<long> EndTimes { get; set; }
+        public List<long> MachiningDurations { get; set; }
     }
 }

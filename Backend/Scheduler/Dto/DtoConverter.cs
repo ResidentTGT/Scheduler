@@ -1,4 +1,5 @@
-﻿using Scheduler.Database;
+﻿using Scheduler.Core.Grouping;
+using Scheduler.Database;
 using Scheduler.Model;
 using System;
 using System.Collections.Generic;
@@ -113,6 +114,21 @@ namespace Scheduler.Dto
 
             return order;
         }
+        internal OrderDto ConvertOrderForViewing(Order order)
+        {
+            var orderDto = new OrderDto()
+            {
+                Id = order.Id,
+                Description = order.Description,
+                Name = order.Name,
+                PlannedBeginDate = order.PlannedBeginDate,
+                PlannedEndDate = order.PlannedEndDate,
+                State = order.State,
+                OrderQuantums = order.OrderQuantums != null ? order.OrderQuantums.Select(d => ConvertOrderQuantumForViewing(d)).ToList() : null,
+            };
+
+            return orderDto;
+        }
         #endregion
 
         #region OrderQuantumConvert
@@ -140,6 +156,30 @@ namespace Scheduler.Dto
                 orderQuantum.ProductionItemId = (int)orderQuantumDto.ProductionItem.Id;
 
             return orderQuantum;
+        }
+        internal OrderQuantumDto ConvertOrderQuantumForViewing(OrderQuantum orderQuantum)
+        {
+            var orderQuantumDto = new OrderQuantumDto()
+            {
+                Id = orderQuantum.Id,
+                Count = orderQuantum.Count,
+                ItemsCountInOnePart = orderQuantum.ItemsCountInOnePart,
+                OrderId = orderQuantum.OrderId,
+                ProductionItem = orderQuantum.ProductionItem != null ? ConvertProductionItemForViewing(orderQuantum.ProductionItem) : null,
+                AssemblingDurations = orderQuantum.AssemblingDurations.Select(a=>a.Ticks).ToList(),
+                AssemblingEndTimes = orderQuantum.AssemblingEndTimes.Select(a => a.Ticks).ToList(),
+                AssemblingFullBatchTime = orderQuantum.AssemblingFullBatchTime.Ticks,
+                AssemblingFullPartTime = orderQuantum.AssemblingFullPartTime.Ticks,
+                AssemblingRemainingFromPartsTime = orderQuantum.AssemblingRemainingFromPartsTime.Value.Ticks,
+                AssemblingStartTimes = orderQuantum.AssemblingStartTimes.Select(a => a.Ticks).ToList(),
+                MachiningDurations = orderQuantum.MachiningDurations.Select(a => a.Ticks).ToList(),
+                MachiningEndTimes = orderQuantum.MachiningEndTimes.Select(a => a.Ticks).ToList(),
+                MachiningFullPartTime = orderQuantum.MachiningFullPartTime.Ticks,
+                MachiningRemainingFromPartsTime = orderQuantum.MachiningRemainingFromPartsTime.Ticks,
+                MachiningStartTimes = orderQuantum.MachiningStartTimes.Select(a => a.Ticks).ToList()
+            };
+
+            return orderQuantumDto;
         }
 
 
@@ -176,6 +216,35 @@ namespace Scheduler.Dto
 
             return productionItem;
         }
+        internal ProductionItemDto ConvertProductionItemForViewing(ProductionItem productionItem)
+        {
+            var productionItemDto = new ProductionItemDto()
+            {
+                Id = productionItem.Id,
+                Title = productionItem.Title,
+                Description = productionItem.Description,
+                IsNode = productionItem.IsNode,
+                ParentProductionItemId = productionItem.ParentProductionItemId,
+                ParentProductionItemTitle = productionItem.ParentProductionItemId.HasValue ? _dbManager.GetProductionItemById(productionItem.ParentProductionItemId).Title : "",
+                ProductionItemQuantums = productionItem.ProductionItemQuantums != null ? productionItem.ProductionItemQuantums.Select(d => ConvertProductionItemQuantumForViewing(d)).ToList() : null,
+                ProductionItemQuantumsGroups = productionItem.ProductionItemQuantumsGroups.Select(d => ConvertProductionItemQuantumsGroupForViewing(d)).ToList()
+            };
+
+            return productionItemDto;
+        }
+        internal ProductionItemQuantumsGroupDto ConvertProductionItemQuantumsGroupForViewing(ProductionItemQuantumsGroup productionItemQuantumsGroup)
+        {
+            var productionItemQuantumsGroupDto = new ProductionItemQuantumsGroupDto()
+            {
+                ProductionItemQuantums = productionItemQuantumsGroup.ProductionItemQuantums.Select(p => ConvertProductionItemQuantumForViewing(p)).ToList(),
+                WorkshopDurations = productionItemQuantumsGroup.WorkshopDurations.Select(a => a.Ticks).ToList(),
+                WorkshopEndTimes = productionItemQuantumsGroup.WorkshopEndTimes.Select(a => a.Ticks).ToList(),
+                WorkshopSequence = productionItemQuantumsGroup.WorkshopSequence,
+                WorkshopStartTimes = productionItemQuantumsGroup.WorkshopStartTimes.Select(a => a.Ticks).ToList()
+            };
+
+            return productionItemQuantumsGroupDto;
+        }
         #endregion
 
         #region ProductionItemQuantumConvert
@@ -187,6 +256,21 @@ namespace Scheduler.Dto
                 Detail = ConvertDetail(productionItemQuantum.Detail),
                 Id = productionItemQuantum.Id,
                 ProductionItemId = productionItemQuantum.ProductionItemId
+            };
+
+            return productionItemQuantumDto;
+        }
+        internal ProductionItemQuantumDto ConvertProductionItemQuantumForViewing(ProductionItemQuantum productionItemQuantum)
+        {
+            var productionItemQuantumDto = new ProductionItemQuantumDto()
+            {
+                Count = productionItemQuantum.Count,
+                Detail = ConvertDetail(productionItemQuantum.Detail),
+                Id = productionItemQuantum.Id,
+                ProductionItemId = productionItemQuantum.ProductionItemId,
+                EndTimes = productionItemQuantum.EndTimes.Select(a => a.Ticks).ToList(),
+                MachiningDurations = productionItemQuantum.MachiningDurations.Select(a => a.Ticks).ToList(),
+                StartTimes = productionItemQuantum.StartTimes.Select(a => a.Ticks).ToList()
             };
 
             return productionItemQuantumDto;

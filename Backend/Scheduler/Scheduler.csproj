@@ -88,6 +88,7 @@
     <Compile Include="Dto\OrderQuantumDto.cs" />
     <Compile Include="Dto\ProductionItemDto.cs" />
     <Compile Include="Dto\ProductionItemQuantumDto.cs" />
+    <Compile Include="Dto\ProductionItemQuantumsGroupDto.cs" />
     <Compile Include="Dto\RouteDto.cs" />
     <Compile Include="Dto\WorkshopDto.cs" />
     <Compile Include="Core\Assembling\AssemblingTime.cs" />

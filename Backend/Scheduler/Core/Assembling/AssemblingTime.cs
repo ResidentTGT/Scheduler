@@ -26,7 +26,7 @@ namespace Scheduler.Core.Assembling
 
             foreach (var orderQuantum in order.OrderQuantums)
             {
-                Logger.Log($"Начат расчет времен сборки партии изделий типа '{orderQuantum.ProductionItem.Title}' в кол-ве {orderQuantum.Count} штук.", LogLevel.Info);
+                Logger.Log($"Начат расчет времен сборки партии изделий типа '{orderQuantum.ProductionItem.Title}' в кол-ве {orderQuantum.Count} штук.", LogLevel.Trace);
 
                 Logger.Log($"Начат поиск операций на сборочных местах конвейера для сборки изделия.", LogLevel.Trace);
                 var operations = _dbManager.GetOperationsByProductionItemId(orderQuantum.ProductionItem.Id)
@@ -34,7 +34,7 @@ namespace Scheduler.Core.Assembling
                     .ToList();
                 Logger.Log($"Поиск операций закончен. Кол-во: {operations.Count}", LogLevel.Trace);
 
-                Logger.Log($"Начат расчет времен сборок для всей партии изделий, передаточной части партии, а также оставшейся части изделий в случае неполной части партии.", LogLevel.Info);
+                Logger.Log($"Начат расчет времен сборок для всей партии изделий, передаточной части партии, а также оставшейся части изделий в случае неполной части партии.", LogLevel.Trace);
                 var orderQuantumAssemblingTime = new OrderQuantumAssemblingTime()
                 {
                     ProductionItem = orderQuantum.ProductionItem,
@@ -45,9 +45,9 @@ namespace Scheduler.Core.Assembling
                 if (orderQuantum.Count % orderQuantum.ItemsCountInOnePart != 0)
                     orderQuantumAssemblingTime.RemainingFromPartsTime = CalculateAssemblingTimeForProductsCount(operations, orderQuantum.Count % orderQuantum.ItemsCountInOnePart);
                 Logger.Log($"Закончен расчет времен. Для всей партии: {orderQuantumAssemblingTime.FullBatchTime}, для части партии: {orderQuantumAssemblingTime.ProductionsItemsPartTime}, " +
-                    $" для неполной части: {orderQuantumAssemblingTime.RemainingFromPartsTime}", LogLevel.Info);
+                    $" для неполной части: {orderQuantumAssemblingTime.RemainingFromPartsTime}", LogLevel.Trace);
 
-                Logger.Log($"Закончен расчет времен сборки партии изделий типа '{orderQuantum.ProductionItem.Title}'. Суммарное время сборки для всей партии: {orderQuantumAssemblingTime.FullBatchTime}", LogLevel.Info);
+                Logger.Log($"Закончен расчет времен сборки партии изделий типа '{orderQuantum.ProductionItem.Title}'. Суммарное время сборки для всей партии: {orderQuantumAssemblingTime.FullBatchTime}", LogLevel.Trace);
 
                 orderQuantumAssemblingTimes.Add(orderQuantumAssemblingTime);
 

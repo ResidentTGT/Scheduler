@@ -36,20 +36,25 @@ namespace Scheduler.Core.CountingTime
 
                 for (var j = 0; j < blocksCount; j++)
                 {
-                    orderQuantums[i].MachiningDurations.Add(orderQuantums[i].MachiningFullPartTime);
-                    orderQuantums[i].MachiningStartTimes.Add(new TimeSpan(orderQuantums[i].MachiningDurations[j].Ticks * j));
-                    orderQuantums[i].MachiningEndTimes.Add(new TimeSpan(orderQuantums[i].MachiningDurations[j].Ticks * (j + 1)));
-
                     if (orderQuantums[i].AssemblingFullPartTime <= orderQuantums[i].MachiningFullPartTime)
                     {
-                        orderQuantums[i].AssemblingEndTimes.Add(orderQuantums[i].MachiningEndTimes[(int)blocksCount - 1] + orderQuantums[i].AssemblingFullPartTime
-                            - new TimeSpan((int)(blocksCount - j - 1) * orderQuantums[i].AssemblingFullPartTime.Ticks));
+                        var dividedFullTime = new TimeSpan((long)Math.Round(orderQuantums[i].AssemblingFullBatchTime.Ticks / blocksCount));
+                        orderQuantums[i].AssemblingEndTimes.Add(orderQuantums[i].MachiningEndTimes[(int)blocksCount - 1] + dividedFullTime
+                            - new TimeSpan((int)(blocksCount - j - 1) * dividedFullTime.Ticks));
+
+                        orderQuantums[i].AssemblingDurations.Add(dividedFullTime);
+
+                        orderQuantums[i].AssemblingStartTimes.Add(orderQuantums[i].AssemblingEndTimes[j] - dividedFullTime);
                     }
                     else
                     {
                         orderQuantums[i].AssemblingEndTimes.Add(orderQuantums[i].MachiningStartTimes[j] + orderQuantums[i].AssemblingFullPartTime);
+
+                        orderQuantums[i].AssemblingDurations.Add(orderQuantums[i].AssemblingFullPartTime);
+
+                        orderQuantums[i].AssemblingStartTimes.Add(orderQuantums[i].AssemblingEndTimes[j] - orderQuantums[i].AssemblingFullPartTime);
                     }
-                    orderQuantums[i].AssemblingStartTimes.Add(orderQuantums[i].AssemblingEndTimes[j] - orderQuantums[i].AssemblingFullPartTime);
+                    
                 }
 
                 if (i != 0)

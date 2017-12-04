@@ -1,0 +1,14 @@
+
+.diagram{
+    overflow-x: auto;
+}
+.machining,.assembling{
+    display: flex;
+    
+}
+.order-quantum-machining,.order-quantum-assembling{
+    display: flex;
+}
+.order-quantum-block{
+    height: 50px;
+}

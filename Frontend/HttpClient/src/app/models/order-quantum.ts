@@ -7,18 +7,18 @@ export class OrderQuantum {
     public count: number;
     public itemsCountInOnePart: number;
 
-    public machiningFullPartTime?: Date;
-    public machiningRemainingFromPartsTime?: Date;
+    public machiningFullPartTime?: number;
+    public machiningRemainingFromPartsTime?: number;
 
-    public assemblingFullBatchTime?: Date;
-    public assemblingFullPartTime?: Date;
-    public assemblingRemainingFromPartsTime?: Date;
+    public assemblingFullBatchTime?: number;
+    public assemblingFullPartTime?: number;
+    public assemblingRemainingFromPartsTime?: number;
 
-    public machiningStartTimes?: Date[];
-    public machiningEndTimes?: Date[];
-    public machiningDurations?: Date[];
+    public machiningStartTimes?: number[];
+    public machiningEndTimes?: number[];
+    public machiningDurations?: number[];
 
-    public assemblingStartTimes?: Date[];
-    public assemblingEndTimes?: Date[];
-    public assemblingDurations?: Date[];
+    public assemblingStartTimes?: number[];
+    public assemblingEndTimes?: number[];
+    public assemblingDurations?: number[];
 }

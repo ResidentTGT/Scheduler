@@ -13,7 +13,7 @@ export class CalculateOrdersComponent implements OnInit {
 
     public orders: Order[] = [];
 
-    public calculatedOrder: Order;
+    public calculatedOrder: Order = null;
 
     constructor(private _api: BackendApiService) { }
 
@@ -35,7 +35,6 @@ export class CalculateOrdersComponent implements OnInit {
         this._api.calculateOrder(this.orders[0].id).subscribe(
             order => {
                 this.calculatedOrder = order;
-                alert('Заказ расчитан.');
             });
     }
 

@@ -1,3 +1,21 @@
-<p>
-  view-order-quantums works!
-</p>
+<div class="diagram">
+
+    <div class="machining">
+        <div class="order-quantum-machining" *ngFor="let orderQuantum of order.orderQuantums; let i = index">
+            <div *ngFor="let orderQuantumBlock of orderQuantum.machiningDurations;let j = index">
+                <div class="order-quantum-block" [ngStyle]="{'width.px':orderQuantum.machiningDurations[j],'left.px':getMachiningStartTime(i,j),'background-color':getBlockColor(i)}">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="assembling">
+        <div class="order-quantum-assembling" *ngFor="let orderQuantum of order.orderQuantums; let i = index">
+            <div *ngFor="let orderQuantumBlock of orderQuantum.assemblingDurations;let j = index">
+                <div class="order-quantum-block" [ngStyle]="{'width.px':orderQuantum.assemblingDurations[j],'left.px':getAssemblingStartTime(i,j),'background-color':getBlockColor(i)}"></div>
+            </div>
+        </div>
+    </div>
+
+</div>

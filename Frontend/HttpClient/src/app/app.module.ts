@@ -28,6 +28,7 @@ import { RoutesComponent } from './components/routes/routes.component';
 import { CreateRouteComponent } from './components/create-route/create-route.component';
 import { CalculateOrdersComponent } from './components/calculate-orders/calculate-orders.component';
 import { ViewOrderQuantumsComponent } from './components/view-calculate-results/view-order-quantums/view-order-quantums.component';
+import { ViewProductionItemQuantumsGroupsComponent } from './components/view-calculate-results/view-production-item-quantums-groups/view-production-item-quantums-groups.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -59,7 +60,8 @@ const appRoutes: Routes = [
         RoutesComponent,
         CreateRouteComponent,
         CalculateOrdersComponent,
-        ViewOrderQuantumsComponent
+        ViewOrderQuantumsComponent,
+        ViewProductionItemQuantumsGroupsComponent
     ],
     imports: [
         RouterModule.forRoot(appRoutes),

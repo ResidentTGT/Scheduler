@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, EventEmitter } from '@angular/core';
 import { Order } from '../../../models/order';
 import { randomColor } from 'randomcolor';
 import { forEach } from '@angular/router/src/utils/collection';
 import { OrderQuantum } from '../../../models/order-quantum';
+import { Output } from '@angular/core/src/metadata/directives';
 
 @Component({
     selector: 'sch-view-order-quantums',
@@ -14,6 +15,9 @@ export class ViewOrderQuantumsComponent implements OnInit {
 
     @Input()
     public order: Order;
+
+    @Output()
+    public selectedBlock: EventEmitter<Map<number, number>> = new EventEmitter<Map<number, number>>();
 
     public filteredOrderQuantums: OrderQuantum[] = [];
 
@@ -41,6 +45,12 @@ export class ViewOrderQuantumsComponent implements OnInit {
 
     public getBlockColor(orderQuantumIndex: number) {
         return this.colors[orderQuantumIndex];
+    }
+
+    public selectBlock(orderQuantumIndex: number, blockIndex: number) {
+        const map = new Map();
+        map.set(orderQuantumIndex, blockIndex);
+        this.selectedBlock.emit(map);
     }
 
     public zoomPlus() {

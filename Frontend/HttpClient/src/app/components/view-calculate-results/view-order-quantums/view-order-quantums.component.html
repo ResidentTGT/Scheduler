@@ -6,10 +6,10 @@
             <mat-card class="assemble-card">Сборка</mat-card>
         </div>
         <div class="diagram">
-            <div class="machining">
+            <div class="machining mat-elevation-z4">
                 <div class="order-quantum-machining" *ngFor="let orderQuantum of filteredOrderQuantums; let i = index">
                     <div *ngFor="let orderQuantumBlock of orderQuantum.machiningDurations; let j = index">
-                        <div class="order-quantum-block" [ngStyle]="{'width.px':orderQuantum.machiningDurations[j],'left.px':getMachiningStartTime(i,j),'background-color':getBlockColor(i)}">
+                        <div class="order-quantum-block mach" (click)="selectBlock(i,j)" [ngStyle]="{'width.px':orderQuantum.machiningDurations[j],'left.px':getMachiningStartTime(i,j),'background-color':getBlockColor(i)}">
                             <div class="times-view">
                                 <div class="from"> {{order.orderQuantums[i].machiningStartTimes[j]}}</div>
                                 <div class="duration"> {{order.orderQuantums[i].machiningDurations[j]}}</div>

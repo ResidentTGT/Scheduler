@@ -14,6 +14,8 @@ export class CalculateOrdersComponent implements OnInit {
     public orders: Order[] = [];
     public selectedOrder: number[];
 
+    public selectedBlock: Map<number, number>;
+
     public calculatedOrder: Order = null;
 
     constructor(private _api: BackendApiService) { }

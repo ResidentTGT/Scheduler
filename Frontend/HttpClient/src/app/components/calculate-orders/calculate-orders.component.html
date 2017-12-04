@@ -7,6 +7,6 @@
 <div>
     <button mat-button color="primary" class="calculate-button" [disabled]="!this.orders || !this.orders.length" (click)="calculateOrder()">Рассчитать заказ</button>
 </div>
-<sch-view-order-quantums *ngIf="calculatedOrder" [order]="calculatedOrder"></sch-view-order-quantums>
+<sch-view-order-quantums *ngIf="calculatedOrder" [order]="calculatedOrder" (selectedBlock)="selectedBlock= $event"></sch-view-order-quantums>
 
-
+<sch-view-production-item-quantums-groups *ngIf="calculatedOrder&&selectedBlock" [order]="calculatedOrder" [selectedBlock]="selectedBlock"></sch-view-production-item-quantums-groups>

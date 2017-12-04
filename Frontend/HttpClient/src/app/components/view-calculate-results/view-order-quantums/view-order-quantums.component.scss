@@ -17,19 +17,22 @@
                 height: 67px;
                 border-left: 1px solid black;
                 position: absolute;
+                &.mach {
+                    cursor: pointer;
+                }
                 .times-view {
                     position: relative;
                     margin-top: 45px;
                     display: flex;
                     justify-content: space-between;
                     overflow: hidden;
-                    .duration{
+                    .duration {
                         margin-top: 25px;
                     }
-                    .from{
+                    .from {
                         margin-left: 5px;
                     }
-                    .to{
+                    .to {
                         margin-right: 5px;
                     }
                 }

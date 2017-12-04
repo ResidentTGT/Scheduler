@@ -1,4 +1,4 @@
-import { ProductionItemQuantum } from "./production-item-quantum";
+import { ProductionItemQuantum } from './production-item-quantum';
 
 export class ProductionItemQuantumsGroup {
     public productionItemQuantums?: ProductionItemQuantum[];

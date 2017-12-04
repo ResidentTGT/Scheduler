@@ -1,21 +1,48 @@
-<div class="diagram">
+<div class="layout">
 
-    <div class="machining">
-        <div class="order-quantum-machining" *ngFor="let orderQuantum of order.orderQuantums; let i = index">
-            <div *ngFor="let orderQuantumBlock of orderQuantum.machiningDurations;let j = index">
-                <div class="order-quantum-block" [ngStyle]="{'width.px':orderQuantum.machiningDurations[j],'left.px':getMachiningStartTime(i,j),'background-color':getBlockColor(i)}">
+    <div class="diagram-names">
+        <div>
+            <mat-card>Производство</mat-card>
+            <mat-card class="assemble-card">Сборка</mat-card>
+        </div>
+        <div class="diagram">
+            <div class="machining">
+                <div class="order-quantum-machining" *ngFor="let orderQuantum of filteredOrderQuantums; let i = index">
+                    <div *ngFor="let orderQuantumBlock of orderQuantum.machiningDurations; let j = index">
+                        <div class="order-quantum-block" [ngStyle]="{'width.px':orderQuantum.machiningDurations[j],'left.px':getMachiningStartTime(i,j),'background-color':getBlockColor(i)}">
+                            <div class="times-view">
+                                <div class="from"> {{order.orderQuantums[i].machiningStartTimes[j]}}</div>
+                                <div class="duration"> {{order.orderQuantums[i].machiningDurations[j]}}</div>
+                                <div class="to"> {{order.orderQuantums[i].machiningEndTimes[j]}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="assembling">
+                <div class="order-quantum-assembling" *ngFor="let orderQuantum of filteredOrderQuantums; let i = index">
+                    <div *ngFor="let orderQuantumBlock of orderQuantum.assemblingDurations; let j = index">
+                        <div class="order-quantum-block" [ngStyle]="{'width.px':orderQuantum.assemblingDurations[j],'left.px':getAssemblingStartTime(i,j),'background-color':getBlockColor(i)}">
+                            <div class="times-view">
+                                <div class="from"> {{order.orderQuantums[i].assemblingStartTimes[j]}}</div>
+                                <div class="duration"> {{order.orderQuantums[i].assemblingDurations[j]}}</div>
+                                <div class="to"> {{order.orderQuantums[i].assemblingEndTimes[j]}}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
-
-    <div class="assembling">
-        <div class="order-quantum-assembling" *ngFor="let orderQuantum of order.orderQuantums; let i = index">
-            <div *ngFor="let orderQuantumBlock of orderQuantum.assemblingDurations;let j = index">
-                <div class="order-quantum-block" [ngStyle]="{'width.px':orderQuantum.assemblingDurations[j],'left.px':getAssemblingStartTime(i,j),'background-color':getBlockColor(i)}"></div>
-            </div>
-        </div>
+    <div class="scale-buttons">
+        <button mat-fab (click)="zoomPlus()">
+            <mat-icon>zoom_in</mat-icon>
+        </button>
+        <button mat-fab class="minus" (click)="zoomMinus()">
+            <mat-icon>zoom_out</mat-icon>
+        </button>
+        <button mat-fab class="minus" (click)="defaultZoom()">
+            <mat-icon>youtube_searched_for</mat-icon>
+        </button>
     </div>
-
 </div>

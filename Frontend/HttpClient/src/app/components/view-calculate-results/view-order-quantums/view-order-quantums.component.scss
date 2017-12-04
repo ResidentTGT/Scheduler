@@ -1,14 +1,64 @@
-
-.diagram{
-    overflow-x: auto;
-}
-.machining,.assembling{
-    display: flex;
-    
-}
-.order-quantum-machining,.order-quantum-assembling{
-    display: flex;
-}
-.order-quantum-block{
-    height: 50px;
+.layout {
+    width: 100%;
+    .diagram-names {
+        display: flex;
+        justify-content: center;
+        mat-card {
+            &.assemble-card {
+                margin-top: 20px;
+            }
+        }
+        .diagram {
+            overflow-x: auto;
+            height: 200px;
+            width: 70%;
+            margin-left: 30px;
+            .order-quantum-block {
+                height: 67px;
+                border-left: 1px solid black;
+                position: absolute;
+                .times-view {
+                    position: relative;
+                    margin-top: 45px;
+                    display: flex;
+                    justify-content: space-between;
+                    overflow: hidden;
+                    .duration{
+                        margin-top: 25px;
+                    }
+                    .from{
+                        margin-left: 5px;
+                    }
+                    .to{
+                        margin-right: 5px;
+                    }
+                }
+            }
+            .machining {
+                display: flex;
+                position: relative;
+                height: 67px;
+                .order-quantum-machining {
+                    display: flex;
+                }
+            }
+            .assembling {
+                display: flex;
+                margin-top: 20px;
+                height: 67px;
+                position: relative;
+                .order-quantum-assembling {
+                    display: flex;
+                }
+            }
+        }
+    }
+    .scale-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        .minus {
+            margin-left: 20px;
+        }
+    }
 }

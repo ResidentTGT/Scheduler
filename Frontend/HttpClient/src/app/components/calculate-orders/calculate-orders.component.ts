@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Rx';
 export class CalculateOrdersComponent implements OnInit {
 
     public orders: Order[] = [];
+    public selectedOrder: number[];
 
     public calculatedOrder: Order = null;
 
@@ -37,5 +38,4 @@ export class CalculateOrdersComponent implements OnInit {
                 this.calculatedOrder = order;
             });
     }
-
 }

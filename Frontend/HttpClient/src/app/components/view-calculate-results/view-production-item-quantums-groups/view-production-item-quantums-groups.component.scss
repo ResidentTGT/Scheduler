@@ -1,0 +1,52 @@
+@import '~@angular/material/_theming.scss';
+.layout-groups {
+    margin-top: 30px;
+    width: 100%;
+    .diagram-names {
+        display: flex;
+        justify-content: center;
+        .workshops {
+            mat-card {
+                margin-top: 20px;
+                width: 110px;
+            }
+        }
+        .diagram {
+            width: 70%;
+            margin-left: 30px;
+            overflow-x: auto;
+            position: relative;
+            @include mat-elevation(4);
+            .mach-block {
+                height: 67px;
+                position: absolute;
+                margin-top: 20px;
+                @include mat-elevation(4);
+                .times-view {
+                    position: relative;
+                    margin-top: 45px;
+                    display: flex;
+                    justify-content: space-between;
+                    overflow: hidden;
+                    .duration {
+                        margin-top: 25px;
+                    }
+                    .from {
+                        margin-left: 5px;
+                    }
+                    .to {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
+    .scale-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        .minus {
+            margin-left: 20px;
+        }
+    }
+}

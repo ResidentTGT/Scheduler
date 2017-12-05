@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
 import { Order } from '../../../models/order';
+import { ProductionItem } from '../../../models/production-item';
+import { randomColor } from 'randomcolor';
+import { ProductionItemQuantumsGroup } from '../../../models/production-item-quantums-group';
 
 @Component({
     selector: 'sch-view-production-item-quantums-groups',
@@ -13,12 +16,80 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit {
     public order: Order;
 
     @Input()
-    public selectedBlock: Map<number, number>;
+    public selectedBlock: { orderQuantumIndex: number, blockIndex: number };
+
+    public productionItem: ProductionItem;
+    public colors: any[] = [];
+    public allWorkshops: Set<number> = new Set<number>();
 
     constructor() { }
 
     ngOnInit() {
-debugger;
+        this.defaultZoom();
+
+        this.generateColors();
+        this.getAllWorkshops();
+    }
+
+    private generateColors() {
+        this.productionItem.productionItemQuantumsGroups.forEach(q => this.colors.push(randomColor({ luminosity: 'light' })));
+    }
+
+    public defaultZoom() {
+        this.productionItem = new ProductionItem();
+        this.productionItem.productionItemQuantumsGroups = new Array<ProductionItemQuantumsGroup>();
+        this.order.orderQuantums[this.selectedBlock.orderQuantumIndex].productionItem.productionItemQuantumsGroups
+            .forEach(oq => this.productionItem.productionItemQuantumsGroups.push({
+                workshopSequence: Object.assign(new Array<number>(), oq.workshopSequence),
+                workshopStartTimes: Object.assign(new Array<number>(), oq.workshopStartTimes),
+                workshopEndTimes: Object.assign(new Array<number>(), oq.workshopEndTimes),
+                workshopDurations: Object.assign(new Array<number>(), oq.workshopDurations),
+            }));
+    }
+
+    public zoomPlus() {
+        this.productionItem.productionItemQuantumsGroups.forEach(g => {
+            for (let i = 0; i < g.workshopDurations.length; i++) {
+                g.workshopDurations[i] *= 1.1;
+                g.workshopStartTimes[i] *= 1.1;
+            }
+        });
+    }
+
+    public zoomMinus() {
+        this.productionItem.productionItemQuantumsGroups.forEach(g => {
+            for (let i = 0; i < g.workshopDurations.length; i++) {
+                g.workshopDurations[i] *= 0.9;
+                g.workshopStartTimes[i] *= 0.9;
+            }
+        });
+    }
+
+    public getAllWorkshops() {
+        this.productionItem.productionItemQuantumsGroups.forEach(g => g.workshopSequence.forEach(s => this.allWorkshops.add(s)));
+    }
+
+    public isGroupInWorkshop(workshopId: number, groupIndex: number) {
+        return this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.some(s => s === workshopId);
+    }
+
+    public getWorkshopDuration(workshopId: number, groupIndex: number) {
+        const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
+        return this.productionItem.productionItemQuantumsGroups[groupIndex].workshopDurations[workshopIndex];
+    }
+
+    public getWorkshopStartTime(workshopId: number, groupIndex: number) {
+        const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
+        return this.productionItem.productionItemQuantumsGroups[groupIndex].workshopStartTimes[workshopIndex];
+    }
+
+    public getWorkshopEndTime(workshopId: number, groupIndex: number) {
+        const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
+        return this.productionItem.productionItemQuantumsGroups[groupIndex].workshopEndTimes[workshopIndex];
+    }
+
+    public getBlockColor(groupIndex: number) {
+        return this.colors[groupIndex];
     }
 
 }

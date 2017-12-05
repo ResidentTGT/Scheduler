@@ -14,7 +14,7 @@ export class CalculateOrdersComponent implements OnInit {
     public orders: Order[] = [];
     public selectedOrder: number[];
 
-    public selectedBlock: Map<number, number>;
+    public selectedBlock: { orderQuantumIndex: number, blockIndex: number };
 
     public calculatedOrder: Order = null;
 

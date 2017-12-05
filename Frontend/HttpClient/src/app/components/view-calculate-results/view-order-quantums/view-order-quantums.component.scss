@@ -1,22 +1,26 @@
-.layout {
+@import '~@angular/material/_theming.scss';
+.layout-order-quantums {
     width: 100%;
     .diagram-names {
         display: flex;
         justify-content: center;
         mat-card {
+            width: 110px;
+            margin-top: 20px;
             &.assemble-card {
                 margin-top: 20px;
             }
         }
         .diagram {
+            @include mat-elevation(4);
             overflow-x: auto;
-            height: 200px;
+            height: 220px;
             width: 70%;
             margin-left: 30px;
             .order-quantum-block {
                 height: 67px;
-                border-left: 1px solid black;
                 position: absolute;
+                @include mat-elevation(4);
                 &.mach {
                     cursor: pointer;
                 }
@@ -40,6 +44,7 @@
             .machining {
                 display: flex;
                 position: relative;
+                margin-top: 20px;
                 height: 67px;
                 .order-quantum-machining {
                     display: flex;

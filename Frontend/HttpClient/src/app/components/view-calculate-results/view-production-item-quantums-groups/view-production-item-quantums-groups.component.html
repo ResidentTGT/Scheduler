@@ -1,3 +1,35 @@
-<p>
-  view-production-item-quantums-groups works!
-</p>
+<div class="layout-groups">
+
+    <div class="diagram-names" [ngStyle]="{'height': 'calc(' + (110 * allWorkshops.size + 25) + 'px )'}">
+
+        <div class="workshops">
+            <mat-card *ngFor="let workshop of allWorkshops">Цех {{workshop}}</mat-card>
+        </div>
+
+        <div class="diagram">
+            <div *ngFor="let workshop of allWorkshops">
+                <div *ngFor="let group of productionItem.productionItemQuantumsGroups; let j=index">
+                    <div class="mach-block" *ngIf="isGroupInWorkshop(workshop,j)" [ngStyle]="{'width.px':getWorkshopDuration(workshop,j),'left.px':getWorkshopStartTime(workshop,j),'background-color':getBlockColor(j)}">
+                        <div class="times-view">
+                            <div class="from"> {{getWorkshopStartTime(workshop,j)+selectedBlock.blockIndex*getWorkshopDuration(workshop,j)}}</div>
+                            <div class="duration"> {{getWorkshopDuration(workshop,j)}}</div>
+                            <div class="to"> {{getWorkshopEndTime(workshop,j)+selectedBlock.blockIndex*getWorkshopDuration(workshop,j)}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="scale-buttons">
+        <button mat-fab (click)="zoomPlus()">
+            <mat-icon>zoom_in</mat-icon>
+        </button>
+        <button mat-fab class="minus" (click)="zoomMinus()">
+            <mat-icon>zoom_out</mat-icon>
+        </button>
+        <button mat-fab class="minus" (click)="defaultZoom()">
+            <mat-icon>youtube_searched_for</mat-icon>
+        </button>
+    </div>
+</div>

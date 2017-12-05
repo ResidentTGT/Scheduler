@@ -1,15 +1,15 @@
 <div class="layout-groups">
 
-    <div class="diagram-names" [ngStyle]="{'height': 'calc(' + (110 * allWorkshops.size + 25) + 'px )'}">
+    <div class="diagram-names" [ngStyle]="{'height': 'calc(' + (92 * allWorkshops.size + 45) + 'px )'}">
 
         <div class="workshops">
             <mat-card *ngFor="let workshop of allWorkshops">Цех {{workshop}}</mat-card>
         </div>
 
         <div class="diagram">
-            <div *ngFor="let workshop of allWorkshops">
+            <div class="workshop-line" *ngFor="let workshop of allWorkshops">
                 <div *ngFor="let group of productionItem.productionItemQuantumsGroups; let j=index">
-                    <div class="mach-block" *ngIf="isGroupInWorkshop(workshop,j)" [ngStyle]="{'width.px':getWorkshopDuration(workshop,j),'left.px':getWorkshopStartTime(workshop,j),'background-color':getBlockColor(j)}">
+                    <div class="mach-block" (click)="selectGroup(j)" *ngIf="isGroupInWorkshop(workshop,j)" [ngStyle]="{'width.px':getWorkshopDuration(workshop,j),'left.px':getWorkshopStartTime(workshop,j),'background-color':getBlockColor(j)}">
                         <div class="times-view">
                             <div class="from"> {{getViewWorkshopStartTime(workshop,j)+selectedBlock.blockIndex*getViewWorkshopDuration(workshop,j)}}</div>
                             <div class="duration"> {{getViewWorkshopDuration(workshop,j)}}</div>

@@ -34,6 +34,24 @@ namespace Scheduler.Dto
             return detailDto;
         }
 
+        internal DetailDto ConvertDetailForViewing(Detail detail)
+        {
+            var detailDto = new DetailDto()
+            {
+                Cost = detail.Cost,
+                Description = detail.Description,
+                Id = detail.Id,
+                IsPurchased = detail.IsPurchased,
+                RouteName = detail.Route != null ? detail.Route.Name : null,
+                Title = detail.Title,
+                WorkshopSequence = detail.WorkshopSequence,
+                EquipmentsIdSequence = detail.EquipmentsIdSequence,
+                EquipmentsNameSequence = detail.EquipmentsNameSequence
+            };
+
+            return detailDto;
+        }
+
         internal Detail ConvertDetail(DetailDto detailDto)
         {
             var detail = new Detail()
@@ -166,11 +184,11 @@ namespace Scheduler.Dto
                 ItemsCountInOnePart = orderQuantum.ItemsCountInOnePart,
                 OrderId = orderQuantum.OrderId,
                 ProductionItem = orderQuantum.ProductionItem != null ? ConvertProductionItemForViewing(orderQuantum.ProductionItem) : null,
-                AssemblingDurations = orderQuantum.AssemblingDurations.Select(a=>a.Ticks).ToList(),
+                AssemblingDurations = orderQuantum.AssemblingDurations.Select(a => a.Ticks).ToList(),
                 AssemblingEndTimes = orderQuantum.AssemblingEndTimes.Select(a => a.Ticks).ToList(),
                 AssemblingFullBatchTime = orderQuantum.AssemblingFullBatchTime.Ticks,
                 AssemblingFullPartTime = orderQuantum.AssemblingFullPartTime.Ticks,
-                AssemblingRemainingFromPartsTime = orderQuantum.AssemblingRemainingFromPartsTime.Value.Ticks,
+                AssemblingRemainingFromPartsTime = orderQuantum.AssemblingRemainingFromPartsTime.HasValue ? orderQuantum.AssemblingRemainingFromPartsTime.Value.Ticks : default(long),
                 AssemblingStartTimes = orderQuantum.AssemblingStartTimes.Select(a => a.Ticks).ToList(),
                 MachiningDurations = orderQuantum.MachiningDurations.Select(a => a.Ticks).ToList(),
                 MachiningEndTimes = orderQuantum.MachiningEndTimes.Select(a => a.Ticks).ToList(),
@@ -265,7 +283,7 @@ namespace Scheduler.Dto
             var productionItemQuantumDto = new ProductionItemQuantumDto()
             {
                 Count = productionItemQuantum.Count,
-                Detail = ConvertDetail(productionItemQuantum.Detail),
+                Detail = ConvertDetailForViewing(productionItemQuantum.Detail),
                 Id = productionItemQuantum.Id,
                 ProductionItemId = productionItemQuantum.ProductionItemId,
                 EndTimes = productionItemQuantum.EndTimes.Select(a => a.Ticks).ToList(),

@@ -61,7 +61,7 @@ namespace Scheduler.Core.CountingTime
                 {
                     var diff = new TimeSpan(Math.Max((orderQuantums[i].MachiningStartTimes.First() - orderQuantums[i - 1].MachiningEndTimes.Last()).Ticks
                         , (orderQuantums[i].AssemblingStartTimes.First() - orderQuantums[i - 1].AssemblingEndTimes.Last()).Ticks));
-                    for (var j = 0; j < blocksCount; i++)
+                    for (var j = 0; j < blocksCount; j++)
                     {
                         orderQuantums[i].AssemblingStartTimes[j] += diff;
                         orderQuantums[i].AssemblingEndTimes[j] += diff;

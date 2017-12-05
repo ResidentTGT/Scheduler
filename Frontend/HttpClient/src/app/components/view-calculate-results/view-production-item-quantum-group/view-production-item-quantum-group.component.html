@@ -1,0 +1,34 @@
+<div class="layout-group">
+    <div class="diagram-names" [ngStyle]="{'height': 'calc(' + (92 * equipments.length + 45) + 'px )'}">
+
+        <div class="equipments">
+            <mat-card *ngFor="let equipment of equipments">{{equipment.name}}</mat-card>
+        </div>
+
+        <div class="diagram">
+            <div class="equipment-line" *ngFor="let equipment of equipments">
+                <div *ngFor="let productionItemQuantum of group.productionItemQuantums; let i=index">
+                    <div class="mach-block" *ngIf="isProductionItemQuantumInEquipment(equipment,i)" [ngStyle]="{'width.px':getMachiningDuration(equipment,i),'left.px':getMachiningStartTime(equipment,i),'background-color':getBlockColor(i)}">
+                        <div class="times-view">
+                            <div class="from"> {{getViewMachiningStartTime(equipment,i)}}</div>
+                            <div class="duration"> {{getViewMachiningDuration(equipment,i)}}</div>
+                            <div class="to"> {{getViewMachiningEndTime(equipment,i)}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="scale-buttons">
+        <button mat-fab (click)="zoomPlus()">
+            <mat-icon>zoom_in</mat-icon>
+        </button>
+        <button mat-fab class="minus" (click)="zoomMinus()">
+            <mat-icon>zoom_out</mat-icon>
+        </button>
+        <button mat-fab class="minus" (click)="defaultZoom()">
+            <mat-icon>youtube_searched_for</mat-icon>
+        </button>
+    </div>
+</div>

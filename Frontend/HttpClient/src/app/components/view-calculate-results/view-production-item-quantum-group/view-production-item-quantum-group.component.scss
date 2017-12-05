@@ -1,11 +1,11 @@
 @import '~@angular/material/_theming.scss';
-.layout-groups {
-    margin-top: 30px;
+.layout-group {
+    margin: 30px 0 30px 0;
     width: 100%;
     .diagram-names {
         display: flex;
         justify-content: center;
-        .workshops {
+        .equipments {
             mat-card {
                 margin-top: 25px;
                 width: 110px;
@@ -17,7 +17,7 @@
             overflow-x: auto;
             position: relative;
             @include mat-elevation(4);
-            .workshop-line {
+            .equipment-line {
                 display: flex;
                 position: relative;
                 margin-top: 25px;
@@ -25,7 +25,7 @@
                 .mach-block {
                     height: 67px;
                     position: absolute;
-                    cursor: pointer;
+                    
                     @include mat-elevation(4);
                     .times-view {
                         position: relative;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ElementRef } from '@angular/core';
 import { Order } from '../../models/order';
 import { BackendApiService } from '../../services/backend-api.service';
 import { Observable } from 'rxjs/Rx';
@@ -12,13 +12,15 @@ import { Observable } from 'rxjs/Rx';
 export class CalculateOrdersComponent implements OnInit {
 
     public orders: Order[] = [];
-    public selectedOrder: number[];
+    public selectedOrder: number;
 
     public selectedBlock: { orderQuantumIndex: number, blockIndex: number };
 
+    public selectedGroup: { orderQuantumIndex: number, groupIndex: number };
+
     public calculatedOrder: Order = null;
 
-    constructor(private _api: BackendApiService) { }
+    constructor(private _api: BackendApiService, private _elementRef: ElementRef) { }
 
     ngOnInit() {
         this.getOrders();
@@ -35,9 +37,19 @@ export class CalculateOrdersComponent implements OnInit {
     }
 
     private calculateOrder() {
-        this._api.calculateOrder(this.orders[0].id).subscribe(
+        this.calculatedOrder = null;
+        this.selectedBlock = null;
+        this.selectedGroup = null;
+        this._api.calculateOrder(this.selectedOrder).subscribe(
             order => {
                 this.calculatedOrder = order;
             });
+    }
+
+    public selectOrder(id: number) {
+
+        // const elems = this._elementRef.nativeElement.querySelectorAll('.selector');
+        // elems.forEach(e => e.removeAttribute('checked'));
+        this.selectedOrder = id;
     }
 }

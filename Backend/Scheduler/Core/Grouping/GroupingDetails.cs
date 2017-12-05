@@ -58,11 +58,17 @@ namespace Scheduler.Core.Grouping
                 foreach (var productionItemQuantum in productionItemQuantums)
                 {
                     var workshopSequence = new HashSet<int>();
+                    var equipmentsIdSequence = new List<int>();
+                    var equipmentsNameSequence = new List<string>();
                     foreach (var oper in productionItemQuantum.Detail.Operations.Where(o => o.Equipment.Workshop != null))
                     {
+                        equipmentsIdSequence.Add(oper.Equipment.Id);
+                        equipmentsNameSequence.Add(oper.Equipment.Name);
                         workshopSequence.Add((int)oper.Equipment.WorkshopId);
                     }
                     productionItemQuantum.Detail.WorkshopSequence = workshopSequence.ToList();
+                    productionItemQuantum.Detail.EquipmentsIdSequence = equipmentsIdSequence;
+                    productionItemQuantum.Detail.EquipmentsNameSequence = equipmentsNameSequence;
                 }
             }
         }

@@ -1,5 +1,5 @@
-<mat-selection-list #selector class="orders-list">
-    <mat-list-option *ngFor="let order of orders">
+<mat-selection-list #selector class="orders-list" >
+    <mat-list-option class="selector" *ngFor="let order of orders" [value]="order.id" (click)="selectOrder(order.id)">
         {{order.name}}
     </mat-list-option>
 </mat-selection-list>
@@ -9,4 +9,8 @@
 </div>
 <sch-view-order-quantums *ngIf="calculatedOrder" [order]="calculatedOrder" (selectedBlock)="selectedBlock= $event"></sch-view-order-quantums>
 
-<sch-view-production-item-quantums-groups *ngIf="calculatedOrder&&selectedBlock" [order]="calculatedOrder" [selectedBlock]="selectedBlock"></sch-view-production-item-quantums-groups>
+<sch-view-production-item-quantums-groups *ngIf="selectedBlock" [order]="calculatedOrder" (selectedGroup)="selectedGroup=$event"
+    [selectedBlock]="selectedBlock">
+</sch-view-production-item-quantums-groups>
+
+<sch-view-production-item-quantum-group *ngIf="selectedGroup" [order]="calculatedOrder" [selectedGroup]="selectedGroup"></sch-view-production-item-quantum-group>

@@ -21,5 +21,9 @@ namespace Scheduler.Dto
         public string RouteName { get; set; }
 
         public List<int> WorkshopSequence { get; set; }
+
+        public List<int> EquipmentsIdSequence { get; set; }
+
+        public List<string> EquipmentsNameSequence { get; set; }
     }
 }

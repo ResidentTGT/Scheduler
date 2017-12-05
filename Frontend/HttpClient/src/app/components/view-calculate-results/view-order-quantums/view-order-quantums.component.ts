@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { Order } from '../../../models/order';
 import { randomColor } from 'randomcolor';
 import { forEach } from '@angular/router/src/utils/collection';
@@ -10,7 +10,7 @@ import { OrderQuantum } from '../../../models/order-quantum';
     styleUrls: ['./view-order-quantums.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ViewOrderQuantumsComponent implements OnInit {
+export class ViewOrderQuantumsComponent implements OnInit, OnChanges {
 
     @Input()
     public order: Order;
@@ -26,6 +26,12 @@ export class ViewOrderQuantumsComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
+        this.defaultZoom();
+
+        this.generateColors();
+    }
+
+    ngOnChanges() {
         this.defaultZoom();
 
         this.generateColors();

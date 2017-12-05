@@ -72,7 +72,7 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit {
     public isGroupInWorkshop(workshopId: number, groupIndex: number) {
         return this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.some(s => s === workshopId);
     }
-
+    //#region Получение времен для рисования блоков
     public getWorkshopDuration(workshopId: number, groupIndex: number) {
         const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
         return this.productionItem.productionItemQuantumsGroups[groupIndex].workshopDurations[workshopIndex];
@@ -83,10 +83,27 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit {
         return this.productionItem.productionItemQuantumsGroups[groupIndex].workshopStartTimes[workshopIndex];
     }
 
-    public getWorkshopEndTime(workshopId: number, groupIndex: number) {
+    public getViewWorkshopEndTime(workshopId: number, groupIndex: number) {
         const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
         return this.productionItem.productionItemQuantumsGroups[groupIndex].workshopEndTimes[workshopIndex];
     }
+    //#endregion
+    //#region Получение времен для отображения значений времен
+    public getViewWorkshopDuration(workshopId: number, groupIndex: number) {
+        const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
+        return this.order.orderQuantums[this.selectedBlock.orderQuantumIndex].productionItem.productionItemQuantumsGroups[groupIndex].workshopDurations[workshopIndex];
+    }
+
+    public getViewWorkshopStartTime(workshopId: number, groupIndex: number) {
+        const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
+        return this.order.orderQuantums[this.selectedBlock.orderQuantumIndex].productionItem.productionItemQuantumsGroups[groupIndex].workshopStartTimes[workshopIndex];
+    }
+
+    public getWorkshopEndTime(workshopId: number, groupIndex: number) {
+        const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
+        return this.order.orderQuantums[this.selectedBlock.orderQuantumIndex].productionItem.productionItemQuantumsGroups[groupIndex].workshopEndTimes[workshopIndex];
+    }
+    //#endregion
 
     public getBlockColor(groupIndex: number) {
         return this.colors[groupIndex];

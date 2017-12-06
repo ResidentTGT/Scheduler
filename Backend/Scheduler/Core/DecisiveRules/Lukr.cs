@@ -31,7 +31,7 @@ namespace Scheduler.Core.DecisiveRules
         private static TimeSpan SumDurations(Detail detail)
         {
             TimeSpan sum = new TimeSpan();
-            foreach (var operation in detail.Operations.Where(o => o.Equipment.Workshop != null))
+            foreach (var operation in detail.Route.Operations.Where(o => o.Equipment.Workshop != null))
                 sum += operation.MainTime;
             return sum;
         }

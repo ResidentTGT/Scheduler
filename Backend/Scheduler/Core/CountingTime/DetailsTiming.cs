@@ -26,7 +26,7 @@ namespace Scheduler.Core.CountingTime
                     var endTimes = new List<TimeSpan>();
                     var durations = new List<TimeSpan>();
 
-                    var opers = productionItemQuantums[j].Detail.Operations.Where(o => o.Equipment.WorkshopId == productionItemQuantumsGroup.WorkshopSequence[i]).ToList();
+                    var opers = productionItemQuantums[j].Detail.Route.Operations.Where(o => o.Equipment.WorkshopId == productionItemQuantumsGroup.WorkshopSequence[i]).ToList();
 
                     for (var k = 0; k < opers.Count; k++)
                     {
@@ -50,9 +50,6 @@ namespace Scheduler.Core.CountingTime
                             endTimes.Add(endTime);
                         }
                     }
-                    productionItemQuantums[j].MachiningDurations = durations;
-                    productionItemQuantums[j].StartTimes = startTimes;
-                    productionItemQuantums[j].EndTimes = endTimes;
 
                     if (j != 0)
                     {
@@ -62,12 +59,12 @@ namespace Scheduler.Core.CountingTime
                         {
                             for (var piqIndex = 1; piqIndex <= j; piqIndex++)
                             {
-                                var prevDetailOper = productionItemQuantums[j - piqIndex].Detail.Operations.FirstOrDefault(o => o.EquipmentId == opers[p].EquipmentId);
+                                var prevDetailOper = productionItemQuantums[j - piqIndex].Detail.Route.Operations.FirstOrDefault(o => o.EquipmentId == opers[p].EquipmentId);
                                 if (prevDetailOper != null)
                                 {
                                     var diff = productionItemQuantums[j - piqIndex]
-                                        .EndTimes[productionItemQuantums[j - piqIndex].Detail.Operations.Where(o => o.Equipment.WorkshopId == productionItemQuantumsGroup.WorkshopSequence[i]).ToList().IndexOf(prevDetailOper)]
-                                        - productionItemQuantums[j].StartTimes[p];
+                                        .EndTimes[productionItemQuantums[j - piqIndex].Detail.Route.Operations.Where(o => o.Equipment.WorkshopId == productionItemQuantumsGroup.WorkshopSequence[i]).ToList().IndexOf(prevDetailOper)]
+                                        - startTimes[p];
                                     if (diff > maxDiff)
                                         maxDiff = diff;
                                     break;
@@ -76,32 +73,52 @@ namespace Scheduler.Core.CountingTime
 
 
                         }
-                        for (var f = 0; f < productionItemQuantums[j].StartTimes.Count; f++)
+                        for (var f = 0; f < startTimes.Count; f++)
                         {
-                            productionItemQuantums[j].StartTimes[f] += maxDiff;
-                            productionItemQuantums[j].EndTimes[f] += maxDiff;
+                            startTimes[f] += maxDiff;
+                            endTimes[f] += maxDiff;
+                        }
+                    }
+
+                    var diffBetween = groupTime.Ticks-startTimes.First().Ticks ;
+                    if (diffBetween > 0)
+                        for (var f = 0; f < startTimes.Count; f++)
+                        {
+                            startTimes[f] += new TimeSpan(diffBetween);
+                            endTimes[f] += new TimeSpan(diffBetween);
                         }
 
-                    }
-                }
+                    foreach (var dur in durations)
+                        productionItemQuantums[j].MachiningDurations.Add(dur);
+                    foreach (var startTime in startTimes)
+                        productionItemQuantums[j].StartTimes.Add(startTime);
+                    foreach (var endTime in endTimes)
+                        productionItemQuantums[j].EndTimes.Add(endTime);
 
-                var maxEndTime = productionItemQuantums.Last().EndTimes.Max();
-                groupTime += maxEndTime;
-                if (isFinally)
-                    productionItemQuantumsGroup.WorkshopDurations.Add(maxEndTime);
-                else
-                {
-                    foreach (var d in productionItemQuantums)
-                    {
-                        d.EndTimes.Clear();
-                        d.StartTimes.Clear();
-                        d.MachiningDurations.Clear();
-                    }
+                    if (isFinally)
+                        productionItemQuantumsGroup.WorkshopDurations.Add(endTimes.Last() - startTimes.First());
+
+                    groupTime = productionItemQuantums[j].EndTimes.Max();
                 }
 
                 Logger.Log($"Закончен расчет времени группы деталей для цеха с id '{productionItemQuantumsGroup.WorkshopSequence[i]}', " +
-                    $"суммарное время: {maxEndTime}", LogLevel.Info);
+               $"суммарное время: {groupTime}", LogLevel.Info);
             }
+
+
+
+            if (!isFinally)
+            {
+                foreach (var d in productionItemQuantums)
+                {
+                    d.EndTimes.Clear();
+                    d.StartTimes.Clear();
+                    d.MachiningDurations.Clear();
+                }
+            }
+
+
+
             return groupTime;
         }
 

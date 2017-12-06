@@ -60,7 +60,7 @@ namespace Scheduler.Core.Grouping
                     var workshopSequence = new HashSet<int>();
                     var equipmentsIdSequence = new List<int>();
                     var equipmentsNameSequence = new List<string>();
-                    foreach (var oper in productionItemQuantum.Detail.Operations.Where(o => o.Equipment.Workshop != null))
+                    foreach (var oper in productionItemQuantum.Detail.Route.Operations.Where(o => o.Equipment.Workshop != null))
                     {
                         equipmentsIdSequence.Add(oper.Equipment.Id);
                         equipmentsNameSequence.Add(oper.Equipment.Name);

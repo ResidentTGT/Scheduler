@@ -225,7 +225,7 @@ namespace Scheduler.Database
                 .Include(pi => pi.ProductionItemQuantums.Select(piq => piq.Detail))
                 .First(p => p.Id == id)
                 .ProductionItemQuantums
-                .Select(piq => piq.Detail)
+                .Select(piq => piq.Detail.Route)
                 .SelectMany(d => d.Operations);
 
             return operations;

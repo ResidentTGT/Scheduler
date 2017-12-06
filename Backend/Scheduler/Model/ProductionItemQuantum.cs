@@ -21,8 +21,8 @@ namespace Scheduler.Model
 
         public int Count { get; set; }
 
-        public List<TimeSpan> StartTimes { get; set; }
-        public List<TimeSpan> EndTimes { get; set; }
-        public List<TimeSpan> MachiningDurations { get; set; }
+        public List<TimeSpan> StartTimes { get; set; } = new List<TimeSpan>();
+        public List<TimeSpan> EndTimes { get; set; } = new List<TimeSpan>();
+        public List<TimeSpan> MachiningDurations { get; set; } = new List<TimeSpan>();
     }
 }

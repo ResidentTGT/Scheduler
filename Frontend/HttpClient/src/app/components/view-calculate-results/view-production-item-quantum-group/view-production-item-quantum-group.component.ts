@@ -16,7 +16,7 @@ export class ViewProductionItemQuantumGroupComponent implements OnInit, OnChange
     @Input()
     public order: Order;
     @Input()
-    public selectedGroup: { orderQuantumIndex: number, groupIndex: number };
+    public selectedGroup: { orderQuantumIndex: number, groupIndex: number, offset: number };
 
     public colors: any[] = [];
     public group: ProductionItemQuantumsGroup;

@@ -9,12 +9,16 @@
         <div class="diagram">
             <div class="workshop-line" *ngFor="let workshop of allWorkshops">
                 <div *ngFor="let group of productionItem.productionItemQuantumsGroups; let j=index">
-                    <div class="mach-block" (click)="selectGroup(j)" *ngIf="isGroupInWorkshop(workshop,j)" [ngStyle]="{'width.px':getWorkshopDuration(workshop,j),'left.px':getWorkshopStartTime(workshop,j),'background-color':getBlockColor(j)}">
-                        <div class="times-view">
-                            <div class="from"> {{getViewWorkshopStartTime(workshop,j)+selectedBlock.blockIndex*getViewWorkshopDuration(workshop,j)}}</div>
-                            <div class="duration"> {{getViewWorkshopDuration(workshop,j)}}</div>
-                            <div class="to"> {{getViewWorkshopEndTime(workshop,j)+selectedBlock.blockIndex*getViewWorkshopDuration(workshop,j)}}</div>
-                        </div>
+                    <div class="mach-block" (click)="selectGroup(j)" *ngIf="isGroupInWorkshop(workshop,j)"
+                        [ngStyle]="{'width.px':getWorkshopDuration(workshop,j),'left.px':getWorkshopStartTime(workshop,j),'background-color':getBlockColor(j)}">
+                      
+                         
+                            <div class="times-view">
+                                <div class="from"> {{getViewWorkshopStartTime(workshop,j)+selectedBlock.offset}}</div>
+                                <div class="duration"> {{getViewWorkshopDuration(workshop,j)}}</div>
+                                <div class="to"> {{getViewWorkshopEndTime(workshop,j)+selectedBlock.offset}}</div>
+                            </div>
+                      
                     </div>
                 </div>
             </div>

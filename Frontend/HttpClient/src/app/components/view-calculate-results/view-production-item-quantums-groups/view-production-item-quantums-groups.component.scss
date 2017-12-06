@@ -27,6 +27,7 @@
                     position: absolute;
                     cursor: pointer;
                     @include mat-elevation(4);
+                   
                     .times-view {
                         position: relative;
                         margin-top: 45px;

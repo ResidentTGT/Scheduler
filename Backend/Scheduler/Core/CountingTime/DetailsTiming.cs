@@ -38,7 +38,7 @@ namespace Scheduler.Core.CountingTime
                         }
                         else
                         {
-                            durations.Add(new TimeSpan(opers[k].MainTime.Ticks * productionItemQuantums[j].Count* itemsCountInOnePart));
+                            durations.Add(new TimeSpan(opers[k].MainTime.Ticks * productionItemQuantums[j].Count * itemsCountInOnePart));
                             var startTime = startTimes[k - 1] + opers[k].MainTime;
                             var endTime = startTime + durations[k];
                             if (endTime < endTimes[k - 1] + opers[k].MainTime)
@@ -60,15 +60,21 @@ namespace Scheduler.Core.CountingTime
 
                         for (var p = 0; p < opers.Count; p++)
                         {
-                            var prevDetailOper = productionItemQuantums[j - 1].Detail.Operations.FirstOrDefault(o => o.EquipmentId == opers[p].EquipmentId);
-                            if (prevDetailOper != null)
+                            for (var piqIndex = 1; piqIndex <= j; piqIndex++)
                             {
-                                var diff = productionItemQuantums[j - 1]
-                                    .EndTimes[productionItemQuantums[j - 1].Detail.Operations.Where(o => o.Equipment.WorkshopId == productionItemQuantumsGroup.WorkshopSequence[i]).ToList().IndexOf(prevDetailOper)] 
-                                    - productionItemQuantums[j].StartTimes[p];
-                                if (diff > maxDiff)
-                                    maxDiff = diff;
+                                var prevDetailOper = productionItemQuantums[j - piqIndex].Detail.Operations.FirstOrDefault(o => o.EquipmentId == opers[p].EquipmentId);
+                                if (prevDetailOper != null)
+                                {
+                                    var diff = productionItemQuantums[j - piqIndex]
+                                        .EndTimes[productionItemQuantums[j - piqIndex].Detail.Operations.Where(o => o.Equipment.WorkshopId == productionItemQuantumsGroup.WorkshopSequence[i]).ToList().IndexOf(prevDetailOper)]
+                                        - productionItemQuantums[j].StartTimes[p];
+                                    if (diff > maxDiff)
+                                        maxDiff = diff;
+                                    break;
+                                }
                             }
+
+
                         }
                         for (var f = 0; f < productionItemQuantums[j].StartTimes.Count; f++)
                         {

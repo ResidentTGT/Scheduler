@@ -27,9 +27,14 @@
                     position: absolute;
                     
                     @include mat-elevation(4);
+                    .name{
+                        display: flex;
+                        justify-content: center;
+                        overflow: hidden;
+                    }
                     .times-view {
                         position: relative;
-                        margin-top: 45px;
+                        margin-top: 26px;
                         display: flex;
                         justify-content: space-between;
                         overflow: hidden;

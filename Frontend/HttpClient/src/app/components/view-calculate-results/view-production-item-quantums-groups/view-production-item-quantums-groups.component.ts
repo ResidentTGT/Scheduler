@@ -16,11 +16,11 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit, OnChan
     public order: Order;
 
     @Input()
-    public selectedBlock: { orderQuantumIndex: number, blockIndex: number };
+    public selectedBlock: { orderQuantumIndex: number, offset: number };
 
     @Output()
-    selectedGroup: EventEmitter<{ orderQuantumIndex: number, groupIndex: number }>
-        = new EventEmitter<{ orderQuantumIndex: number, groupIndex: number }>();
+    selectedGroup: EventEmitter<{ orderQuantumIndex: number, groupIndex: number, offset: number }>
+        = new EventEmitter<{ orderQuantumIndex: number, groupIndex: number, offset: number }>();
 
     public productionItem: ProductionItem;
     public colors: any[] = [];
@@ -128,7 +128,10 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit, OnChan
     }
 
     public selectGroup(groupIndex: number) {
-        this.selectedGroup.emit({ orderQuantumIndex: this.selectedBlock.orderQuantumIndex, groupIndex });
+        this.selectedGroup.emit({
+            orderQuantumIndex: this.selectedBlock.orderQuantumIndex
+            , groupIndex: groupIndex, offset: this.selectedBlock.offset
+        });
     }
 
 }

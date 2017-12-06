@@ -16,8 +16,8 @@ export class ViewOrderQuantumsComponent implements OnInit, OnChanges {
     public order: Order;
 
     @Output()
-    public selectedBlock: EventEmitter<{ orderQuantumIndex: number, blockIndex: number }>
-        = new EventEmitter<{ orderQuantumIndex: number, blockIndex: number }>();
+    public selectedBlock: EventEmitter<{ orderQuantumIndex: number, offset: number }>
+        = new EventEmitter<{ orderQuantumIndex: number, offset: number }>();
 
     public filteredOrderQuantums: OrderQuantum[] = [];
 
@@ -54,7 +54,13 @@ export class ViewOrderQuantumsComponent implements OnInit, OnChanges {
     }
 
     public selectBlock(orderQuantumIndex: number, blockIndex: number) {
-        this.selectedBlock.emit({ orderQuantumIndex: orderQuantumIndex, blockIndex: blockIndex });
+        let offset = 0;
+        for (let i = 0; i < orderQuantumIndex; i++) {
+            offset += this.order.orderQuantums[i].machiningEndTimes[this.order.orderQuantums[i].machiningEndTimes.length - 1];
+        }
+        offset += blockIndex * this.order.orderQuantums[orderQuantumIndex].machiningFullPartTime;
+
+        this.selectedBlock.emit({ orderQuantumIndex: orderQuantumIndex, offset: offset });
     }
 
     public zoomPlus() {

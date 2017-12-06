@@ -9,10 +9,13 @@
             <div class="equipment-line" *ngFor="let equipment of equipments">
                 <div *ngFor="let productionItemQuantum of group.productionItemQuantums; let i=index">
                     <div class="mach-block" *ngIf="isProductionItemQuantumInEquipment(equipment,i)" [ngStyle]="{'width.px':getMachiningDuration(equipment,i),'left.px':getMachiningStartTime(equipment,i),'background-color':getBlockColor(i)}">
+                        <div class="name">
+                            {{productionItemQuantum.detail.title}}
+                        </div>
                         <div class="times-view">
-                            <div class="from"> {{getViewMachiningStartTime(equipment,i)}}</div>
-                            <div class="duration"> {{getViewMachiningDuration(equipment,i)}}</div>
-                            <div class="to"> {{getViewMachiningEndTime(equipment,i)}}</div>
+                            <div class="from"> {{getViewMachiningStartTime(equipment,i)+selectedGroup.offset}}</div>
+                            <div class="duration"> {{getViewMachiningDuration(equipment,i)+selectedGroup.offset}}</div>
+                            <div class="to"> {{getViewMachiningEndTime(equipment,i)+selectedGroup.offset}}</div>
                         </div>
                     </div>
                 </div>

@@ -54,13 +54,13 @@ namespace Scheduler.Core.CountingTime
 
                         orderQuantums[i].AssemblingStartTimes.Add(orderQuantums[i].AssemblingEndTimes[j] - orderQuantums[i].AssemblingFullPartTime);
                     }
-                    
+
                 }
 
                 if (i != 0)
                 {
-                    var diff = new TimeSpan(Math.Max((orderQuantums[i].MachiningStartTimes.First() - orderQuantums[i - 1].MachiningEndTimes.Last()).Ticks
-                        , (orderQuantums[i].AssemblingStartTimes.First() - orderQuantums[i - 1].AssemblingEndTimes.Last()).Ticks));
+                    var diff = new TimeSpan(Math.Max((orderQuantums[i - 1].MachiningEndTimes.Last() - orderQuantums[i].MachiningStartTimes.First()).Ticks
+                        , (orderQuantums[i - 1].AssemblingEndTimes.Last() - orderQuantums[i].AssemblingStartTimes.First()).Ticks));
                     for (var j = 0; j < blocksCount; j++)
                     {
                         orderQuantums[i].AssemblingStartTimes[j] += diff;

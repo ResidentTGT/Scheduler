@@ -14,9 +14,9 @@ export class CalculateOrdersComponent implements OnInit {
     public orders: Order[] = [];
     public selectedOrder: number;
 
-    public selectedBlock: { orderQuantumIndex: number, blockIndex: number };
+    public selectedBlock: { orderQuantumIndex: number, offset: number };
 
-    public selectedGroup: { orderQuantumIndex: number, groupIndex: number };
+    public selectedGroup: { orderQuantumIndex: number, groupIndex: number, offset: number };
 
     public calculatedOrder: Order = null;
 

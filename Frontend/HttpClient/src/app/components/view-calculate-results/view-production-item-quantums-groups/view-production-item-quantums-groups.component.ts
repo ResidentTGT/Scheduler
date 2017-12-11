@@ -130,7 +130,10 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit, OnChan
     public selectGroup(groupIndex: number) {
         this.selectedGroup.emit({
             orderQuantumIndex: this.selectedBlock.orderQuantumIndex
-            , groupIndex: groupIndex, offset: this.selectedBlock.offset
+            , groupIndex: groupIndex
+            , offset: this.selectedBlock.offset
+                + this.order.orderQuantums[this.selectedBlock.orderQuantumIndex]
+                .productionItem.productionItemQuantumsGroups[groupIndex].workshopStartTimes[0]
         });
     }
 

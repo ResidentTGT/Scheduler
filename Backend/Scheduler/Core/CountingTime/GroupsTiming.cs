@@ -46,11 +46,14 @@ namespace Scheduler.Core.CountingTime
 
                     for (var k = 0; k < groups[i].WorkshopSequence.Count; k++)
                     {
-                        if (groups[i - 1].WorkshopSequence.Contains(groups[i].WorkshopSequence[k]))
+                        for (var groupIndex = 1; groupIndex <= i; groupIndex++)
                         {
-                            var diff = groups[i - 1].WorkshopEndTimes[groups[i - 1].WorkshopSequence.IndexOf(groups[i].WorkshopSequence[k])] - groups[i].WorkshopStartTimes[k];
-                            if (diff > maxDiff)
-                                maxDiff = diff;
+                            if (groups[i - groupIndex].WorkshopSequence.Contains(groups[i].WorkshopSequence[k]))
+                            {
+                                var diff = groups[i - groupIndex].WorkshopEndTimes[groups[i - groupIndex].WorkshopSequence.IndexOf(groups[i].WorkshopSequence[k])] - groups[i].WorkshopStartTimes[k];
+                                if (diff > maxDiff)
+                                    maxDiff = diff;
+                            }
                         }
                     }
 

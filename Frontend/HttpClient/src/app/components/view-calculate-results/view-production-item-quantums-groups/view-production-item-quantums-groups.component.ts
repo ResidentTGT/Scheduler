@@ -48,6 +48,7 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit, OnChan
 
     public defaultZoom() {
         this.productionItem = new ProductionItem();
+        this.productionItem.title = this.order.orderQuantums[this.selectedBlock.orderQuantumIndex].productionItem.title;
         this.productionItem.productionItemQuantumsGroups = new Array<ProductionItemQuantumsGroup>();
         this.order.orderQuantums[this.selectedBlock.orderQuantumIndex].productionItem.productionItemQuantumsGroups
             .forEach(oq => this.productionItem.productionItemQuantumsGroups.push({
@@ -133,7 +134,7 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit, OnChan
             , groupIndex: groupIndex
             , offset: this.selectedBlock.offset
                 + this.order.orderQuantums[this.selectedBlock.orderQuantumIndex]
-                .productionItem.productionItemQuantumsGroups[groupIndex].workshopStartTimes[0]
+                    .productionItem.productionItemQuantumsGroups[groupIndex].workshopStartTimes[0]
         });
     }
 

@@ -93,7 +93,7 @@ export class ViewOrderQuantumsComponent implements OnInit, OnChanges {
             machiningDurations: Object.assign(new Array<number>(), oq.machiningDurations),
             machiningStartTimes: Object.assign(new Array<number>(), oq.machiningStartTimes),
             count: oq.count,
-            itemsCountInOnePart: oq.itemsCountInOnePart
+            itemsCountInOnePart: oq.itemsCountInOnePart,
         }));
     }
 

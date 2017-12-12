@@ -15,10 +15,13 @@ namespace Scheduler.Core.CountingTime
         {
             var productionItemQuantums = productionItemQuantumsGroup.ProductionItemQuantums;
 
-            var groupTime = new TimeSpan(0);
+           
+            var previousGroupLastTime = new TimeSpan(0);
 
             for (var i = 0; i < productionItemQuantumsGroup.WorkshopSequence.Count; i++)
             {
+                var currentGroupTime = new TimeSpan(0);
+
                 Logger.Log($"Начат расчет времени группы деталей для цеха с id '{productionItemQuantumsGroup.WorkshopSequence[i]}'", LogLevel.Info);
                 for (var j = 0; j < productionItemQuantums.Count; j++)
                 {
@@ -80,7 +83,9 @@ namespace Scheduler.Core.CountingTime
                         }
                     }
 
-                    var diffBetween = groupTime.Ticks-startTimes.First().Ticks ;
+                    currentGroupTime = endTimes.Last();
+
+                    var diffBetween = previousGroupLastTime.Ticks - startTimes.First().Ticks;
                     if (diffBetween > 0)
                         for (var f = 0; f < startTimes.Count; f++)
                         {
@@ -95,17 +100,17 @@ namespace Scheduler.Core.CountingTime
                     foreach (var endTime in endTimes)
                         productionItemQuantums[j].EndTimes.Add(endTime);
 
-                    if (isFinally)
-                        productionItemQuantumsGroup.WorkshopDurations.Add(endTimes.Last() - startTimes.First());
-
-                    groupTime = productionItemQuantums[j].EndTimes.Max();
+                    if (productionItemQuantums.Count == (j + 1))
+                    {
+                        previousGroupLastTime = productionItemQuantums[j].EndTimes.Max();
+                        if (isFinally)
+                            productionItemQuantumsGroup.WorkshopDurations.Add(currentGroupTime);
+                    }
                 }
 
                 Logger.Log($"Закончен расчет времени группы деталей для цеха с id '{productionItemQuantumsGroup.WorkshopSequence[i]}', " +
-               $"суммарное время: {groupTime}", LogLevel.Info);
+               $"суммарное время группы: {currentGroupTime}", LogLevel.Info);
             }
-
-
 
             if (!isFinally)
             {
@@ -117,9 +122,7 @@ namespace Scheduler.Core.CountingTime
                 }
             }
 
-
-
-            return groupTime;
+            return previousGroupLastTime;
         }
 
     }

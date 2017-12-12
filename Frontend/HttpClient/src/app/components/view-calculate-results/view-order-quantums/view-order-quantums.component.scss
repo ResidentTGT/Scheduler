@@ -19,20 +19,22 @@
             margin-left: 30px;
             .order-quantum-block {
                 height: 67px;
-               position: absolute; 
-                @include mat-elevation(4);     
+                position: absolute;
+                .production-name {
+                    display: flex;
+                    justify-content: center;
+                    overflow: hidden;
+                }
+                @include mat-elevation(4);
                 &.mach {
-                    cursor: pointer; 
-                    &:hover{
+                    cursor: pointer;
+                    &:hover {
                         @include mat-elevation(10);
-                    }     
-                    &:focus{
-                        background-color: red !important;
                     }
                 }
                 .times-view {
                     position: relative;
-                    margin-top: 45px;
+                    margin-top: 26px;
                     display: flex;
                     justify-content: space-between;
                     overflow: hidden;

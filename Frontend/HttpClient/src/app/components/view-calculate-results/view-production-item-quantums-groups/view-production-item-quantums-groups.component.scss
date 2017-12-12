@@ -2,9 +2,15 @@
 .layout-groups {
     margin-top: 30px;
     width: 100%;
+    .production-name{
+        display: flex;
+        justify-content: center;
+        font-size: 26px;
+    }
     .diagram-names {
         display: flex;
         justify-content: center;
+        margin-top: 8px;
         .workshops {
             mat-card {
                 margin-top: 25px;
@@ -27,10 +33,16 @@
                     position: absolute;
                     cursor: pointer;
                     @include mat-elevation(4);
-                   
+                    .group-index {
+                        font-size: 18px;
+                        display: flex;
+                        justify-content: center;                      
+                        font-family: 'Roboto-Light';
+                        overflow: hidden;
+                    }
                     .times-view {
                         position: relative;
-                        margin-top: 45px;
+                        margin-top: 26px;
                         display: flex;
                         justify-content: space-between;
                         overflow: hidden;

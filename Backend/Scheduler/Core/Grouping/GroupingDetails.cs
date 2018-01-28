@@ -33,7 +33,6 @@ namespace Scheduler.Core.Grouping
                             WorkshopSequence = productionItemQuantum.Detail.WorkshopSequence
                         });
                         Logger.Log($"Добавлена новая группа с последовательностью обработки '{productionItemQuantum.Detail.WorkshopSequenceStr}'");
-
                     }
                 }
 

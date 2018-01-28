@@ -111,8 +111,9 @@ namespace Scheduler.Database
                 .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations)))
                 .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations.Select(oper => oper.Equipment))))
                 .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations.Select(oper => oper.Equipment.Workshop))))
-                 .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations.Select(oper => oper.Equipment.Conveyor))))
+                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations.Select(oper => oper.Equipment.Conveyor))))
                 .First(o => o.Id == id);
+
             return order;
         }
 
@@ -222,7 +223,7 @@ namespace Scheduler.Database
         public IEnumerable<Operation> GetOperationsByProductionItemId(int id)
         {
             var operations = _context.ProductionItems
-                .Include(pi => pi.ProductionItemQuantums.Select(piq => piq.Detail))
+              //  .Include(pi => pi.ProductionItemQuantums.Select(piq => piq.Detail))
                 .First(p => p.Id == id)
                 .ProductionItemQuantums
                 .Select(piq => piq.Detail.Route)

@@ -44,7 +44,7 @@ namespace Scheduler.Core
 
             var assemblingTime = new AssemblingTime(_dbManager);
             Logger.Log($"Начат расчет времен сборок партий изделий на конвейере для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
-            var assemblingTimes = assemblingTime.CalculateAssemblingTimes(order);
+            assemblingTime.CalculateAssemblingTimes(order);
             Logger.Log($"Закончен расчет времен сборок партий изделий на конвейере для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
 
             var grouping = new GroupingDetails(_dbManager);

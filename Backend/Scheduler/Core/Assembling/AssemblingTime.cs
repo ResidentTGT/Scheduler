@@ -19,9 +19,8 @@ namespace Scheduler.Core.Assembling
             _dbManager = dbManager;
         }
 
-        public List<OrderQuantumAssemblingTime> CalculateAssemblingTimes(Order order)
+        internal void CalculateAssemblingTimes(Order order)
         {
-
             var orderQuantumAssemblingTimes = new List<OrderQuantumAssemblingTime>();
 
             foreach (var orderQuantum in order.OrderQuantums)
@@ -39,29 +38,24 @@ namespace Scheduler.Core.Assembling
                 {
                     ProductionItem = orderQuantum.ProductionItem,
                     FullBatchTime = CalculateAssemblingTimeForProductsCount(operations, orderQuantum.Count),
-                    ProductionsItemsPartTime = CalculateAssemblingTimeForProductsCount(operations, orderQuantum.ItemsCountInOnePart)
+                    ProductionsItemsPartTime = CalculateAssemblingTimeForProductsCount(operations, orderQuantum.ItemsCountInOnePart),
+                    RemainingFromPartsTime = CalculateAssemblingTimeForProductsCount(operations, orderQuantum.Count % orderQuantum.ItemsCountInOnePart)
                 };
 
-                if (orderQuantum.Count % orderQuantum.ItemsCountInOnePart != 0)
-                    orderQuantumAssemblingTime.RemainingFromPartsTime = CalculateAssemblingTimeForProductsCount(operations, orderQuantum.Count % orderQuantum.ItemsCountInOnePart);
                 Logger.Log($"Закончен расчет времен. Для всей партии: {orderQuantumAssemblingTime.FullBatchTime}, для части партии: {orderQuantumAssemblingTime.ProductionsItemsPartTime}, " +
                     $" для неполной части: {orderQuantumAssemblingTime.RemainingFromPartsTime}", LogLevel.Trace);
 
                 Logger.Log($"Закончен расчет времен сборки партии изделий типа '{orderQuantum.ProductionItem.Title}'. Суммарное время сборки для всей партии: {orderQuantumAssemblingTime.FullBatchTime}", LogLevel.Trace);
 
-                orderQuantumAssemblingTimes.Add(orderQuantumAssemblingTime);
-
                 orderQuantum.AssemblingFullPartTime = orderQuantumAssemblingTime.ProductionsItemsPartTime;
                 orderQuantum.AssemblingFullBatchTime = orderQuantumAssemblingTime.FullBatchTime;
                 orderQuantum.AssemblingRemainingFromPartsTime = orderQuantumAssemblingTime.RemainingFromPartsTime;
             }
-
-            return orderQuantumAssemblingTimes;
         }
 
         public TimeSpan CalculateAssemblingTimeForProductsCount(List<Operation> operations, int count)
         {
-            var conveyor = _dbManager.GetEquipmentByOperationId((int)operations.First().Id).Conveyor;
+            var conveyor = _dbManager.GetEquipmentByOperationId(operations.First().Id).Conveyor;
 
             var currentOperations = new List<OperationProcess>();
             foreach (var oper in operations)

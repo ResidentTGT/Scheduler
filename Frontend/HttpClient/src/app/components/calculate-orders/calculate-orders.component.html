@@ -1,11 +1,11 @@
-<mat-selection-list #selector class="orders-list" >
-    <mat-list-option class="selector" *ngFor="let order of orders" [value]="order.id" (click)="selectOrder(order.id)">
-        {{order.name}}
-    </mat-list-option>
-</mat-selection-list>
+<mat-radio-group class="orders-list" [(ngModel)]="selectedOrderId">
+    <mat-radio-button class="order-item" *ngFor="let order of orders" [value]="order.id">
+      {{order.name}}
+    </mat-radio-button>
+  </mat-radio-group>
 
 <div>
-    <button mat-button color="primary" class="calculate-button" [disabled]="!selectedOrder||!orders || !orders.length" (click)="calculateOrder()">Рассчитать заказ</button>
+    <button mat-button color="primary" class="calculate-button" [disabled]="!selectedOrderId||!orders || !orders.length" (click)="calculateOrder()">Рассчитать заказ</button>
 </div>
 
 <sch-view-order-quantums *ngIf="calculatedOrder" [order]="calculatedOrder" (selectedBlock)="selectedBlock= $event"></sch-view-order-quantums>

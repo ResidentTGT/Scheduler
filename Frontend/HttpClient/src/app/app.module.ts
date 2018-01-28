@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     MatButtonModule, MatToolbarModule, MatIconModule, MatPaginatorModule, MatListModule, MatProgressSpinnerModule, MatSlideToggleModule,
     MatGridListModule, MatDatepickerModule, MatFormFieldModule, MatNativeDateModule, MatInputModule, MatSliderModule, MatSliderChange,
-    MatSelectModule, MatCardModule, MatDialogModule, MAT_DATE_LOCALE
+    MatSelectModule, MatCardModule, MatDialogModule, MAT_DATE_LOCALE,MatRadioModule
 } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
@@ -86,7 +86,8 @@ const appRoutes: Routes = [
         MatSelectModule,
         FormsModule,
         MatCardModule,
-        MatDialogModule
+        MatDialogModule,
+        MatRadioModule
     ],
     providers: [BackendApiService, { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' }],
     bootstrap: [RootComponent],

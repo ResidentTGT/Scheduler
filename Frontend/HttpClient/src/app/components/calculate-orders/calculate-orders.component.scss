@@ -6,6 +6,9 @@
 }
 
 .orders-list {
-    width: 400px;
-    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    .order-item {
+        margin: 5px;
+    }
 }

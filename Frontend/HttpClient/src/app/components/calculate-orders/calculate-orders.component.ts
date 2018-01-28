@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Rx';
 export class CalculateOrdersComponent implements OnInit {
 
     public orders: Order[] = [];
-    public selectedOrder: number;
+    public selectedOrderId: number;
 
     public selectedBlock: { orderQuantumIndex: number, offset: number };
 
@@ -20,7 +20,7 @@ export class CalculateOrdersComponent implements OnInit {
 
     public calculatedOrder: Order = null;
 
-    constructor(private _api: BackendApiService, private _elementRef: ElementRef) { }
+    constructor(private _api: BackendApiService) { }
 
     ngOnInit() {
         this.getOrders();
@@ -30,7 +30,7 @@ export class CalculateOrdersComponent implements OnInit {
         this._api.getOrders()
             .do(orders => this.orders = orders)
             .catch(resp => {
-                alert(`Не удалось загрузить список заказов по причине: ${JSON.stringify(resp.json())}`);
+                alert(`Не удалось загрузить список заказов по причине: ${JSON.stringify(resp, null, 4)}`);
                 return Observable.empty();
             })
             .subscribe();
@@ -40,16 +40,10 @@ export class CalculateOrdersComponent implements OnInit {
         this.calculatedOrder = null;
         this.selectedBlock = null;
         this.selectedGroup = null;
-        this._api.calculateOrder(this.selectedOrder).subscribe(
+        this._api.calculateOrder(this.selectedOrderId).subscribe(
             order => {
                 this.calculatedOrder = order;
             });
     }
 
-    public selectOrder(id: number) {
-
-        // const elems = this._elementRef.nativeElement.querySelectorAll('.selector');
-        // elems.forEach(e => e.removeAttribute('checked'));
-        this.selectedOrder = id;
-    }
 }

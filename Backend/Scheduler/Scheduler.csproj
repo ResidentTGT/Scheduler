@@ -109,6 +109,10 @@
     <Compile Include="Migrations\201711271827181_AddedWorkshopSequenceToDetail.Designer.cs">
       <DependentUpon>201711271827181_AddedWorkshopSequenceToDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802101933599_AddOperationSequenceToRoute.cs" />
+    <Compile Include="Migrations\201802101933599_AddOperationSequenceToRoute.Designer.cs">
+      <DependentUpon>201802101933599_AddOperationSequenceToRoute.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
     <Compile Include="Model\Detail.cs" />
@@ -149,6 +153,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711271827181_AddedWorkshopSequenceToDetail.resx">
       <DependentUpon>201711271827181_AddedWorkshopSequenceToDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802101933599_AddOperationSequenceToRoute.resx">
+      <DependentUpon>201802101933599_AddOperationSequenceToRoute.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

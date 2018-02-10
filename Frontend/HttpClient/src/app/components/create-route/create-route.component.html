@@ -1,43 +1,57 @@
-<div class="form-container">
-    <mat-form-field>
-        <input matInput [(ngModel)]="name" placeholder="Название">
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput [(ngModel)]="description" placeholder="Описание">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-select placeholder="Деталь" (change)="filterOperations(detail)" [(ngModel)]="detail">
-            <mat-option *ngFor="let detail of details" [value]="detail">
-                {{ detail.title }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+<div class="layout">
+    <div class="form-container">
+        <div class="first-form">
+            <mat-form-field>
+                <input matInput [(ngModel)]="name" placeholder="Название">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput [(ngModel)]="description" placeholder="Описание">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Деталь" (change)="filterOperations(detail)" [(ngModel)]="detail">
+                    <mat-option *ngFor="let detail of details" [value]="detail">
+                        {{ detail.title }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
 
-    <mat-divider></mat-divider>
+        <mat-form-field>
+            <mat-select placeholder="Операция" [disabled]="!detail" [(ngModel)]="operation">
+                <mat-option *ngFor="let operation of viewOperations" [value]="operation">
+                    {{ operation.name }} ({{ operation.equipment.conveyor?.name||operation.equipment.workshop?.name }})
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-raised-button class="add-operation-button" color="primary" (click)="addOperation()" [disabled]="!operation">Добавить операцию</button>
 
-    <mat-form-field>
-        <mat-select placeholder="Операция" [disabled]="!detail" [(ngModel)]="operation">
-            <mat-option *ngFor="let operation of viewOperations" [value]="operation">
-                {{ operation.name }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+        <div class="warning-message">
+            Расположите операции в том порядке, в котором деталь должна их проходить.
+            <br> У детали должна быть одна операция сборки и >1 операций обработки.
+            <br> Если операции по цехам перепутаны местами, то порядок цехов будет выбран автоматически.
+        </div>
 
-    <button mat-button  (click)="addOperation()" [disabled]="!operation">Добавить операцию</button>
+        <div class="operations-list">
+            <div class="list-item" id="{{operation.id}}" *ngFor="let operation of addedOperations;let i =index;">
+                <div class="mat-line">
+                    <span class="operation-name">{{ operation.name }} ({{ operation.equipment.conveyor?.name||operation.equipment.workshop?.name }})</span>
+                    <button [disabled]="addedOperations.length<2" mat-mini-fab color="primary" (click)="moveDown(operation)">
+                        <mat-icon>expand_more</mat-icon>
+                    </button>
+                    <button [disabled]="addedOperations.length<2" mat-mini-fab color="primary" (click)="moveUp(operation)">
+                        <mat-icon>expand_less</mat-icon>
+                    </button>
+                </div>
+                <mat-divider></mat-divider>
+            </div>
+        </div>
 
-    <mat-list class="operations-list">
-        <mat-list-item *ngFor="let operation of addedOperations">
-            <p matLine>
-                <span>{{ operation.name }}</span>
-                <span>{{ operation.equipment.conveyor?.name||operation.equipment.workshop?.name }}</span>
-            </p>
-        </mat-list-item>
-    </mat-list>
+    </div>
 
-    <mat-divider></mat-divider>
-
-    <button mat-button (click)="createRoute()" [disabled]="!name||!addedOperations.length">Создать маршрут</button>
-
+    <footer>
+        <button mat-raised-button color="primary" (click)="createRoute()" [disabled]="!name||!addedOperations.length||!isValidSequence()">Создать маршрут</button>
+        <div style="flex:1"></div>
+        <button mat-raised-button color="primary" (click)="closeDialog()">Закрыть</button>
+    </footer>
 </div>
-
-<button mat-button (click)="closeDialog()">Закрыть</button>

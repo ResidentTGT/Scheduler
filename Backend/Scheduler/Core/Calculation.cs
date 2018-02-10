@@ -48,7 +48,7 @@ namespace Scheduler.Core
             Logger.Log($"Закончен расчет времен сборок партий изделий на конвейере для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
 
             var grouping = new GroupingDetails(_dbManager);
-            //Установка последовательности следования деталей по цехам, пока нет интерфейса для этого
+            //Сортировка операций согласно маршруту и группировка по цехам
             grouping.SetWorkshopSequenceForDetails(order);
 
             Logger.Log($"Начато группирование деталей по маршрутам их следования для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);

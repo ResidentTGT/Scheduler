@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 import { BackendApiService } from '../../services/backend-api.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Operation } from '../../models/operation';
+import { Operation, OperationType } from '../../models/operation';
 import { Detail } from '../../models/detail';
 import { Observable } from 'rxjs/Rx';
 import { Route } from '../../models/route';
@@ -42,6 +42,7 @@ export class CreateRouteComponent implements OnInit {
             name: this.name,
             operations: this.addedOperations,
             detail: this.detail,
+            operationsSequence: this.addedOperations.map(o => +o.id)
         };
 
         this._api.createRoute(route)
@@ -91,6 +92,35 @@ export class CreateRouteComponent implements OnInit {
 
     closeDialog() {
         this.matDialogRef.close();
+    }
+
+    public moveUp(operation: Operation): void {
+        const index = this.addedOperations.indexOf(operation);
+
+        if (index !== 0) {
+            const a = this.addedOperations[index - 1];
+            const b = this.addedOperations[index];
+            this.addedOperations[index] = a;
+            this.addedOperations[index - 1] = b;
+        }
+    }
+
+    public moveDown(operation: Operation): void {
+        const index = this.addedOperations.indexOf(operation);
+
+        if (index !== this.addedOperations.length - 1) {
+            const a = this.addedOperations[index];
+            const b = this.addedOperations[index + 1];
+            this.addedOperations[index] = b;
+            this.addedOperations[index + 1] = a;
+        }
+    }
+
+    public isValidSequence(): boolean {
+        if (this.addedOperations.some(o => OperationType[o.type.toString()] === OperationType.Machining)
+            && this.addedOperations.filter(o => OperationType[o.type.toString()] === OperationType.Assembling).length === 1) {
+            return true;
+        }
     }
 
 }

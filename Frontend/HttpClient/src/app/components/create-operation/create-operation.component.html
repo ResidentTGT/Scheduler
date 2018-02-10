@@ -1,40 +1,42 @@
-<div class="form-container">
-    <mat-form-field>
-        <input matInput [(ngModel)]="name" placeholder="Наименование">
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput [(ngModel)]="description" placeholder="Описание">
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput [(ngModel)]="mainTime" placeholder="Основное время">
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput [(ngModel)]="additionalTime" placeholder="Дополнительное время">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-select placeholder="Тип операции" [(ngModel)]="type" (change)=changeSortedEquipments()>
-            <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption">
-                {{ typeOption|operationType }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-select [(ngModel)]="equipment" placeholder="Оборудование" [disabled]="type==''||type=='Undefined'">
-            <mat-option *ngFor="let equipment of sortedEquipments" [value]="equipment">
-                {{ equipment.name }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-select [(ngModel)]="detail" placeholder="Деталь" [disabled]="equipment==null">
-            <mat-option *ngFor="let detail of details" [value]="detail">
-                {{ detail.title }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
+<div class="create-operation-layout">
+    <div class="form-container">
+        <mat-form-field>
+            <input matInput [(ngModel)]="name" placeholder="Наименование">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="description" placeholder="Описание">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="mainTime" placeholder="Основное время">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [(ngModel)]="additionalTime" placeholder="Дополнительное время">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select placeholder="Тип операции" [(ngModel)]="type" (change)=changeSortedEquipments()>
+                <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption">
+                    {{ typeOption|operationType }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select [(ngModel)]="equipment" placeholder="Оборудование" [disabled]="type==''||type=='Undefined'">
+                <mat-option *ngFor="let equipment of sortedEquipments" [value]="equipment">
+                    {{ equipment.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select [(ngModel)]="detail" placeholder="Деталь" [disabled]="equipment==null">
+                <mat-option *ngFor="let detail of details" [value]="detail">
+                    {{ detail.title }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-    <button mat-raised-button color="primary" (click)="createOperation()" [disabled]="checkInput()">Создать операцию</button>
+        <button mat-raised-button color="primary" (click)="createOperation()" [disabled]="checkInput()">Создать операцию</button>
 
+    </div>
+
+    <button mat-raised-button color="primary" (click)="closeDialog()">Закрыть</button>
 </div>
-
-<button mat-raised-button color="primary" (click)="closeDialog()">Закрыть</button>

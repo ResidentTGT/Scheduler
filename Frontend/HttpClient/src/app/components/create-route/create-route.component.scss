@@ -1,0 +1,32 @@
+.layout {
+    width: 600px;
+    .warning-message {
+        color: #F34336;
+        margin-bottom: 5px;
+    }
+    .first-form {
+        display: flex;
+        justify-content: space-between;
+    }
+    .add-operation-button {
+        margin-left: 5px;
+    }
+    .operations-list {
+        max-height: 300px;
+        overflow-y: auto;
+        .mat-line {
+            display: flex;
+        }
+        .operation-name {
+            flex: 1;
+            align-self: center;
+        }
+        button {
+            margin: 7px 4px;
+        }
+    }
+    footer {
+        margin-top: 10px;
+        display: flex;
+    }
+}

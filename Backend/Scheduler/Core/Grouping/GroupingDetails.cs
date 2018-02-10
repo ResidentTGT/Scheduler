@@ -59,7 +59,10 @@ namespace Scheduler.Core.Grouping
                     var workshopSequence = new HashSet<int>();
                     var equipmentsIdSequence = new List<int>();
                     var equipmentsNameSequence = new List<string>();
-                    foreach (var oper in productionItemQuantum.Detail.Route.Operations.Where(o => o.Equipment.Workshop != null))
+
+                    var sortedOpers = GetOperationsSortedByRoute(productionItemQuantum);
+
+                    foreach (var oper in sortedOpers)
                     {
                         equipmentsIdSequence.Add(oper.Equipment.Id);
                         equipmentsNameSequence.Add(oper.Equipment.Name);
@@ -70,6 +73,23 @@ namespace Scheduler.Core.Grouping
                     productionItemQuantum.Detail.EquipmentsNameSequence = equipmentsNameSequence;
                 }
             }
+        }
+
+        private List<Operation> GetOperationsSortedByRoute(ProductionItemQuantum productionItemQuantum)
+        {
+            var opers = new List<Operation>();
+            var operationsInWorkshops = productionItemQuantum.Detail.Route.Operations.Where(o => o.Equipment.Workshop != null);
+            var opersSequence = Array.ConvertAll(productionItemQuantum.Detail.Route.OperationsSequence.Split(','), int.Parse).ToList();
+
+            foreach (var operId in opersSequence)
+            {
+                var oper = operationsInWorkshops.FirstOrDefault(o => o.Id == operId);
+                if (oper != null)
+                    opers.Add(oper);
+            }
+
+            opers = opers.GroupBy(o => o.Equipment.WorkshopId).SelectMany(g => g.ToList()).ToList();
+            return opers;
         }
     }
 }

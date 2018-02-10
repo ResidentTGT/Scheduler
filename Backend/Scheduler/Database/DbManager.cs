@@ -223,7 +223,6 @@ namespace Scheduler.Database
         public IEnumerable<Operation> GetOperationsByProductionItemId(int id)
         {
             var operations = _context.ProductionItems
-              //  .Include(pi => pi.ProductionItemQuantums.Select(piq => piq.Detail))
                 .First(p => p.Id == id)
                 .ProductionItemQuantums
                 .Select(piq => piq.Detail.Route)

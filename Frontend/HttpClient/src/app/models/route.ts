@@ -7,4 +7,5 @@ export class Route {
     public description: string;
     public detail: Detail;
     public operations: Operation[];
+    public operationsSequence: number[];
 }

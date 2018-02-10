@@ -17,6 +17,8 @@ namespace Scheduler.Model
 
         public string Description { get; set; }
 
+        public string OperationsSequence { get; set; }
+
         public virtual List<Operation> Operations { get; set; }
 
         public virtual Detail Detail { get; set; }

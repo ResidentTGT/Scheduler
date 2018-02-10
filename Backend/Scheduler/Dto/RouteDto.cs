@@ -17,5 +17,7 @@ namespace Scheduler.Dto
         public List<OperationDto> Operations { get; set; }
 
         public DetailDto Detail { get; set; }
+
+        public List<int> OperationsSequence { get; set; }
     }
 }

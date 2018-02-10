@@ -353,7 +353,8 @@ namespace Scheduler.Dto
                 Description = route.Description,
                 Detail = ConvertDetail(route.Detail),
                 Name = route.Name,
-                Operations = route.Operations.Select(o => ConvertOperation(o)).ToList()
+                Operations = route.Operations.Select(o => ConvertOperation(o)).ToList(),
+                OperationsSequence = Array.ConvertAll(route.OperationsSequence.Split(','), int.Parse).ToList()
             };
 
             return routeDto;
@@ -366,7 +367,8 @@ namespace Scheduler.Dto
                 Description = routeDto.Description,
                 Id = (int)routeDto.Detail.Id,
                 Name = routeDto.Name,
-                Operations = routeDto.Operations.ToList().Select(o => ConvertOperation(o)).ToList()
+                Operations = routeDto.Operations.ToList().Select(o => ConvertOperation(o)).ToList(),
+                OperationsSequence = String.Join(",", routeDto.OperationsSequence)
             };
 
             return route;

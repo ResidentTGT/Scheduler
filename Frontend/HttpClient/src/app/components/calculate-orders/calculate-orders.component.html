@@ -5,7 +5,7 @@
   </mat-radio-group>
 
 <div>
-    <button mat-button color="primary" class="calculate-button" [disabled]="!selectedOrderId||!orders || !orders.length" (click)="calculateOrder()">Рассчитать заказ</button>
+    <button mat-raised-button color="primary"  [disabled]="!selectedOrderId||!orders || !orders.length" (click)="calculateOrder()">Рассчитать заказ</button>
 </div>
 
 <sch-view-order-quantums *ngIf="calculatedOrder" [order]="calculatedOrder" (selectedBlock)="selectedBlock= $event"></sch-view-order-quantums>

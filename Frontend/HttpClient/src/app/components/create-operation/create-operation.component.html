@@ -32,11 +32,9 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
-    
 
-    <button mat-button (click)="createOperation()" [disabled]="checkInput()">Создать операцию</button>
+    <button mat-raised-button color="primary" (click)="createOperation()" [disabled]="checkInput()">Создать операцию</button>
 
-    
 </div>
 
-<button mat-button (click)="closeDialog()">Закрыть</button>
+<button mat-raised-button color="primary" (click)="closeDialog()">Закрыть</button>

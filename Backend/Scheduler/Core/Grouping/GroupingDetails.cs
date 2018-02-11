@@ -60,7 +60,7 @@ namespace Scheduler.Core.Grouping
                     var equipmentsIdSequence = new List<int>();
                     var equipmentsNameSequence = new List<string>();
 
-                    var sortedOpers = GetOperationsSortedByRoute(productionItemQuantum);
+                    var sortedOpers = GetSortedByRouteOperationsByWorkshopId(productionItemQuantum,null);
 
                     foreach (var oper in sortedOpers)
                     {
@@ -75,10 +75,14 @@ namespace Scheduler.Core.Grouping
             }
         }
 
-        private List<Operation> GetOperationsSortedByRoute(ProductionItemQuantum productionItemQuantum)
+        internal List<Operation> GetSortedByRouteOperationsByWorkshopId(ProductionItemQuantum productionItemQuantum, int? workshopId)
         {
             var opers = new List<Operation>();
-            var operationsInWorkshops = productionItemQuantum.Detail.Route.Operations.Where(o => o.Equipment.Workshop != null);
+
+            var operationsInWorkshops = workshopId.HasValue
+                ? productionItemQuantum.Detail.Route.Operations.Where(o => o.Equipment.WorkshopId == workshopId)
+                : productionItemQuantum.Detail.Route.Operations.Where(o => o.Equipment.Workshop != null);
+
             var opersSequence = Array.ConvertAll(productionItemQuantum.Detail.Route.OperationsSequence.Split(','), int.Parse).ToList();
 
             foreach (var operId in opersSequence)
@@ -88,7 +92,9 @@ namespace Scheduler.Core.Grouping
                     opers.Add(oper);
             }
 
-            opers = opers.GroupBy(o => o.Equipment.WorkshopId).SelectMany(g => g.ToList()).ToList();
+            if (!workshopId.HasValue)
+                opers = opers.GroupBy(o => o.Equipment.WorkshopId).SelectMany(g => g.ToList()).ToList();
+
             return opers;
         }
     }

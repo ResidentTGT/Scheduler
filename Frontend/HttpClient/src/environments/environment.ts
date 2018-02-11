@@ -6,4 +6,5 @@
 export const environment = {
     production: false,
     backendUrl: 'http://localhost:7777/',
+    pageSizeOptions: [5, 25, 50, 100]
 };

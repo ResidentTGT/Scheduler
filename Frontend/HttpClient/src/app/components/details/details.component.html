@@ -1,57 +1,74 @@
-<div class="layout">
-    <div class="table">
-        <div class="table-header">
-            <div class="title">
-                Наименование
-            </div>
-            <div class="description">
-                Описание
-            </div>
-            <div class="cost">
-                Стоимость
-            </div>
-            <div class="is-purchased">
-                Покупное
-            </div>
-            <div class="routeId">
-                Маршрут
-            </div>
+<div class="details-layout">
+    <aside>
+        <div class="form-container">
+            <div class="form-text">Форма создания детали</div>
+            <mat-form-field>
+                <input matInput [(ngModel)]="title" placeholder="Наименование">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput [(ngModel)]="description" placeholder="Описание">
+            </mat-form-field>
+            <mat-slide-toggle class="slider" [(ngModel)]="isPurchased">Покупное</mat-slide-toggle>
+            <mat-form-field>
+                <input matInput type="number" [disabled]="!isPurchased" [(ngModel)]="cost" placeholder="Стоимость">
+            </mat-form-field>
+            <button mat-raised-button color="primary" [disabled]="isNullOrWhitespace()" (click)="createDetail()">Создать деталь</button>
         </div>
-        <mat-list>
-            <mat-list-item *ngFor="let detail of details">
-                <span class="title">
-                    {{detail.title}}
-                </span>
-                <span class="description">
-                    {{detail.description}}
-                </span>
-                <span class="cost">
-                    {{detail.cost}}
-                </span>
-                <span class="is-purchased">
-                    {{detail.isPurchased?"да":"нет"}}
-                </span>
-                <span class="routeId">
-                    {{detail.routeName}}
-                </span>
-                <button mat-button class="delete-button" (click)="deleteDetail(detail)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </mat-list-item>
-        </mat-list>
-    </div>
+    </aside>
+    <main>
+        <mat-card mat-elevation-z8>
+            <div class="table-container">
 
-    <div class="form-container">
-        <mat-slide-toggle [(ngModel)]="isPurchased">Покупное</mat-slide-toggle>
-        <mat-form-field>
-            <input matInput [(ngModel)]="title" placeholder="Наименование">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [(ngModel)]="description" placeholder="Описание">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [(ngModel)]="cost" placeholder="Стоимость">
-        </mat-form-field>
-        <button mat-button [disabled]="!title||title===''" (click)="createDetail()">Создать деталь</button>
-    </div>
+                <div class="loading" *ngIf="loading">
+                    <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+                </div>
+
+                <mat-table #table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="title">
+                        <mat-header-cell *matHeaderCellDef> Наименование </mat-header-cell>
+                        <mat-cell *matCellDef="let detail"> {{detail.title}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef> Описание </mat-header-cell>
+                        <mat-cell *matCellDef="let detail"> {{detail.description}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cost">
+                        <mat-header-cell *matHeaderCellDef> Стоимость </mat-header-cell>
+                        <mat-cell *matCellDef="let detail">
+                            {{detail.cost}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="is-purchased">
+                        <mat-header-cell *matHeaderCellDef> Покупное </mat-header-cell>
+                        <mat-cell *matCellDef="let detail">
+                            {{detail.isPurchased?"да":"нет"}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="routeId">
+                        <mat-header-cell *matHeaderCellDef> Маршрут </mat-header-cell>
+                        <mat-cell *matCellDef="let detail">
+                            {{detail.routeId}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                </mat-table>
+
+                <mat-divider></mat-divider>
+
+                <footer>
+                    <mat-paginator [length]="pageLength" [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)"></mat-paginator>
+                </footer>
+
+            </div>
+        </mat-card>
+    </main>
+
 </div>

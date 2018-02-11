@@ -18,9 +18,11 @@ export class BackendApiService {
 
     constructor(private http: Http) { }
 
-    getDetails(): Observable<Detail[]> {
+    getDetails(pageNumber: number = 0, pageSize: number = 0): Observable<Detail[]> {
+        const query = `${env.backendUrl}details?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
         return this.http
-            .get(`${env.backendUrl}details`)
+            .get(query)
             .map(response => response.json() as Detail[]);
     }
 
@@ -135,7 +137,7 @@ export class BackendApiService {
     calculateOrder(id: number | {}): Observable<Order> {
         return this.http
             .get(`${env.backendUrl}calculate-order?id=${id}`)
-            .map(resp =>  resp.json() as Order);
+            .map(resp => resp.json() as Order);
     }
 
     getRoutes(): Observable<Route[]> {

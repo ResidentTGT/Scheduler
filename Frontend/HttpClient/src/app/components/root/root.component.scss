@@ -15,6 +15,5 @@ main {
     flex: 1;
     height: calc(100% - #{$header-height});
     max-height: calc(100% - #{$header-height});
-    overflow-y: scroll;
     position: relative;
 }

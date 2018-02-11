@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     MatButtonModule, MatToolbarModule, MatIconModule, MatPaginatorModule, MatListModule, MatProgressSpinnerModule, MatSlideToggleModule,
     MatGridListModule, MatDatepickerModule, MatFormFieldModule, MatNativeDateModule, MatInputModule, MatSliderModule, MatSliderChange,
-    MatSelectModule, MatCardModule, MatDialogModule, MAT_DATE_LOCALE,MatRadioModule
+    MatSelectModule, MatCardModule, MatDialogModule, MAT_DATE_LOCALE, MatRadioModule, MatTableModule, MatPaginatorIntl, MatDividerModule
 } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
@@ -30,6 +30,9 @@ import { CalculateOrdersComponent } from './components/calculate-orders/calculat
 import { ViewOrderQuantumsComponent } from './components/view-calculate-results/view-order-quantums/view-order-quantums.component';
 import { ViewProductionItemQuantumsGroupsComponent } from './components/view-calculate-results/view-production-item-quantums-groups/view-production-item-quantums-groups.component';
 import { ViewProductionItemQuantumGroupComponent } from './components/view-calculate-results/view-production-item-quantum-group/view-production-item-quantum-group.component';
+import { MatPaginatorIntlRu } from './extenders/MatPaginatorIntlRu';
+import { HelperService } from './services/helper.service';
+
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/', pathMatch: 'full' },
@@ -87,9 +90,16 @@ const appRoutes: Routes = [
         FormsModule,
         MatCardModule,
         MatDialogModule,
-        MatRadioModule
+        MatRadioModule,
+        MatTableModule,
+        MatDividerModule
     ],
-    providers: [BackendApiService, { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' }],
+    providers: [
+        BackendApiService,
+        HelperService,
+        { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
+        { provide: MatPaginatorIntl, useClass: MatPaginatorIntlRu },
+    ],
     bootstrap: [RootComponent],
     entryComponents: [
         CreateProductionItemComponent,

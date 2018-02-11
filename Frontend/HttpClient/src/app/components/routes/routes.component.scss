@@ -1,52 +1,53 @@
 $table-width:900px;
 :host {
-    .layout {
+    .routes-layout {
         display: flex;
-    }
-    .delete-button {
-        min-width: 40px;
-    }
-    .table-header {
-        display: flex;
-        color: black;
-        padding: 0 16px;
-        width: calc($table-width - 32px);
-        background-color: rgb(245, 245, 245);
-        font-size: 16px;
-        border-bottom: 1px solid rgb(63, 81, 181);
-        div {
-            margin: 10px;
+        .delete-button {
+            min-width: 40px;
         }
-    }
-    mat-list {
-        mat-list-item {
-            height: auto;
-            font-size: 14px;
+        .table-header {
+            display: flex;
+            color: black;
+            padding: 0 16px;
+            width: calc($table-width - 32px);
+            background-color: rgb(245, 245, 245);
+            font-size: 16px;
             border-bottom: 1px solid rgb(63, 81, 181);
+            div {
+                margin: 10px;
+            }
         }
-        width: $table-width;
-        background-color: rgb(245, 245, 245);
+        mat-list {
+            mat-list-item {
+                height: auto;
+                font-size: 14px;
+                border-bottom: 1px solid rgb(63, 81, 181);
+            }
+            width: $table-width;
+            background-color: rgb(245, 245, 245);
+        }
+        span {
+            font-family: 'Roboto-Light';
+            margin: 15px 10px;
+        }
+        .name {
+            width: 200px;
+        }
+        .description {
+            width: 200px;
+        }
+        .detail {
+            width: 130px;
+        }
+        .word-limitation {
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+        .operations-list {
+            max-width: 200px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
     }
-    span {
-        font-family: 'Roboto-Light';
-        margin: 15px 10px;
-    }
-    .name {
-        width: 200px;
-    }
-    .description {
-        width: 200px;
-    }
-    .detail {
-        width: 130px;
-    }
-    .word-limitation {
-        word-wrap: break-word;
-        word-break: break-word;
-    }
-    .operations-list {
-        max-width: 200px;
-        max-height: 200px;
-        overflow-y: auto;
-    }
+    
 }

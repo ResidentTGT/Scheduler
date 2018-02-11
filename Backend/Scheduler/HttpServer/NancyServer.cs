@@ -76,7 +76,11 @@ namespace Scheduler.HttpServer
         #region DetailsApi
         private object GetDetails(dynamic parameters)
         {
-            var details = _dbManager.GetDetails();
+            int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
+            int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
+
+            var details = _dbManager.GetDetails(pageNumber, pageSize);
+
             var dtoDetails = details.Select(d => _dtoConverter.ConvertDetail(d)).ToList();
 
             return dtoDetails;

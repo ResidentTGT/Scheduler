@@ -21,7 +21,7 @@ namespace Scheduler.Database
         #region Details
         public IEnumerable<Detail> GetDetails(int pageNumber, int pageSize)
         {
-            var details = pageSize > 0 ? _context.Details.ToList().Skip(pageNumber * pageSize).Take(pageSize)
+            var details = pageSize > 0 ? _context.Details.OrderByDescending(d => d.Id).ToList().Skip(pageNumber * pageSize).Take(pageSize)
                 : _context.Details.Include("Route").Include("ProductionItems").Include("ProductionItemQuantums").Include("Operations");
             return details as IEnumerable<Detail>;
         }

@@ -36,23 +36,33 @@
                     </ng-container>
 
                     <ng-container matColumnDef="cost">
-                        <mat-header-cell *matHeaderCellDef> Стоимость </mat-header-cell>
-                        <mat-cell *matCellDef="let detail">
+                        <mat-header-cell class="cost" *matHeaderCellDef> Стоимость </mat-header-cell>
+                        <mat-cell class="cost" *matCellDef="let detail">
                             {{detail.cost}}
                         </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="is-purchased">
-                        <mat-header-cell *matHeaderCellDef> Покупное </mat-header-cell>
-                        <mat-cell *matCellDef="let detail">
+                        <mat-header-cell class="is-purchased" *matHeaderCellDef> Покупное </mat-header-cell>
+                        <mat-cell class="is-purchased" *matCellDef="let detail">
                             {{detail.isPurchased?"да":"нет"}}
                         </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="routeId">
-                        <mat-header-cell *matHeaderCellDef> Маршрут </mat-header-cell>
-                        <mat-cell *matCellDef="let detail">
-                            {{detail.routeId}}
+                    <ng-container matColumnDef="routeName">
+                        <mat-header-cell class="route-name" *matHeaderCellDef> Маршрут </mat-header-cell>
+                        <mat-cell class="route-name" *matCellDef="let detail">
+                            {{detail.routeName}}
+                        </mat-cell>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="deleteButton">
+                        <mat-header-cell class="delete-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="delete-button" *matCellDef="let detail">
+                            <button mat-mini-fab (click)="deleteDetail(detail)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
                         </mat-cell>
                     </ng-container>
 

@@ -33,7 +33,7 @@ $paginator-height:56px;
             position: relative;
             background-color: #FAFAFA;
             mat-card {
-                max-width: 1300px;
+                max-width: 1000px;
                 padding: 0;
                 position: relative;
                 margin: auto;
@@ -61,6 +61,21 @@ $paginator-height:56px;
                     overflow-y: auto;
                     mat-header-cell {
                         font-size: 16px;
+                    }
+                    .delete-button {
+                        max-width: 60px;
+                        button {
+                            margin: 7px;
+                        }
+                    }
+                    .is-purchased{
+                        max-width: 90px; 
+                    }
+                    .cost{
+                        max-width: 110px;  
+                    }
+                    .route-name{
+                        max-width: 200px;
                     }
                 }
                 mat-paginator {

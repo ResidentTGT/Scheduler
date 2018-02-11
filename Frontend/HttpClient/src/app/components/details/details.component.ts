@@ -16,7 +16,7 @@ export class DetailsComponent implements OnInit {
 
     public details: Detail[] = [];
     public dataSource: DetailsDataSource | null;
-    public displayedColumns = ['title', 'description', 'cost', 'is-purchased', 'routeId'];
+    public displayedColumns = ['title', 'description', 'cost', 'is-purchased', 'routeName', 'deleteButton'];
 
     public pageSizeOptions: number[] = env.pageSizeOptions;
     public pageNumber = 0;
@@ -34,12 +34,12 @@ export class DetailsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getDetails(this.pageNumber, this.pageSize);
+        this.getDetails(this.pageNumber, this.pageSize).subscribe();
     }
 
-    private getDetails(pageNumber: number, pageSize: number) {
+    private getDetails(pageNumber: number, pageSize: number): Observable<Detail[] | {}> {
         this.loading = true;
-        this._api.getDetails(pageNumber, pageSize)
+        return this._api.getDetails(pageNumber, pageSize)
             .do(details => {
                 this.details = details;
                 this.dataSource = new DetailsDataSource(this.details);
@@ -50,8 +50,7 @@ export class DetailsComponent implements OnInit {
                 alert(`Не удалось загрузить список деталей по причине: ${JSON.stringify(resp, null, 4)}`);
                 this.loading = false;
                 return Observable.empty();
-            })
-            .subscribe();
+            });
     }
 
     public createDetail() {
@@ -63,29 +62,29 @@ export class DetailsComponent implements OnInit {
         };
         this._api.createDetail(detail)
             .catch(resp => {
-                alert(`Не удалось добавить деталь по причине: ${JSON.stringify(resp.json())}`);
+                alert(`Не удалось добавить деталь по причине: ${JSON.stringify(resp, null, 4)}`);
                 return Observable.empty();
             })
-            .subscribe(id => {
-                detail.id = id;
-                this.details.push(detail);
-            });
+            .switchMap(_ => this.getDetails(this.pageNumber, this.pageSize))
+            .subscribe();
     }
 
     public deleteDetail(detail: Detail) {
         this._api.deleteDetail(detail.id)
             .catch(resp => {
-                alert(`Не удалось удалить деталь по причине: ${JSON.stringify(resp.json())}`);
+
+                alert(`Не удалось удалить деталь по причине: ${JSON.stringify(resp, null, 4)}`);
                 return Observable.empty();
             })
-            .subscribe(_ => this.details.splice(this.details.indexOf(detail), 1));
+            .switchMap(_ => this.getDetails(this.pageNumber, this.pageSize))
+            .subscribe();
     }
 
     public handlePageEvent(event: any) {
         this.pageNumber = event.pageIndex;
         this.pageSize = event.pageSize;
 
-        this.getDetails(this.pageNumber, this.pageSize);
+        this.getDetails(this.pageNumber, this.pageSize).subscribe();
 
     }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Scheduler.Core.Grouping;
 
 namespace Scheduler.Core.CountingTime
 {
@@ -20,37 +21,25 @@ namespace Scheduler.Core.CountingTime
 
             for (var i = 0; i < groups.Count; i++)
             {
-                var startTimes = new List<TimeSpan>();
-                var endTimes = new List<TimeSpan>();
+                var currentGroup = groups[i];
 
-                for (var j = 0; j < groups[i].WorkshopSequence.Count; j++)
-                {
-                    if (j == 0)
-                    {
-                        startTimes.Add(new TimeSpan(0));
-                        endTimes.Add(groups[i].WorkshopDurations[j]);
-                    }
-                    else
-                    {
-                        startTimes.Add(endTimes[j - 1]);
-                        endTimes.Add(startTimes[j] + groups[i].WorkshopDurations[j]);
-                    }
-                }
-
-                groups[i].WorkshopEndTimes = endTimes;
-                groups[i].WorkshopStartTimes = startTimes;
+                CountTimesForGroup(currentGroup);
 
                 if (i != 0)
                 {
                     TimeSpan maxDiff = new TimeSpan(0);
 
-                    for (var k = 0; k < groups[i].WorkshopSequence.Count; k++)
+                    for (var k = 0; k < currentGroup.WorkshopSequence.Count; k++)
                     {
                         for (var groupIndex = 1; groupIndex <= i; groupIndex++)
                         {
-                            if (groups[i - groupIndex].WorkshopSequence.Contains(groups[i].WorkshopSequence[k]))
+                            var prevGroup = groups[i - groupIndex];
+
+                            if (prevGroup.WorkshopSequence.Contains(currentGroup.WorkshopSequence[k]))
                             {
-                                var diff = groups[i - groupIndex].WorkshopEndTimes[groups[i - groupIndex].WorkshopSequence.IndexOf(groups[i].WorkshopSequence[k])] - groups[i].WorkshopStartTimes[k];
+                                var diff = prevGroup
+                                    .WorkshopEndTimes[prevGroup.WorkshopSequence.IndexOf(currentGroup.WorkshopSequence[k])]
+                                    - currentGroup.WorkshopStartTimes[k];
                                 if (diff > maxDiff)
                                     maxDiff = diff;
                             }
@@ -83,6 +72,23 @@ namespace Scheduler.Core.CountingTime
             Logger.Log($"Закончен расчет времени части партии изделия: {orderQuantum.ProductionItem.Title}. Суммарное время: {productionItemTime}.", LogLevel.Info);
 
             return productionItemTime;
+        }
+
+        private static void CountTimesForGroup(ProductionItemQuantumsGroup group)
+        {
+            for (var j = 0; j < group.WorkshopSequence.Count; j++)
+            {
+                if (j == 0)
+                {
+                    group.WorkshopStartTimes.Add(new TimeSpan(0));
+                    group.WorkshopEndTimes.Add(group.WorkshopDurations[j]);
+                }
+                else
+                {
+                    group.WorkshopStartTimes.Add(group.WorkshopEndTimes[j - 1]);
+                    group.WorkshopEndTimes.Add(group.WorkshopStartTimes[j] + group.WorkshopDurations[j]);
+                }
+            }
         }
     }
 }

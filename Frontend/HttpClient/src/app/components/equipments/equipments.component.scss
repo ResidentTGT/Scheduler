@@ -1,56 +1,82 @@
-$table-width:800px;
+$create-form:300px;
+$paginator-height:56px;
+@import '~@angular/material/_theming.scss';
 :host {
-    .layout {
+    .equipments-layout {
         display: flex;
-    }
-    .form-container {
-        display: flex;
-        flex-direction: column;
-        margin: 15px 30px;
-        color: rgb(63, 81, 181)
-    }
-    .delete-button {
-        min-width: 40px;
-    }
-    .table-header {
-        display: flex;
-        color: black;
-        padding: 0 16px;
-        width: calc($table-width - 32px);
-        background-color: rgb(245, 245, 245);
-        font-size: 16px;
-        border-bottom: 1px solid rgb(63, 81, 181);
-        div {
-            margin: 10px;
+        height: 100%;
+        position: relative;
+        aside {
+            width:#{$create-form};
+            height: 100%;
+            position: relative;
+            background-color: #F2F2F2;
+            @include mat-elevation(4);
+            z-index: 900;
+            .form-container {
+                display: flex;
+                flex-direction: column;
+                padding: 20px;
+                .description {
+                    max-height: 100px;
+                }
+               
+                .form-text {
+                    text-align: center;
+                    font-size: 16px;
+                    font-family: 'Roboto';
+                    margin-bottom: 5px;
+                }
+            }
         }
-    }
-    mat-list {
-        mat-list-item {
-            height: auto;
-            font-size: 14px;
-            border-bottom: 1px solid rgb(63, 81, 181);
+        main {
+            width: calc(100% - #{$create-form});
+            height: 100%;
+            position: relative;
+            background-color: #FAFAFA;
+            mat-card {
+                max-width: 1000px;
+                padding: 0;
+                position: relative;
+                margin: auto;
+                margin-top: 20px;
+                height: calc(100% - 40px);
+                background-color: #F2F2F2;
+            }
+            .table-container {
+                height: 100%;
+                position: relative;
+                .loading {
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    z-index: 1;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: rgba(0, 0, 0, 0.1);
+                }
+                mat-table {
+                    background-color: #F2F2F2;
+                    height: calc(100% - #{$paginator-height});
+                    position: relative;
+                    overflow-y: auto;
+                    mat-header-cell {
+                        font-size: 16px;
+                    }
+                    .delete-button {
+                        max-width: 60px;
+                        button {
+                            margin: 7px;
+                        }
+                    }
+                    
+                   
+                }
+                mat-paginator {
+                    background-color: #F2F2F2;
+                }
+            }
         }
-        width: $table-width;
-        background-color: rgb(245, 245, 245);
-    }
-    span {
-        font-family: 'Roboto-Light';
-        margin: 15px 10px;
-    }
-    .name {
-        width: 200px;
-    }
-    .description {
-        width: 200px;
-    }
-    .type {
-        width: 100px;
-    }
-    .equipment-system {
-        width: 100px;
-    }
-    .word-limitation {
-        word-wrap: break-word;
-        word-break: break-word;
     }
 }

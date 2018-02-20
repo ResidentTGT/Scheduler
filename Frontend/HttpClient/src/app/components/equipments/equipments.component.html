@@ -1,70 +1,96 @@
-<div class="layout">
-    <div class="table">
-        <div class="table-header">
-            <div class="name">
-                Наименование
-            </div>
-            <div class="description">
-                Описание
-            </div>
-            <div class="equipment-system">
-                Система
-            </div>
-            <div class="type">
-                Тип
-            </div>
-
+<div class="equipments-layout">
+    <aside>
+        <div class="form-container">
+            <div class="form-text">Форма создания оборудования</div>
+            <mat-form-field>
+                <input matInput [(ngModel)]="name" placeholder="Наименование">
+            </mat-form-field>
+            <mat-form-field>
+                <textarea class="description" matInput [(ngModel)]="description" placeholder="Описание"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Тип оборудования" [(ngModel)]="type">
+                    <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption" (click)="workshop=null;conveyor=null">
+                        {{ typeOption|equipmentType }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select [(ngModel)]="workshop" [disabled]="conveyor||type!=='MachiningTool'"
+                    placeholder="Цех">
+                    <mat-option *ngFor="let workshop of workshops" [value]="workshop">
+                        {{ workshop.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select [(ngModel)]="conveyor" [disabled]="workshop||type!=='AssemblyWorkplace'"
+                    placeholder="Конвейер">
+                    <mat-option *ngFor="let conveyor of conveyors" [value]="conveyor">
+                        {{ conveyor.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-raised-button color="primary" [disabled]="!isFormValid()" (click)="createEquipment()">Создать оборудование</button>
         </div>
-        <mat-list>
-            <mat-list-item *ngFor="let equipment of equipments">
-                <span class="name word-limitation">
-                    {{equipment.name}}
-                </span>
-                <span class="description word-limitation">
-                    {{equipment.description}}
-                </span>
-                <span class="equipment-system word-limitation">
-                    {{equipment.conveyor?.name||equipment.workshop?.name}}
-                </span>
-                <span class="type word-limitation">
-                    {{equipment.type.toString()|equipmentType}}
-                </span>
-                <button mat-button class="delete-button" (click)="deleteEquipment(equipment)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </mat-list-item>
-        </mat-list>
-    </div>
+    </aside>
+    <main>
+        <mat-card mat-elevation-z8>
+            <div class="table-container">
 
-    <div class="form-container">
+                <div class="loading" *ngIf="loading">
+                    <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+                </div>
 
-        <mat-form-field>
-            <input matInput [(ngModel)]="name " placeholder="Наименование">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [(ngModel)]="description" placeholder="Описание">
-        </mat-form-field>
-        <mat-form-field>
-            <mat-select placeholder="Тип оборудования" [(ngModel)]="type">
-                <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption" (click)="workshop=null;conveyor=null">
-                    {{ typeOption|equipmentType }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-select [(ngModel)]="workshop"  [disabled]="conveyor||type!=='MachiningTool'" placeholder="Цех">
-                <mat-option *ngFor="let workshop of workshops" [value]="workshop">
-                    {{ workshop.name }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-select [(ngModel)]="conveyor" [disabled]="workshop||type!=='AssemblyWorkplace'" placeholder="Конвейер">
-                <mat-option *ngFor="let conveyor of conveyors" [value]="conveyor">
-                    {{ conveyor.name }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <button mat-button [disabled]="checkInput()" (click)="createEquipment()">Добавить оборудование</button>
-    </div>
+                <mat-table #table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef> Наименование </mat-header-cell>
+                        <mat-cell *matCellDef="let equipment"> {{equipment.name}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef> Описание </mat-header-cell>
+                        <mat-cell *matCellDef="let equipment"> {{equipment.description}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="type">
+                        <mat-header-cell class="type" *matHeaderCellDef> Тип </mat-header-cell>
+                        <mat-cell class="type" *matCellDef="let equipment">
+                            {{equipment.type.toString()|equipmentType}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="system">
+                        <mat-header-cell class="system" *matHeaderCellDef> Система </mat-header-cell>
+                        <mat-cell class="system" *matCellDef="let equipment">
+                            {{equipment.conveyor?.name||equipment.workshop?.name}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="deleteButton">
+                        <mat-header-cell class="delete-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="delete-button" *matCellDef="let equipment">
+                            <button mat-mini-fab color="primary" (click)="deleteEquipment(equipment)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                </mat-table>
+
+                <mat-divider></mat-divider>
+
+                <footer>
+                    <mat-paginator [length]="pageLength" [pageIndex]="pageNumber" [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)"></mat-paginator>
+                </footer>
+
+            </div>
+        </mat-card>
+    </main>
+
 </div>

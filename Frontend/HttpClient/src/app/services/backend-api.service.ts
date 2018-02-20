@@ -46,9 +46,11 @@ export class BackendApiService {
             .get(`${env.backendUrl}delete-detail?id=${id}`);
     }
 
-    getEquipments(): Observable<Equipment[]> {
+    getEquipments(pageNumber: number = 0, pageSize: number = 0): Observable<Equipment[]> {
+        const query = `${env.backendUrl}equipments?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
         return this.http
-            .get(`${env.backendUrl}equipments`)
+            .get(query)
             .map(response => response.json().map(e => Equipment.fromJSON(e)));
     }
 

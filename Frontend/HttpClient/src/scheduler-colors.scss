@@ -1,0 +1,13 @@
+@import '~@angular/material/theming';
+
+$scheduler-primary: mat-palette($mat-indigo, 700, 500, 300);
+$scheduler-accent: mat-palette($mat-amber, 700, 500, 300);
+$scheduler-warn: mat-palette($mat-red, 700, 500, 300);
+
+$scheduler-background:mat-palette($mat-grey, 400, 200, 100);
+
+@include mat-core();
+
+$scheduler-theme: mat-light-theme($scheduler-primary, $scheduler-accent, $scheduler-warn);
+
+@include angular-material-theme($scheduler-theme);

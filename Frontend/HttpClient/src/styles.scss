@@ -1,16 +1,6 @@
 $roboto-font-path: '../node_modules/roboto-fontface/fonts';
 @import "node_modules/roboto-fontface/css/roboto/sass/roboto-fontface.scss";
-@import '~@angular/material/theming';
-
-@include mat-core();
-
-$scheduler-primary: mat-palette($mat-indigo, 700, 500, 300);
-$scheduler-accent: mat-palette($mat-amber, 700, 500, 300);
-$scheduler-warn: mat-palette($mat-red, 700, 500, 300);
-
-$scheduler-theme: mat-light-theme($scheduler-primary, $scheduler-accent, $scheduler-warn);
-
-@include angular-material-theme($scheduler-theme);
+@import 'src/scheduler-colors.scss';
 
 body {
     font-family: 'Roboto-Light'; 

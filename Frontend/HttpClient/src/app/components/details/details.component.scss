@@ -17,12 +17,16 @@ $paginator-height:56px;
                 display: flex;
                 flex-direction: column;
                 padding: 20px;
+                .description {
+                    max-height: 100px;
+                }
                 .slider {
                     align-self: center;
                 }
                 .form-text {
                     text-align: center;
-                    font-size: 18px;
+                    font-size: 16px;
+                    font-family: 'Roboto';
                     margin-bottom: 5px;
                 }
             }
@@ -68,13 +72,13 @@ $paginator-height:56px;
                             margin: 7px;
                         }
                     }
-                    .is-purchased{
-                        max-width: 90px; 
+                    .is-purchased {
+                        max-width: 90px;
                     }
-                    .cost{
-                        max-width: 110px;  
+                    .cost {
+                        max-width: 110px;
                     }
-                    .route-name{
+                    .route-name {
                         max-width: 200px;
                     }
                 }

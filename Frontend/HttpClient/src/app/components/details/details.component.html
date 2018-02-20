@@ -5,8 +5,8 @@
             <mat-form-field>
                 <input matInput [(ngModel)]="title" placeholder="Наименование">
             </mat-form-field>
-            <mat-form-field>
-                <input matInput [(ngModel)]="description" placeholder="Описание">
+            <mat-form-field >
+                <textarea class="description" matInput [(ngModel)]="description" placeholder="Описание"></textarea>
             </mat-form-field>
             <mat-slide-toggle class="slider" [(ngModel)]="isPurchased">Покупное</mat-slide-toggle>
             <mat-form-field>
@@ -60,7 +60,7 @@
                     <ng-container matColumnDef="deleteButton">
                         <mat-header-cell class="delete-button" *matHeaderCellDef></mat-header-cell>
                         <mat-cell class="delete-button" *matCellDef="let detail">
-                            <button mat-mini-fab (click)="deleteDetail(detail)">
+                            <button mat-mini-fab color="primary" (click)="deleteDetail(detail)">
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </mat-cell>

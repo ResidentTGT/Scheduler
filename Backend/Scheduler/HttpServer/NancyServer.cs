@@ -113,7 +113,11 @@ namespace Scheduler.HttpServer
         #region EquipmentApi
         private object GetEquipments(dynamic parameters)
         {
-            var equipments = _dbManager.GetEquipments().ToList();
+            int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
+            int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
+
+            var equipments = _dbManager.GetEquipments(pageNumber, pageSize);
+
             var dtoEquipments = equipments.Select(e => _dtoConverter.ConvertEquipment(e)).ToList();
 
             return dtoEquipments;

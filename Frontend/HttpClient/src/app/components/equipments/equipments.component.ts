@@ -5,6 +5,9 @@ import { MatFormFieldControl } from '@angular/material';
 import { Equipment, EquipmentType } from '../../models/equipment';
 import { Conveyor } from '../../models/conveyor';
 import { Workshop } from '../../models/workshop';
+import { environment as env } from '../../../environments/environment';
+import { DataSource } from '@angular/cdk/collections';
+import { HelperService } from '../../services/helper.service';
 
 @Component({
     selector: 'sch-equipments',
@@ -14,39 +17,54 @@ import { Workshop } from '../../models/workshop';
 export class EquipmentsComponent implements OnInit {
 
     equipments: Equipment[] = [];
+    public dataSource: EquipmentsDataSource | null;
+    public displayedColumns = ['name', 'description', 'type', 'system', 'deleteButton'];
 
-    name: '';
-    description: '';
-    type: string = EquipmentType[0];
-    typeOptions: string[] = [];
+    public pageSizeOptions: number[] = env.pageSizeOptions;
+    public pageNumber = 0;
+    public pageSize: number = env.pageSizeOptions[0];
+    public pageLength: number;
+
+    public loading: boolean;
+
+    public name: '';
+    public description: '';
+    public type: string = EquipmentType[0];
+    public typeOptions: string[] = [];
     public workshop: Workshop;
     public conveyor: Conveyor;
 
     public conveyors: Conveyor[] = [];
     public workshops: Workshop[] = [];
 
-    constructor(private _api: BackendApiService) {
+    constructor(private _api: BackendApiService, private _helper: HelperService) {
     }
 
     ngOnInit() {
-        this.getEquipments();
+        this.getEquipments(this.pageNumber, this.pageSize).subscribe();
         this.getConveyors();
         this.getWorkshops();
         this.typeOptions = Object.keys(EquipmentType);
         this.typeOptions = this.typeOptions.slice(this.typeOptions.length / 2);
     }
 
-    private getEquipments() {
-        this._api.getEquipments()
-            .do(equipments => this.equipments = equipments)
-            .catch(resp => {
-                alert(`Не удалось загрузить список оборудования по причине: ${JSON.stringify(resp.json())}`);
-                return Observable.empty();
+    private getEquipments(pageNumber: number, pageSize: number): Observable<Equipment[] | {}> {
+        this.loading = true;
+        return this._api.getEquipments(pageNumber, pageSize)
+            .do(equipments => {
+                this.equipments = equipments;
+                this.dataSource = new EquipmentsDataSource(this.equipments);
+                this.updatePaginatorFields();
+                this.loading = false;
             })
-            .subscribe();
+            .catch(resp => {
+                alert(`Не удалось загрузить список оборудования по причине: ${JSON.stringify(resp, null, 4)}`);
+                this.loading = false;
+                return Observable.empty();
+            });
     }
 
-    public createEquipment() {
+    public createEquipment(): void {
         const equipment: Equipment = {
             name: this.name,
             description: this.description,
@@ -57,29 +75,28 @@ export class EquipmentsComponent implements OnInit {
 
         this._api.createEquipment(equipment)
             .catch(resp => {
-                alert(`Не удалось добавить оборудование по причине: ${JSON.stringify(resp.json())}`);
+                alert(`Не удалось добавить оборудование по причине: ${JSON.stringify(resp, null, 4)}`);
                 return Observable.empty();
             })
-            .subscribe(id => {
-                equipment.id = id;
-                this.equipments.push(equipment);
-            });
+            .switchMap(_ => this.getEquipments(this.pageNumber, this.pageSize))
+            .subscribe();
     }
 
     public deleteEquipment(equipment: Equipment) {
         this._api.deleteEquipment(equipment.id)
             .catch(resp => {
-                alert(`Не удалось удалить оборудование по причине: ${JSON.stringify(resp.json())}`);
+                alert(`Не удалось удалить оборудование по причине: ${JSON.stringify(resp, null, 4)}`);
                 return Observable.empty();
             })
-            .subscribe(_ => this.equipments.splice(this.equipments.indexOf(equipment), 1));
+            .switchMap(_ => this.getEquipments(this.pageNumber, this.pageSize))
+            .subscribe();
     }
 
     private getConveyors() {
         this._api.getConveyors()
             .do(conveyors => this.conveyors = conveyors)
             .catch(resp => {
-                alert(`Не удалось загрузить список конвейеров по причине: ${JSON.stringify(resp.json())}`);
+                alert(`Не удалось загрузить список конвейеров по причине: ${JSON.stringify(resp, null, 4)}`);
                 return Observable.empty();
             })
             .subscribe();
@@ -88,19 +105,46 @@ export class EquipmentsComponent implements OnInit {
         this._api.getWorkshops()
             .do(workshops => this.workshops = workshops)
             .catch(resp => {
-                alert(`Не удалось загрузить список цехов по причине: ${JSON.stringify(resp.json())}`);
+                alert(`Не удалось загрузить список цехов по причине: ${JSON.stringify(resp, null, 4)}`);
                 return Observable.empty();
             })
             .subscribe();
     }
 
-    public checkInput() {
-        if (this.name === '' || !this.name
+    public isFormValid(): boolean {
+        if (this._helper.isNullOrWhitespace(this.name)
             || ((!this.conveyor && !this.workshop) && this.type !== 'Transport')) {
+            return false;
+        } else {
             return true;
         }
     }
 
+    public handlePageEvent(event: any) {
+        this.pageNumber = event.pageIndex;
+        this.pageSize = event.pageSize;
+
+        this.getEquipments(this.pageNumber, this.pageSize).subscribe();
+    }
+
+    updatePaginatorFields() {
+        this.pageLength = (this.equipments.length < this.pageSize)
+            ? this.equipments.length + this.pageNumber * this.pageSize
+            : (this.pageNumber + 2) * this.pageSize;
+    }
+}
+
+export class EquipmentsDataSource extends DataSource<Equipment> {
+    constructor(private _equipments: Equipment[]) {
+        super();
+    }
+
+    connect(): Observable<Equipment[]> {
+        return Observable.of(this._equipments);
+    }
+
+    disconnect() {
+    }
 }
 
 

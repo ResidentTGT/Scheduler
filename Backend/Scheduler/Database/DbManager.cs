@@ -59,9 +59,12 @@ namespace Scheduler.Database
         #endregion
 
         #region EquipmentMethods
-        public IEnumerable<Equipment> GetEquipments()
+        public IEnumerable<Equipment> GetEquipments(int pageNumber, int pageSize)
         {
-            var equipments = _context.Equipments.Include("Operations").Include("Conveyor").Include("Workshop");
+            var equipments = pageSize > 0 ? _context.Equipments.Include("Conveyor").Include("Workshop")
+                .OrderByDescending(d => d.Id).ToList().Skip(pageNumber * pageSize).Take(pageSize)
+
+                : _context.Equipments.Include("Operations");
             return equipments as IEnumerable<Equipment>;
         }
 

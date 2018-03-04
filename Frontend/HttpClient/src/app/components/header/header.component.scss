@@ -3,23 +3,21 @@
     z-index: 1000;
 }
 
-.title {
-    font-size: 17px;
-    img {
-        height: 24px;
-        margin-right: 7px;
-        margin-bottom: 2px;
-    }
-}
-
 .active {
-    background-color: rgb(79, 97, 197);
+    &.button {
+        background: rgba(0, 0, 0, 0.2);
+    }
+    &.menu {
+        color: #303F9F;
+        font-weight: 500;
+        background: rgba(0, 0, 0, 0.1);
+    }
 }
 
 a {
     color: white;
     font-family: 'Roboto-Light';
     opacity: 0.87;
-    font-size: 17px;
+    font-size: 16px;
     margin: 0 6px;
 }

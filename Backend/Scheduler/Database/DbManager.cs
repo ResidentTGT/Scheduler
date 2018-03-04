@@ -19,10 +19,33 @@ namespace Scheduler.Database
         }
 
         #region Details
-        public IEnumerable<Detail> GetDetails(int pageNumber, int pageSize)
+        public IEnumerable<Detail> GetDetails(int pageNumber, int pageSize, int equipmentId)
         {
-            var details = pageSize > 0 ? _context.Details.OrderByDescending(d => d.Id).ToList().Skip(pageNumber * pageSize).Take(pageSize)
-                : _context.Details.Include("Route").Include("ProductionItems").Include("ProductionItemQuantums").Include("Operations");
+            var details = new List<Detail>();
+            if (pageSize > 0)
+            {
+                details = _context.Details.ToList();
+                if (equipmentId > 0)
+                {
+                    foreach (var detail in details)
+                    {
+                        if (detail.Operations.Where(o => o.EquipmentId == equipmentId).Count() > 0)
+                        {
+                            details.Remove(detail);
+                            break;
+                        }
+                    }
+                }
+                details = details.OrderByDescending(d => d.Id)
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize)
+                .ToList();
+            }
+            else
+            {
+                details = _context.Details.Include("Route").Include("ProductionItems").Include("ProductionItemQuantums").Include("Operations").ToList();
+            }
+
             return details as IEnumerable<Detail>;
         }
 
@@ -59,12 +82,26 @@ namespace Scheduler.Database
         #endregion
 
         #region EquipmentMethods
-        public IEnumerable<Equipment> GetEquipments(int pageNumber, int pageSize)
+        public IEnumerable<Equipment> GetEquipments(int pageNumber, int pageSize, OperationType? operationType)
         {
-            var equipments = pageSize > 0 ? _context.Equipments.Include("Conveyor").Include("Workshop")
-                .OrderByDescending(d => d.Id).ToList().Skip(pageNumber * pageSize).Take(pageSize)
+            var equipments = new List<Equipment>() as IEnumerable<Equipment>;
+            if (pageSize > 0)
+            {
+                equipments = _context.Equipments.Include("Conveyor").Include("Workshop");
+                if (operationType.HasValue && operationType != OperationType.Undefined)
+                    equipments = equipments.Where(e => (int)e.Type == (int)operationType);
+                equipments = equipments.OrderByDescending(d => d.Id)
+                .ToList()
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize);
+            }
+            else
+            {
+                equipments = _context.Equipments.Include("Operations");
+            }
 
-                : _context.Equipments.Include("Operations");
+
+
             return equipments as IEnumerable<Equipment>;
         }
 

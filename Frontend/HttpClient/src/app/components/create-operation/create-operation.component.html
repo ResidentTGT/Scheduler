@@ -1,42 +1,123 @@
-<div class="create-operation-layout">
-    <div class="form-container">
-        <mat-form-field>
-            <input matInput [(ngModel)]="name" placeholder="Наименование">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [(ngModel)]="description" placeholder="Описание">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [(ngModel)]="mainTime" placeholder="Основное время">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [(ngModel)]="additionalTime" placeholder="Дополнительное время">
-        </mat-form-field>
-        <mat-form-field>
-            <mat-select placeholder="Тип операции" [(ngModel)]="type" (change)=changeSortedEquipments()>
-                <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption">
-                    {{ typeOption|operationType }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-select [(ngModel)]="equipment" placeholder="Оборудование" [disabled]="type==''||type=='Undefined'">
-                <mat-option *ngFor="let equipment of sortedEquipments" [value]="equipment">
-                    {{ equipment.name }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-select [(ngModel)]="detail" placeholder="Деталь" [disabled]="equipment==null">
-                <mat-option *ngFor="let detail of details" [value]="detail">
-                    {{ detail.title }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+<div class="operations-layout">
+    <aside class="first-column">
+        <div class="form-container">
+            <div class="form-text">1. Введите основные параметры</div>
+            <mat-form-field>
+                <input matInput [(ngModel)]="name" placeholder="Название">
+            </mat-form-field>
+            <mat-form-field>
+                <textarea class="description" matInput [(ngModel)]="description" placeholder="Описание"></textarea>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" [(ngModel)]="mainTime" placeholder="Основное время">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" [(ngModel)]="additionalTime" placeholder="Дополнительное время">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-select placeholder="Тип операции" [(ngModel)]="operationType">
+                    <mat-option *ngFor="let typeOption of typeOptions" [value]="typeOption" (click)="updateDataAfterSelect()">
+                        {{ typeOption|operationType }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </aside>
+    <aside class="column second">
 
-        <button mat-raised-button color="primary" (click)="createOperation()" [disabled]="checkInput()">Создать операцию</button>
+        <div class="loading message" *ngIf="operationType==='Undefined'">Выберите тип операции</div>
 
-    </div>
+        <div class="loading" *ngIf="equipmentsLoading">
+            <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+        </div>
 
-    <button mat-raised-button color="primary" (click)="closeDialog()">Закрыть</button>
+        <div class="form-text">2. Выберите оборудование</div>
+
+        <div class="table-container">
+            <mat-table #table [dataSource]="equipmentsDataSource">
+
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef> Наименование </mat-header-cell>
+                    <mat-cell *matCellDef="let equipment"> {{equipment.name}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="description">
+                    <mat-header-cell *matHeaderCellDef> Описание </mat-header-cell>
+                    <mat-cell *matCellDef="let equipment"> {{equipment.description}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="system">
+                    <mat-header-cell class="system" *matHeaderCellDef> Система </mat-header-cell>
+                    <mat-cell class="system" *matCellDef="let equipment">
+                        {{equipment.conveyor?.name||equipment.workshop?.name}}
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="equipmentsDisplayedColumns"></mat-header-row>
+                <mat-row (click)="selectEquipment(equipment)" [ngClass]="selectedEquipment&&selectedEquipment.id===equipment.id?'selected':''"
+                    *matRowDef="let equipment; columns: equipmentsDisplayedColumns;"></mat-row>
+
+            </mat-table>
+
+            <mat-divider></mat-divider>
+
+            <footer>
+                <mat-paginator [length]="equipmentsPageLength" [pageIndex]="equipmentsPageNumber" [pageSize]="equipmentsPageSize" [pageSizeOptions]="pageSizeOptions"
+                    (page)="handleEquipmentsPageEvent($event)"></mat-paginator>
+            </footer>
+
+        </div>
+    </aside>
+
+    <aside class="column third">
+
+        <div class="loading message" *ngIf="!selectedEquipment">Выберите оборудование</div>
+
+        <div class="loading" *ngIf="detailsLoading">
+            <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+        </div>
+
+        <div class="form-text">3. Выберите деталь</div>
+
+        <div class="table-container">
+            <mat-table #table [dataSource]="detailsDataSource">
+
+                <ng-container matColumnDef="title">
+                    <mat-header-cell *matHeaderCellDef> Наименование </mat-header-cell>
+                    <mat-cell *matCellDef="let detail"> {{detail.title}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="description">
+                    <mat-header-cell *matHeaderCellDef> Описание </mat-header-cell>
+                    <mat-cell *matCellDef="let detail"> {{detail.description}} </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="detailsDisplayedColumns"></mat-header-row>
+                <mat-row (click)="selectDetail(detail)" [ngClass]="selectedDetail&&selectedDetail.id===detail.id?'selected':''" *matRowDef="let detail; columns: detailsDisplayedColumns;"></mat-row>
+
+            </mat-table>
+
+            <mat-divider></mat-divider>
+
+            <footer>
+                <mat-paginator [length]="detailsPageLength" [pageIndex]="detailsPageNumber" [pageSize]="detailsPageSize" [pageSizeOptions]="pageSizeOptions"
+                    (page)="handleDetailsPageEvent($event)"></mat-paginator>
+            </footer>
+
+        </div>
+    </aside>
+    <main>
+        <div class="loading message" *ngIf="!isFormValid()">Не вся форма заполнена</div>
+        <div class="form-text">4. Завершение создания операции</div>
+        <div class="form">
+            <div>Наименование: {{name?name:'Не введено'}}</div>
+            <div>Описание: {{description?description:'Не введено'}}</div>
+            <div>Основное время: {{mainTime?mainTime:'Не введено'}}</div>
+            <div>Дополнительное время: {{additionalTime?additionalTime:'Не введено'}}</div>
+            <div>Тип операции: {{operationType?(this.operationType|operationType):'Не определен'}}</div>
+            <div>Оборудование: {{selectedEquipment?selectedEquipment.name:'Не выбрано'}}</div>
+            <div>Деталь: {{selectedDetail?selectedDetail.title:'Не выбрана'}}</div>
+        </div>
+        <button mat-raised-button color="primary" [disabled]="!isFormValid()" (click)="createOperation()">Создать операцию</button>
+    </main>
 </div>

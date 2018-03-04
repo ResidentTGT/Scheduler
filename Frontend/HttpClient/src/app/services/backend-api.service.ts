@@ -6,7 +6,7 @@ import { Detail } from '../models/detail';
 import { RequestOptions, Headers } from '@angular/http';
 import { Equipment } from '../models/equipment';
 import { ProductionItem } from '../models/production-item';
-import { Operation } from '../models/operation';
+import { Operation, OperationType } from '../models/operation';
 import { Conveyor } from '../models/conveyor';
 import { Workshop } from '../models/workshop';
 import { Order } from '../models/order';
@@ -18,8 +18,8 @@ export class BackendApiService {
 
     constructor(private http: Http) { }
 
-    getDetails(pageNumber: number = 0, pageSize: number = 0): Observable<Detail[]> {
-        const query = `${env.backendUrl}details?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    getDetails(pageNumber: number = 0, pageSize: number = 0, equipmentId: number = 0): Observable<Detail[]> {
+        const query = `${env.backendUrl}details?pageNumber=${pageNumber}&pageSize=${pageSize}&equipmentId=${equipmentId}`;
 
         return this.http
             .get(query)
@@ -46,8 +46,8 @@ export class BackendApiService {
             .get(`${env.backendUrl}delete-detail?id=${id}`);
     }
 
-    getEquipments(pageNumber: number = 0, pageSize: number = 0): Observable<Equipment[]> {
-        const query = `${env.backendUrl}equipments?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    getEquipments(pageNumber: number = 0, pageSize: number = 0, operationType: number = OperationType.Undefined): Observable<Equipment[]> {
+        const query = `${env.backendUrl}equipments?pageNumber=${pageNumber}&pageSize=${pageSize}&operationType=${operationType}`;
 
         return this.http
             .get(query)

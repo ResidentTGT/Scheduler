@@ -4,7 +4,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     MatButtonModule, MatToolbarModule, MatIconModule, MatPaginatorModule, MatListModule, MatProgressSpinnerModule, MatSlideToggleModule,
     MatGridListModule, MatDatepickerModule, MatFormFieldModule, MatNativeDateModule, MatInputModule, MatSliderModule, MatSliderChange,
-    MatSelectModule, MatCardModule, MatDialogModule, MAT_DATE_LOCALE, MatRadioModule, MatTableModule, MatPaginatorIntl, MatDividerModule
+    MatSelectModule, MatCardModule, MatDialogModule, MAT_DATE_LOCALE, MatRadioModule, MatTableModule, MatPaginatorIntl, MatDividerModule,
+    MatMenuModule
 } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
@@ -40,7 +41,14 @@ const appRoutes: Routes = [
     { path: 'equipment', component: EquipmentsComponent },
     { path: 'orders', component: OrdersComponent },
     { path: 'production-items', component: ProductionItemsComponent },
-    { path: 'operations', component: OperationsComponent },
+    {
+        path: 'operations',
+        children: [
+            { path: '', redirectTo: 'view', pathMatch: 'full' },
+            { path: 'view', component: OperationsComponent },
+            { path: 'create', component: CreateOperationComponent }
+        ]
+    },
     { path: 'routes', component: RoutesComponent },
     { path: 'calculate-orders', component: CalculateOrdersComponent },
     // { path: '**', component: PageNotFoundComponent },
@@ -92,7 +100,8 @@ const appRoutes: Routes = [
         MatDialogModule,
         MatRadioModule,
         MatTableModule,
-        MatDividerModule
+        MatDividerModule,
+        MatMenuModule
     ],
     providers: [
         BackendApiService,
@@ -103,7 +112,6 @@ const appRoutes: Routes = [
     bootstrap: [RootComponent],
     entryComponents: [
         CreateProductionItemComponent,
-        CreateOperationComponent,
         CreateOrderComponent,
         CreateRouteComponent
     ]

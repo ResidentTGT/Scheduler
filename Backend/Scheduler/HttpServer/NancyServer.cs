@@ -78,8 +78,9 @@ namespace Scheduler.HttpServer
         {
             int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
             int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
+            int equipmentId = Int32.Parse(Request.Query["equipmentId"].Value);
 
-            var details = _dbManager.GetDetails(pageNumber, pageSize);
+            var details = _dbManager.GetDetails(pageNumber, pageSize, equipmentId);
 
             var dtoDetails = details.Select(d => _dtoConverter.ConvertDetail(d)).ToList();
 
@@ -115,8 +116,9 @@ namespace Scheduler.HttpServer
         {
             int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
             int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
+            OperationType? operationType = (OperationType)Int32.Parse(Request.Query["operationType"].Value);
 
-            var equipments = _dbManager.GetEquipments(pageNumber, pageSize);
+            var equipments = _dbManager.GetEquipments(pageNumber, pageSize, operationType);
 
             var dtoEquipments = equipments.Select(e => _dtoConverter.ConvertEquipment(e)).ToList();
 

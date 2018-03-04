@@ -38,8 +38,4 @@ export class OperationsComponent implements OnInit {
             })
             .subscribe(_ => this.operations.splice(this.operations.indexOf(operation), 1));
     }
-
-    public openDialog() {
-        this.dialog.open(CreateOperationComponent, { data: { operations: this.operations } });
-    }
 }

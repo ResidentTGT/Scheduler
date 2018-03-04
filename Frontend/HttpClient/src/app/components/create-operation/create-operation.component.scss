@@ -1,8 +1,115 @@
-.create-operation-layout {
-    .form-container {
-        width: 370px;
-        max-width: 500px;
-        margin: 15px 30px;
-        color: rgb(63, 81, 181)
+$first-column:300px;
+$second-column:500px;
+$third-column:400px;
+$paginator-height:56px;
+@import '~@angular/material/_theming.scss';
+@import 'src/scheduler-colors.scss';
+:host {
+    .operations-layout {
+        display: flex;
+        height: 100%;
+        position: relative;
+        .loading {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.06);
+            &.message {
+                font-size: 18px;
+                font-family: 'Roboto';
+                color: map-get($scheduler-warn, 700);
+            }
+        }
+        .first-column {
+            width:#{$first-column};
+            height: 100%;
+            position: relative;
+            background-color: white;
+            @include mat-elevation(4);
+            z-index: 900;
+            .form-container {
+                display: flex;
+                flex-direction: column;
+                padding: 20px;
+                .description {
+                    max-height: 100px;
+                }
+            }
+            .form-text {
+                text-align: center;
+                font-size: 16px;
+                font-family: 'Roboto';
+                margin-bottom: 5px;
+            }
+        }
+        .column {
+            &.second {
+                width:#{$second-column};
+                z-index: 800;
+            }
+            &.third {
+                width:#{$third-column};
+                z-index: 700;
+            }
+            height: 100%;
+            position: relative;
+            background-color: white;
+            @include mat-elevation(4);
+            .form-text {
+                text-align: center;
+                font-size: 16px;
+                font-family: 'Roboto';
+                height: 45px;
+                line-height: 60px;
+            }
+            .table-container {
+                position: relative;
+                height: calc(100% - 46px);
+                mat-table {
+                    background: white;
+                    height: calc(100% - #{$paginator-height});
+                    position: relative;
+                    overflow-y: auto;
+                    mat-header-cell {
+                        font-size: 16px;
+                    }
+                    mat-row {
+                        &:hover {
+                            background: rgba(0, 0, 0, 0.06);
+                            cursor: pointer;
+                            transition-duration: 0.3s;
+                        }
+                        &.selected {
+                            background-color: map-get($scheduler-primary, 100);
+                        }
+                    }
+                }
+            }
+        }
+        main {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            .form-text {
+                margin: 24px 0 0 40px;
+                font-size: 16px;
+                font-family: 'Roboto';
+            }
+            .form {
+                padding: 20px 40px 0;
+                flex: 1;
+                position: relative;
+                div {
+                    margin-bottom: 20px;
+                }
+            }
+            button {
+                margin-left: 40px;
+            }
+        }
     }
 }

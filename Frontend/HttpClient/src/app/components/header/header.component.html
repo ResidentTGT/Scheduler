@@ -1,10 +1,16 @@
 <mat-toolbar class="site-header mat-elevation-z4" color="primary">
     <a mat-button routerLink="/">Главная</a>
-    <a mat-button routerLink="/details" routerLinkActive="active">Детали</a>
-    <a mat-button routerLink="/equipment" routerLinkActive="active">Оборудование</a>
-    <a mat-button routerLink="/orders" routerLinkActive="active">Заказы</a>
-    <a mat-button routerLink="/calculate-orders" routerLinkActive="active">Рассчитать заказы</a>
-    <a mat-button routerLink="/production-items" routerLinkActive="active">Продукция</a>
-    <a mat-button routerLink="/operations" routerLinkActive="active">Операции</a>
-    <a mat-button routerLink="/routes" routerLinkActive="active">Маршруты деталей</a>
+    <a mat-button routerLink="/details" routerLinkActive="active button">Детали</a>
+    <a mat-button routerLink="/equipment" routerLinkActive="active button">Оборудование</a>
+    <a mat-button routerLink="/orders" routerLinkActive="active button">Заказы</a>
+    <a mat-button routerLink="/calculate-orders" routerLinkActive="active button">Рассчитать заказы</a>
+    <a mat-button routerLink="/production-items" routerLinkActive="active button">Продукция</a>
+    <a mat-button [matMenuTriggerFor]="operationsmenu" routerLinkActive="active button">
+        Операции
+        <mat-menu class="menu" #operationsmenu="matMenu" [overlapTrigger]="false">
+            <button mat-menu-item routerLink="/operations/view" routerLinkActive="active menu">Просмотр</button>
+            <button mat-menu-item routerLink="/operations/create" routerLinkActive="active menu">Создание</button>
+        </mat-menu>
+    </a>
+    <a mat-button routerLink="/routes" routerLinkActive="active button">Маршруты деталей</a>
 </mat-toolbar>

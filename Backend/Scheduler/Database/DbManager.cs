@@ -19,7 +19,7 @@ namespace Scheduler.Database
         }
 
         #region Details
-        public IEnumerable<Detail> GetDetails(int pageNumber, int pageSize, int equipmentId)
+        public IEnumerable<Detail> GetDetails(int pageNumber = 0, int pageSize = 0, int equipmentId = 0)
         {
             var details = new List<Detail>();
             if (pageSize > 0)
@@ -233,14 +233,33 @@ namespace Scheduler.Database
         #endregion
 
         #region Operations
-        public IEnumerable<Operation> GetOperations()
+        public IEnumerable<Operation> GetOperations(int pageNumber = 0, int pageSize = 0)
         {
-            var operations = _context.Operations
+            var operations = new List<Operation>() as IEnumerable<Operation>;
+
+            if (pageSize > 0)
+            {
+                operations = _context.Operations
                 .Include(o => o.Detail)
                 .Include(o => o.Equipment)
                 .Include(o => o.Equipment.Conveyor)
                 .Include(o => o.Equipment.Workshop)
-                .Include(o => o.Routes);
+                .OrderByDescending(d => d.Id)
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize)
+                .ToList();
+            }
+            else
+            {
+                operations = _context.Operations
+                .Include(o => o.Detail)
+                .Include(o => o.Equipment)
+                .Include(o => o.Equipment.Conveyor)
+                .Include(o => o.Equipment.Workshop)
+                .Include(o => o.Routes)
+                .ToList();
+            }
+
             return operations as IEnumerable<Operation>;
         }
 

@@ -5,7 +5,7 @@
             <mat-form-field>
                 <input matInput [(ngModel)]="title" placeholder="Наименование">
             </mat-form-field>
-            <mat-form-field >
+            <mat-form-field>
                 <textarea class="description" matInput [(ngModel)]="description" placeholder="Описание"></textarea>
             </mat-form-field>
             <mat-slide-toggle class="slider" [(ngModel)]="isPurchased">Покупное</mat-slide-toggle>
@@ -16,7 +16,7 @@
         </div>
     </aside>
     <main>
-        <mat-card mat-elevation-z8>
+        <mat-card>
             <div class="table-container">
 
                 <div class="loading" *ngIf="loading">

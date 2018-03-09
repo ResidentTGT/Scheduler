@@ -193,7 +193,10 @@ namespace Scheduler.HttpServer
 
         private object GetOperations(dynamic parameters)
         {
-            var operations = _dbManager.GetOperations().ToList();
+            int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
+            int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
+
+            var operations = _dbManager.GetOperations(pageNumber,pageSize).ToList();
             var dtoOperations = operations.Select(d => _dtoConverter.ConvertOperation(d)).ToList();
 
             return dtoOperations;

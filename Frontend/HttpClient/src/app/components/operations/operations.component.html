@@ -1,55 +1,75 @@
-<div class="layout">
-    <div class="table">
-        <div class="table-header">
-            <div class="title word-limitation">
-                Название
+<div class="operations-layout">
+    <main>
+        <mat-card>
+            <div class="table-container">
+
+                <div class="loading" *ngIf="loading">
+                    <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+                </div>
+
+                <mat-table #table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef class="name"> Название </mat-header-cell>
+                        <mat-cell *matCellDef="let operation" class="name"> {{operation.name}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef> Описание </mat-header-cell>
+                        <mat-cell *matCellDef="let operation"> {{operation.description}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="main-time">
+                        <mat-header-cell *matHeaderCellDef class="main-time"> Основное время </mat-header-cell>
+                        <mat-cell *matCellDef="let operation" class="main-time"> {{operation.mainTime}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="additional-time">
+                        <mat-header-cell *matHeaderCellDef class="additional-time"> Доп. время </mat-header-cell>
+                        <mat-cell *matCellDef="let operation" class="additional-time"> {{operation.additionalTime}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="operation-type">
+                        <mat-header-cell *matHeaderCellDef class="operation-type"> Тип операции </mat-header-cell>
+                        <mat-cell *matCellDef="let operation" class="operation-type"> {{operation.type|operationType}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="equipment">
+                        <mat-header-cell *matHeaderCellDef class="equipment"> Оборудование </mat-header-cell>
+                        <mat-cell *matCellDef="let operation" class="equipment">{{operation.equipment.name}} ({{operation.equipment.workshop?operation.equipment.workshop.name: (operation.equipment.conveyor?operation.equipment.conveyor.name:'')}})
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="detail">
+                        <mat-header-cell *matHeaderCellDef class="detail"> Деталь </mat-header-cell>
+                        <mat-cell *matCellDef="let operation" class="detail">{{operation.detail.title}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="deleteButton">
+                        <mat-header-cell class="delete-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="delete-button" *matCellDef="let operation">
+                            <button mat-mini-fab color="primary" (click)="deleteOperation(operation)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                </mat-table>
+
+                <mat-divider></mat-divider>
+
+                <footer>
+                    <button color="primary" mat-raised-button (click)="createOperation()">Создать операцию</button>
+                    <mat-paginator [length]="pageLength" [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)">
+                    </mat-paginator>
+                </footer>
+
             </div>
-            <div class="description word-limitation">
-                Описание
-            </div>
-            <div class="main-time word-limitation">
-                Осн. время
-            </div>
-            <div class="add-time word-limitation">
-                Доп. время
-            </div>
-            <div class="type word-limitation">
-                Тип
-            </div>
-            <div class="equipment word-limitation">
-                Оборудование
-            </div>
-            <div class="detail word-limitation">
-                Деталь
-            </div>
-        </div>
-        <mat-list>
-            <mat-list-item *ngFor="let operation of operations">
-                <span class="title word-limitation">
-                    {{operation.name}}
-                </span>
-                <span class="description word-limitation">
-                    {{operation.description}}
-                </span>
-                <span class="main-time word-limitation">
-                    {{operation.mainTime}}
-                </span>
-                <span class="add-time word-limitation">
-                    {{operation.additionalTime}}
-                </span>
-                <span class="type word-limitation">
-                    {{operation.type|operationType}}
-                </span>
-                <span class="equipment word-limitation">
-                    {{operation.equipment.type|equipmentType}}: {{operation.equipment.name}}
-                </span>
-                <span class="detail word-limitation">
-                    {{operation.detail.title}}
-                </span>
-                <button mat-button class="delete-button" (click)="deleteOperation(operation)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </mat-list-item>
-        </mat-list>
-    </div>
+        </mat-card>
+    </main>
+
 </div>

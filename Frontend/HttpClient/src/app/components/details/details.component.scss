@@ -37,6 +37,7 @@ $paginator-height:56px;
             position: relative;
             background-color: #FAFAFA;
             mat-card {
+                @include mat-elevation(4);
                 max-width: 1000px;
                 padding: 0;
                 position: relative;

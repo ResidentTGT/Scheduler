@@ -16,16 +16,14 @@
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
-                <mat-select [(ngModel)]="workshop" [disabled]="conveyor||type!=='MachiningTool'"
-                    placeholder="Цех">
+                <mat-select [(ngModel)]="workshop" [disabled]="conveyor||type!=='MachiningTool'" placeholder="Цех">
                     <mat-option *ngFor="let workshop of workshops" [value]="workshop">
                         {{ workshop.name }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
-                <mat-select [(ngModel)]="conveyor" [disabled]="workshop||type!=='AssemblyWorkplace'"
-                    placeholder="Конвейер">
+                <mat-select [(ngModel)]="conveyor" [disabled]="workshop||type!=='AssemblyWorkplace'" placeholder="Конвейер">
                     <mat-option *ngFor="let conveyor of conveyors" [value]="conveyor">
                         {{ conveyor.name }}
                     </mat-option>
@@ -35,7 +33,7 @@
         </div>
     </aside>
     <main>
-        <mat-card mat-elevation-z8>
+        <mat-card>
             <div class="table-container">
 
                 <div class="loading" *ngIf="loading">
@@ -85,8 +83,7 @@
                 <mat-divider></mat-divider>
 
                 <footer>
-                    <mat-paginator [length]="pageLength" [pageIndex]="pageNumber" [pageSize]="pageSize"
-                        [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)"></mat-paginator>
+                    <mat-paginator [length]="pageLength" [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)"></mat-paginator>
                 </footer>
 
             </div>

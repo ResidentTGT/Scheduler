@@ -1,4 +1,4 @@
-<div class="form-container">
+<!-- <div class="form-container">
     <mat-form-field>
         <input matInput [(ngModel)]="title" placeholder="Наименование">
     </mat-form-field>
@@ -40,4 +40,65 @@
     <button mat-button (click)="createProductionItem()" [disabled]="!title||!productionItemQuantums.length">Создать продукцию</button>
 </div>
 
-<button mat-button (click)="closeDialog()">Закрыть</button>
+<button mat-button (click)="closeDialog()">Закрыть</button> -->
+<div class="create-production-item-layout">
+    <mat-card>
+        <header>
+            <mat-form-field class="title">
+                <input matInput [(ngModel)]="title" placeholder="Наименование">
+            </mat-form-field>
+            <mat-form-field class="description">
+                <input matInput [(ngModel)]="description" placeholder="Описание">
+            </mat-form-field>
+            <button mat-raised-button color="primary">Создать продукцию</button>
+        </header>
+        <mat-divider></mat-divider>
+        <main>
+            <div class="column first">
+
+                <mat-radio-group [(ngModel)]="viewDetails">
+                    <mat-radio-button [value]="true">Детали</mat-radio-button>
+                    <mat-radio-button [value]="false">Продукция</mat-radio-button>
+                </mat-radio-group>
+
+                <mat-divider></mat-divider>
+
+                <div class="table-container">
+                    <div class="loading" *ngIf="loading">
+                        <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+                    </div>
+                    <mat-table #table [dataSource]="dataSource">
+
+                        <ng-container matColumnDef="title">
+                            <mat-header-cell *matHeaderCellDef class="title"> Название </mat-header-cell>
+                            <mat-cell *matCellDef="let productionItem" class="title"> {{productionItem.title}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="description">
+                            <mat-header-cell *matHeaderCellDef class="description"> Описание </mat-header-cell>
+                            <mat-cell *matCellDef="let productionItem" class="title"> {{productionItem.title}} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <div class="current-selected">
+
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <div>
+                    <mat-paginator [length]="pageLength" [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)"></mat-paginator>
+                </div>
+            </div>
+
+            <div class="column second"></div>
+        </main>
+    </mat-card>
+
+</div>

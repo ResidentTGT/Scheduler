@@ -4,7 +4,13 @@
     <a mat-button routerLink="/equipment" routerLinkActive="active button">Оборудование</a>
     <a mat-button routerLink="/orders" routerLinkActive="active button">Заказы</a>
     <a mat-button routerLink="/calculate-orders" routerLinkActive="active button">Рассчитать заказы</a>
-    <a mat-button routerLink="/production-items" routerLinkActive="active button">Продукция</a>
+    <a mat-button [matMenuTriggerFor]="productionitemsmenu" routerLinkActive="active button">
+        Продукция
+        <mat-menu class="menu" #productionitemsmenu="matMenu" [overlapTrigger]="false">
+            <button mat-menu-item routerLink="/production-items/view" routerLinkActive="active menu">Просмотр</button>
+            <button mat-menu-item routerLink="/production-items/create" routerLinkActive="active menu">Создание</button>
+        </mat-menu>
+    </a>
     <a mat-button [matMenuTriggerFor]="operationsmenu" routerLinkActive="active button">
         Операции
         <mat-menu class="menu" #operationsmenu="matMenu" [overlapTrigger]="false">

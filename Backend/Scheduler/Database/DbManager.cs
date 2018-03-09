@@ -191,12 +191,14 @@ namespace Scheduler.Database
         #endregion
 
         #region ProductionItems
-        public IEnumerable<ProductionItem> GetProductionItems()
+        public IEnumerable<ProductionItem> GetProductionItems(int pageNumber = 0, int pageSize = 0)
         {
             var productionItems = _context.ProductionItems
-                .Include(p => p.ProductionItemQuantums.Select(po => po.Detail)
-                .Select(d => d.Operations.Select(o => o.Equipment).Select(e => e.Workshop)))
-                .Include("OrderQuantums");
+                .OrderByDescending(d => d.Id)
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize)
+                .ToList();
+
             return productionItems as IEnumerable<ProductionItem>;
         }
 

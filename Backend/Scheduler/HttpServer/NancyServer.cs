@@ -167,7 +167,10 @@ namespace Scheduler.HttpServer
         #region ProductionItemApi
         private object GetProductionItems(dynamic parameters)
         {
-            var productionItems = _dbManager.GetProductionItems();
+            int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
+            int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
+
+            var productionItems = _dbManager.GetProductionItems(pageNumber, pageSize);
             var dtoProductionItems = productionItems.Select(d => _dtoConverter.ConvertProductionItem(d)).ToList();
 
             return dtoProductionItems;

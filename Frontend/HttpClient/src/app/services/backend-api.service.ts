@@ -67,9 +67,11 @@ export class BackendApiService {
             .get(`${env.backendUrl}delete-equipment?id=${id}`);
     }
 
-    getProductionItems(): Observable<ProductionItem[]> {
+    getProductionItems(pageNumber: number = 0, pageSize: number = 0): Observable<ProductionItem[]> {
+        const query = `${env.backendUrl}production-items?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
         return this.http
-            .get(`${env.backendUrl}production-items`)
+            .get(query)
             .map(response => response.json() as ProductionItem[]);
     }
 

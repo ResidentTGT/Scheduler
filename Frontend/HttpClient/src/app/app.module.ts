@@ -40,7 +40,14 @@ const appRoutes: Routes = [
     { path: 'details', component: DetailsComponent },
     { path: 'equipment', component: EquipmentsComponent },
     { path: 'orders', component: OrdersComponent },
-    { path: 'production-items', component: ProductionItemsComponent },
+    {
+        path: 'production-items',
+        children: [
+            { path: '', redirectTo: 'view', pathMatch: 'full' },
+            { path: 'view', component: ProductionItemsComponent },
+            { path: 'create', component: CreateProductionItemComponent }
+        ]
+    },
     {
         path: 'operations',
         children: [
@@ -111,7 +118,6 @@ const appRoutes: Routes = [
     ],
     bootstrap: [RootComponent],
     entryComponents: [
-        CreateProductionItemComponent,
         CreateOrderComponent,
         CreateRouteComponent
     ]

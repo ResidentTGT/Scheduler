@@ -1,52 +1,69 @@
 <div class="production-items-layout">
-    <div class="table">
-        <div class="table-header">
-            <div class="title">
-                Наименование
-            </div>
-            <div class="description">
-                Описание
-            </div>
-            <div class="production-item-quantums">
-                Части продукции
-            </div>
-            <div class="is-node">
-                Узел
-            </div>
-            <div class="parent-production-item-title">
-                Наименование родителя
-            </div>
+    <main>
+        <mat-card>
+            <div class="table-container">
 
-        </div>
-        <mat-list>
-            <mat-list-item *ngFor="let productionItem of productionItems">
-                <span class="title">
-                    {{productionItem.title}}
-                </span>
-                <span class="description">
-                    {{productionItem.description}}
-                </span>
-                <span class="production-item-quantums word-limitation">
-                    <mat-list class="production-item-quantums-list">
-                        <mat-list-item *ngFor="let productionItemQuantum of productionItem.productionItemQuantums">
-                            <p matLine>
-                                <span>{{productionItemQuantum.detail.title}}</span>
-                                <span>{{productionItemQuantum.count}}</span>
-                            </p>
-                        </mat-list-item>
-                    </mat-list>
-                </span>
-                <span class="is-node">
-                    {{productionItem.isNode?"да":"нет"}}
-                </span>
-                <span class="parent-production-item-title">
-                    {{productionItem.parentProductionItemTitle}}
-                </span>
-                <button mat-button class="delete-button" (click)="deleteProductionItem(productionItem)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </mat-list-item>
-        </mat-list>
-    </div>
-    <div><button mat-button color="warn" (click)="openDialog()">Создать продукцию</button></div>
+                <div class="loading" *ngIf="loading">
+                    <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+                </div>
+
+                <mat-table #table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="title">
+                        <mat-header-cell *matHeaderCellDef class="title"> Название </mat-header-cell>
+                        <mat-cell *matCellDef="let productionItem" class="title"> {{productionItem.title}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef> Описание </mat-header-cell>
+                        <mat-cell *matCellDef="let productionItem"> {{productionItem.description}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="is-node">
+                        <mat-header-cell *matHeaderCellDef class="is-node"> Является узлом </mat-header-cell>
+                        <mat-cell *matCellDef="let productionItem" class="is-node">{{productionItem.isNode}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="parent">
+                        <mat-header-cell *matHeaderCellDef class="parent"> Родитель </mat-header-cell>
+                        <mat-cell *matCellDef="let productionItem" class="parent">{{productionItem.parentProductionItemTitle}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="openButton">
+                        <mat-header-cell class="open-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="open-button" *matCellDef="let productionItem">
+                            <button mat-mini-fab color="primary" (click)="openProductionItem(productionItem)">
+                                <mat-icon>open_with</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="deleteButton">
+                        <mat-header-cell class="delete-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="delete-button" *matCellDef="let productionItem">
+                            <button mat-mini-fab color="primary" (click)="deleteProductionItem(productionItem)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                </mat-table>
+
+                <mat-divider></mat-divider>
+
+                <footer>
+                    <button color="primary" mat-raised-button (click)="createProductionItem()">Создать продукцию</button>
+                    <mat-paginator [length]="pageLength" [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)">
+                    </mat-paginator>
+                </footer>
+
+            </div>
+        </mat-card>
+    </main>
+
 </div>

@@ -4,6 +4,9 @@ import { CreateProductionItemComponent } from '../create-production-item/create-
 import { ProductionItem } from '../../models/production-item';
 import { Observable } from 'rxjs/Rx';
 import { BackendApiService } from '../../services/backend-api.service';
+import { environment as env } from '../../../environments/environment';
+import { DataSource } from '@angular/cdk/collections';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'sch-production-items',
@@ -13,41 +16,77 @@ import { BackendApiService } from '../../services/backend-api.service';
 export class ProductionItemsComponent implements OnInit {
 
     public productionItems: ProductionItem[] = [];
+    public dataSource: ProductionItemsDataSource | null;
+    public displayedColumns = ['title', 'description', 'is-node', 'openButton', 'deleteButton'];
 
-    constructor(private _api: BackendApiService, private dialog: MatDialog) { }
+    public pageSizeOptions: number[] = env.pageSizeOptions;
+    public pageNumber = 0;
+    public pageSize: number = env.pageSizeOptions[0];
+    public pageLength: number;
+
+    public loading: boolean;
+
+    constructor(private _api: BackendApiService, private _router: Router) { }
 
     ngOnInit() {
-        this.getProductionItems();
+        this.getProductionItems(this.pageNumber, this.pageSize).subscribe();
     }
 
-    private getProductionItems() {
-        this._api.getProductionItems()
-            .do(productionItems => this.productionItems = productionItems)
-            .catch(resp => {
-                alert(`Не удалось загрузить список продукции по причине: ${JSON.stringify(resp.json())}`);
-                return Observable.empty();
+    private getProductionItems(pageNumber: number, pageSize: number): Observable<ProductionItem[] | {}> {
+        this.loading = true;
+        return this._api.getProductionItems(pageNumber, pageSize)
+            .do(productionItems => {
+                this.productionItems = productionItems;
+                this.dataSource = new ProductionItemsDataSource(this.productionItems);
+                this.updatePaginatorFields();
+                this.loading = false;
             })
-            .subscribe();
+            .catch(resp => {
+                alert(`Не удалось загрузить список продукции по причине: ${JSON.stringify(resp, null, 4)}`);
+                this.loading = false;
+                return Observable.empty();
+            });
     }
 
     public deleteProductionItem(productionItem: ProductionItem) {
         this._api.deleteProductionItem(productionItem.id)
             .catch(resp => {
-                alert(`Не удалось удалить продукцию по причине: ${JSON.stringify(resp.json())}`);
+                alert(`Не удалось удалить продукцию по причине: ${JSON.stringify(resp, null, 4)}`);
                 return Observable.empty();
             })
-            .subscribe(_ => {
-
-                this.productionItems.splice(this.productionItems.indexOf(productionItem), 1);
-                this.productionItems
-                    .filter(p => p.parentProductionItemId === productionItem.id).forEach(p => {
-                        p.parentProductionItemTitle = '';
-                        p.parentProductionItemId = null;
-                    });
-            });
+            .switchMap(_ => this.getProductionItems(this.pageNumber, this.pageSize))
+            .subscribe();
     }
 
-    public openDialog() {
-        this.dialog.open(CreateProductionItemComponent, { data: { productionItems: this.productionItems } });
+    public handlePageEvent(event: any) {
+        this.pageNumber = event.pageIndex;
+        this.pageSize = event.pageSize;
+
+        this.getProductionItems(this.pageNumber, this.pageSize).subscribe();
+
+    }
+
+    updatePaginatorFields() {
+        this.pageLength = (this.productionItems.length < this.pageSize)
+            ? this.productionItems.length + this.pageNumber * this.pageSize
+            : (this.pageNumber + 2) * this.pageSize;
+    }
+
+    public createProductionItem(): void {
+        this._router.navigateByUrl('production-items/create');
+    }
+
+}
+
+export class ProductionItemsDataSource extends DataSource<ProductionItem> {
+    constructor(private _productionItems: ProductionItem[]) {
+        super();
+    }
+
+    connect(): Observable<ProductionItem[]> {
+        return Observable.of(this._productionItems);
+    }
+
+    disconnect() {
     }
 }

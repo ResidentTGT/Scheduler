@@ -27,7 +27,7 @@ export class CreateOperationComponent implements OnInit {
 
     public equipments: Equipment[] = [];
     public equipmentsDataSource: EquipmentsDataSource | null;
-    public equipmentsDisplayedColumns = ['name', 'description', 'system'];
+    public equipmentsDisplayedColumns = ['name', 'system'];
     public equipmentsPageNumber = 0;
     public equipmentsPageSize: number = env.pageSizeOptions[0];
     public equipmentsPageLength: number;
@@ -180,11 +180,15 @@ export class CreateOperationComponent implements OnInit {
 
     public isFormValid(): boolean {
         if (this._helper.isNullOrWhitespace(this.name)
-            || !this.selectedEquipment || !this.selectedDetail || !this.mainTime) {
+            || !this.selectedEquipment || !this.selectedDetail || !this.mainTime || this.mainTime < 1) {
             return false;
-        } else {
-            return true;
         }
+
+        if (this.additionalTime === 0 || (this.additionalTime && this.additionalTime < 1)) {
+            return false;
+        }
+
+        return true;
     }
 
 

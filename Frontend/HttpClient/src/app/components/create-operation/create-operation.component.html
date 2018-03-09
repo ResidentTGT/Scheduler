@@ -41,11 +41,6 @@
                     <mat-cell *matCellDef="let equipment"> {{equipment.name}} </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="description">
-                    <mat-header-cell *matHeaderCellDef> Описание </mat-header-cell>
-                    <mat-cell *matCellDef="let equipment"> {{equipment.description}} </mat-cell>
-                </ng-container>
-
                 <ng-container matColumnDef="system">
                     <mat-header-cell class="system" *matHeaderCellDef> Система </mat-header-cell>
                     <mat-cell class="system" *matCellDef="let equipment">

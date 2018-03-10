@@ -72,7 +72,7 @@
                         <mat-form-field class="count">
                             <input matInput type="number" [(ngModel)]="selectedItem.count" placeholder="Количество">
                         </mat-form-field>
-                        <button mat-mini-fab color="primary" [disabled]="!selectedItem.id||!selectedItem.count||isAlreadySelected(selectedItem,selectedItem.type)"
+                        <button mat-mini-fab color="primary" [disabled]="!selectedItem.id||!selectedItem.count||selectedItem.count<1||isAlreadySelected(selectedItem,selectedItem.type)"
                             (click)="addProduct()">
                             <mat-icon>add</mat-icon>
                         </button>

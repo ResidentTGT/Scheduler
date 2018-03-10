@@ -14,6 +14,12 @@ namespace Scheduler.Dto
 
         public string Description { get; set; }
 
+        public int MachiningOperationsCount { get; set; }
+
+        public int TransportOperationsCount { get; set; }
+
+        public int AssemblingOperationsCount { get; set; }
+
         public List<OperationDto> Operations { get; set; }
 
         public DetailDto Detail { get; set; }

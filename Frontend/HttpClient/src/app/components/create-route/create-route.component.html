@@ -1,4 +1,4 @@
-<div class="create-route-layout">
+<!-- <div class="create-route-layout">
     <div class="form-container">
         <div class="first-form">
             <mat-form-field>
@@ -54,4 +54,54 @@
         <div style="flex:1"></div>
         <button mat-raised-button color="primary" (click)="closeDialog()">Закрыть</button>
     </footer>
+</div> -->
+<div class="create-route-layout">
+    <aside class="first-column">
+        <div class="form-container">
+            <div class="form-text">1. Введите основные параметры
+                <br>и выберите деталь</div>
+            <mat-form-field>
+                <input matInput [(ngModel)]="name" placeholder="Название">
+            </mat-form-field>
+            <mat-form-field class="description-form">
+                <textarea class="description-text" matInput [(ngModel)]="description" placeholder="Описание"></textarea>
+            </mat-form-field>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="table-container">
+            <div class="loading" *ngIf="detailsLoading">
+                <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+            </div>
+
+            <mat-table #table [dataSource]="detailsDataSource">
+                <ng-container matColumnDef="title">
+                    <mat-header-cell *matHeaderCellDef class="title"> Название </mat-header-cell>
+                    <mat-cell *matCellDef="let detail" class="title"> {{detail.title}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="description">
+                    <mat-header-cell *matHeaderCellDef class="description"> Описание </mat-header-cell>
+                    <mat-cell *matCellDef="let detail" class="description"> {{detail.description}} </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="detailsDisplayedColumns"></mat-header-row>
+                <mat-row (click)="selectDetail(detail)" [ngClass]="selectedDetail&&selectedDetail.id===detail.id?'selected':''" *matRowDef="let detail; columns: detailsDisplayedColumns;"></mat-row>
+            </mat-table>
+
+            <mat-divider></mat-divider>
+
+            <mat-paginator [length]="detailsPageLength" [pageIndex]="detailsPageNumber" [pageSize]="detailsPageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="handleDetailsPageEvent($event)"></mat-paginator>
+        </div>
+    </aside>
+    <aside class="column second">
+
+
+    </aside>
+
+    <aside class="column third">
+
+
+    </aside>
+
 </div>

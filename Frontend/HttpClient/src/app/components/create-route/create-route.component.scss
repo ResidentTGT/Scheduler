@@ -1,32 +1,74 @@
-.create-route-layout {
-    width: 600px;
-    .warning-message {
-        color: #F34336;
-        margin-bottom: 5px;
-    }
-    .first-form {
+$first-column:400px;
+$paginator-height:56px;
+@import '~@angular/material/_theming.scss';
+@import 'src/scheduler-colors.scss';
+ :host {
+    .create-route-layout {
         display: flex;
-        justify-content: space-between;
-    }
-    .add-operation-button {
-        margin-left: 5px;
-    }
-    .operations-list {
-        max-height: 300px;
-        overflow-y: auto;
-        .mat-line {
+        height: 100%;
+        position: relative;
+        background-color: #FAFAFA;
+        .loading {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 1;
             display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.06);
+            &.message {
+                font-size: 18px;
+                font-family: 'Roboto';
+                color: map-get($scheduler-warn, 700);
+            }
         }
-        .operation-name {
-            flex: 1;
-            align-self: center;
+        .first-column {
+            width:#{$first-column};
+            height: 100%;
+            position: relative;
+            background-color: white;
+            @include mat-elevation(4);
+            z-index: 900;
+            .form-container {
+                display: flex;
+                flex-direction: column;
+                padding: 20px 20px 0 20px;
+                height: 180px;
+                .form-text {
+                    text-align: center;
+                    font-size: 16px;
+                    font-family: 'Roboto';
+                    margin-bottom: 5px;
+                }
+                mat-form-field {
+                    margin-top: 0;
+                    &.description-form {
+                        margin-top: -15px;
+                    }
+                }
+                .description-text {
+                    max-height: 30px;
+                    height: 30px;
+                }
+            }
+            .table-container {
+                height: calc(100% - 200px - 2px);
+                mat-table {
+                    height: calc(100% - #{$paginator-height});
+                    overflow-y: auto;
+                    mat-row {
+                        &:hover {
+                            background: rgba(0, 0, 0, 0.06);
+                            cursor: pointer;
+                            transition-duration: 0.3s;
+                        }
+                        &.selected {
+                            background-color: map-get($scheduler-primary, 100);
+                        }
+                    }
+                }
+            }
         }
-        button {
-            margin: 7px 4px;
-        }
-    }
-    footer {
-        margin-top: 10px;
-        display: flex;
     }
 }

@@ -146,9 +146,10 @@ export class BackendApiService {
             .map(resp => resp.json() as Order);
     }
 
-    getRoutes(): Observable<Route[]> {
+    getRoutes(pageNumber: number = 0, pageSize: number = 0): Observable<Route[]> {
+        const query = `${env.backendUrl}routes?pageNumber=${pageNumber}&pageSize=${pageSize}`;
         return this.http
-            .get(`${env.backendUrl}routes`)
+            .get(query)
             .map(response => response.json() as Route[]);
     }
 

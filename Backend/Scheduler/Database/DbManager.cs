@@ -317,13 +317,13 @@ namespace Scheduler.Database
         #endregion
 
         #region Routes
-        public IEnumerable<Route> GetRoutes()
+        public IEnumerable<Route> GetRoutes(int pageNumber = 0, int pageSize = 0)
         {
             var routes = _context.Routes
-                .Include("Detail")
-                .Include(r => r.Operations.Select(o => o.Equipment.Workshop))
-                .Include(r => r.Operations.Select(o => o.Equipment.Conveyor))
-                .Include(r => r.Operations.Select(o => o.Equipment));
+                .Include(r => r.Detail)
+                .ToList()
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize);
 
             return routes as IEnumerable<Route>;
         }

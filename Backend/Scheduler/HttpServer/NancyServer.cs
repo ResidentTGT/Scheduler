@@ -234,7 +234,10 @@ namespace Scheduler.HttpServer
 
         private object GetRoutes(dynamic parameters)
         {
-            var routes = _dbManager.GetRoutes().ToList();
+            int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
+            int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
+
+            var routes = _dbManager.GetRoutes(pageNumber, pageSize).ToList();
             var dtoRoutes = routes.Select(d => _dtoConverter.ConvertRoute(d)).ToList();
 
             return dtoRoutes;

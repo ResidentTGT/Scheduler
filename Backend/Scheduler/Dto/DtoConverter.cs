@@ -372,8 +372,9 @@ namespace Scheduler.Dto
                 Description = route.Description,
                 Detail = ConvertDetail(route.Detail),
                 Name = route.Name,
-                Operations = route.Operations.Select(o => ConvertOperation(o)).ToList(),
-                OperationsSequence = Array.ConvertAll(route.OperationsSequence.Split(','), int.Parse).ToList()
+                AssemblingOperationsCount = route.Operations.Where(o => o.Type == OperationType.Assembling).Count(),
+                MachiningOperationsCount = route.Operations.Where(o => o.Type == OperationType.Machining).Count(),
+                TransportOperationsCount = route.Operations.Where(o => o.Type == OperationType.Transport).Count(),
             };
 
             return routeDto;

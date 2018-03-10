@@ -8,4 +8,7 @@ export class Route {
     public detail: Detail;
     public operations: Operation[];
     public operationsSequence: number[];
+    public machiningOperationsCount?: number;
+    public assemblingOperationsCount?: number;
+    public transportOperationsCount?: number;
 }

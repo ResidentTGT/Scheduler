@@ -57,7 +57,14 @@ const appRoutes: Routes = [
             { path: 'create', component: CreateOperationComponent }
         ]
     },
-    { path: 'routes', component: RoutesComponent },
+    {
+        path: 'routes',
+        children: [
+            { path: '', redirectTo: 'view', pathMatch: 'full' },
+            { path: 'view', component: RoutesComponent },
+            { path: 'create', component: CreateRouteComponent }
+        ]
+    },
     { path: 'calculate-orders', component: CalculateOrdersComponent },
     // { path: '**', component: PageNotFoundComponent },
 ];
@@ -121,7 +128,6 @@ const appRoutes: Routes = [
     bootstrap: [RootComponent],
     entryComponents: [
         CreateOrderComponent,
-        CreateRouteComponent
     ]
 })
 export class AppModule { }

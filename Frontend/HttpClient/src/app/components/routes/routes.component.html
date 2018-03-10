@@ -1,49 +1,69 @@
 <div class="routes-layout">
-    <div class="table">
-        <div class="table-header">
-            <div class="name word-limitation">
-                Название
-            </div>
-            <div class="description word-limitation">
-                Описание
-            </div>
-            <div class="detail word-limitation">
-                Деталь
-            </div>
-            <div class="operations word-limitation">
-                Операции
-            </div>
+    <main>
+        <mat-card>
+            <div class="table-container">
 
-        </div>
-        <mat-list>
-            <mat-list-item *ngFor="let route of routes">
-                <span class="name word-limitation">
-                    {{route.name}}
-                </span>
-                <span class="description word-limitation">
-                    {{route.description}}
-                </span>
-                <span class="detail word-limitation">
-                    {{route.detail.title}}
-                </span>
-                <span class="operations word-limitation">
-                    <mat-list class="operations-list">
-                        <mat-list-item *ngFor="let operation of route.operations">
-                            <p matLine>
-                                <span>{{operation.name}}</span>
-                                <span> {{ operation.equipment.conveyor?.name||operation.equipment.workshop?.name }}</span>
-                            </p>
-                        </mat-list-item>
-                    </mat-list>
-                </span>
+                <div class="loading" *ngIf="loading">
+                    <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+                </div>
 
-                <button mat-button class="delete-button" (click)="deleteRoute(route)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </mat-list-item>
-        </mat-list>
-    </div>
-    <div>
-        <button mat-button color="warn" (click)="openDialog()">Создать маршрут</button>
-    </div>
+                <mat-table #table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef class="name"> Название </mat-header-cell>
+                        <mat-cell *matCellDef="let route" class="name"> {{route.name}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef> Описание </mat-header-cell>
+                        <mat-cell *matCellDef="let route"> {{route.description}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="detail">
+                        <mat-header-cell *matHeaderCellDef class="detail"> Деталь </mat-header-cell>
+                        <mat-cell *matCellDef="let route" class="detail">{{route.detail.title}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="operations-count">
+                        <mat-header-cell *matHeaderCellDef class="operations-count"> Кол-во операций <br> обработки/сборки/транспорта </mat-header-cell>
+                        <mat-cell *matCellDef="let route" class="operations-count">{{route.machiningOperationsCount}}/{{route.assemblingOperationsCount}}/{{route.transportOperationsCount}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="openButton">
+                        <mat-header-cell class="open-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="open-button" *matCellDef="let route">
+                            <button mat-icon-button color="primary" (click)="openRoute(route)">
+                                <mat-icon>open_with</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="deleteButton">
+                        <mat-header-cell class="delete-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="delete-button" *matCellDef="let route">
+                            <button mat-icon-button color="primary" (click)="deleteRoute(route)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                </mat-table>
+
+                <mat-divider></mat-divider>
+
+                <footer>
+                    <button color="primary" mat-raised-button (click)="createRoute()">Создать маршрут</button>
+                    <mat-paginator [length]="pageLength" [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)">
+                    </mat-paginator>
+                </footer>
+
+            </div>
+        </mat-card>
+    </main>
+
 </div>

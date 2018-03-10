@@ -19,15 +19,15 @@
                         <mat-cell *matCellDef="let productionItem"> {{productionItem.description}} </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="is-node">
-                        <mat-header-cell *matHeaderCellDef class="is-node"> Является узлом </mat-header-cell>
-                        <mat-cell *matCellDef="let productionItem" class="is-node">{{productionItem.isNode}}
+                    <ng-container matColumnDef="details-count">
+                        <mat-header-cell *matHeaderCellDef class="details-count"> Кол-во деталей </mat-header-cell>
+                        <mat-cell *matCellDef="let productionItem" class="details-count">{{productionItem.detailsCount}}
                         </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="parent">
-                        <mat-header-cell *matHeaderCellDef class="parent"> Родитель </mat-header-cell>
-                        <mat-cell *matCellDef="let productionItem" class="parent">{{productionItem.parentProductionItemTitle}}
+                    <ng-container matColumnDef="сhildren-count">
+                        <mat-header-cell *matHeaderCellDef class="сhildren-count"> Кол-во узлов </mat-header-cell>
+                        <mat-cell *matCellDef="let productionItem" class="сhildren-count">{{productionItem.childrenProductionItemsCount}}
                         </mat-cell>
                     </ng-container>
 

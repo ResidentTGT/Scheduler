@@ -10,6 +10,8 @@ import { Workshop } from '../../models/workshop';
 import { DataSource } from '@angular/cdk/collections';
 import { environment as env } from '../../../environments/environment';
 import { HelperService } from '../../services/helper.service';
+import { DetailsDataSource } from '../details/details.component';
+import { EquipmentsDataSource } from '../equipments/equipments.component';
 
 @Component({
     selector: 'sch-create-operation',
@@ -51,11 +53,13 @@ export class CreateOperationComponent implements OnInit {
         this.typeOptions = Object.keys(OperationType);
         this.typeOptions = this.typeOptions.slice(this.typeOptions.length / 2);
 
-        this.getEquipments(this.equipmentsPageNumber, this.equipmentsPageSize, OperationType[this.operationType]).subscribe();
+        this.getEquipments(this.equipmentsPageNumber, this.equipmentsPageSize,
+            OperationType[this.operationType]).subscribe();
         this.getDetails(this.detailsPageNumber, this.detailsPageSize).subscribe();
     }
 
-    private getEquipments(pageNumber: number, pageSize: number, operationType: OperationType): Observable<Equipment[] | {}> {
+    private getEquipments(pageNumber: number, pageSize: number, operationType: OperationType)
+        : Observable<Equipment[] | {}> {
         this.equipmentsLoading = true;
         return this._api.getEquipments(pageNumber, pageSize, operationType)
             .do(equipments => {
@@ -93,7 +97,8 @@ export class CreateOperationComponent implements OnInit {
     public selectEquipment(equipment: Equipment) {
         this.selectedEquipment = equipment;
 
-        this.getDetails(this.detailsPageNumber, this.detailsPageSize, parseInt(this.selectedEquipment.id.toString(), 10))
+        this.getDetails(this.detailsPageNumber, this.detailsPageSize,
+            parseInt(this.selectedEquipment.id.toString(), 10))
             .subscribe(_ => {
                 if (this.selectedDetail && !this.details.some(d => d.id === this.selectedDetail.id)) {
                     this.selectedDetail = null;
@@ -109,20 +114,23 @@ export class CreateOperationComponent implements OnInit {
         this.equipmentsPageNumber = event.pageIndex;
         this.equipmentsPageSize = event.pageSize;
 
-        this.getEquipments(this.equipmentsPageNumber, this.equipmentsPageSize, OperationType[this.operationType]).subscribe();
+        this.getEquipments(this.equipmentsPageNumber, this.equipmentsPageSize,
+            OperationType[this.operationType]).subscribe();
     }
 
     public handleDetailsPageEvent(event: any) {
         this.detailsPageNumber = event.pageIndex;
         this.detailsPageSize = event.pageSize;
 
-        this.getDetails(this.detailsPageNumber, this.detailsPageSize, parseInt(this.selectedEquipment.id.toString(), 10)).subscribe();
+        this.getDetails(this.detailsPageNumber, this.detailsPageSize,
+            parseInt(this.selectedEquipment.id.toString(), 10)).subscribe();
     }
 
     public updateEquipmentsTable() {
         this.equipmentsPageNumber = 0;
 
-        this.getEquipments(this.equipmentsPageNumber, this.equipmentsPageSize, OperationType[this.operationType]).subscribe();
+        this.getEquipments(this.equipmentsPageNumber, this.equipmentsPageSize,
+            OperationType[this.operationType]).subscribe();
     }
 
     public updateDetailsTable() {
@@ -194,28 +202,4 @@ export class CreateOperationComponent implements OnInit {
 
 }
 
-export class EquipmentsDataSource extends DataSource<Equipment> {
-    constructor(private _equipments: Equipment[]) {
-        super();
-    }
 
-    connect(): Observable<Equipment[]> {
-        return Observable.of(this._equipments);
-    }
-
-    disconnect() {
-    }
-}
-
-export class DetailsDataSource extends DataSource<Detail> {
-    constructor(private _details: Detail[]) {
-        super();
-    }
-
-    connect(): Observable<Detail[]> {
-        return Observable.of(this._details);
-    }
-
-    disconnect() {
-    }
-}

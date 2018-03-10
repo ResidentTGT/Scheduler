@@ -171,7 +171,7 @@ namespace Scheduler.HttpServer
             int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
 
             var productionItems = _dbManager.GetProductionItems(pageNumber, pageSize);
-            var dtoProductionItems = productionItems.Select(d => _dtoConverter.ConvertProductionItem(d)).ToList();
+            var dtoProductionItems = productionItems.Select(d => _dtoConverter.ConvertProductionItemForView(d)).ToList();
 
             return dtoProductionItems;
         }

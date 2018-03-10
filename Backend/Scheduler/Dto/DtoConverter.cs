@@ -212,10 +212,21 @@ namespace Scheduler.Dto
                 Id = productionItem.Id,
                 Title = productionItem.Title,
                 Description = productionItem.Description,
-                IsNode = productionItem.IsNode,
-                ParentProductionItemId = productionItem.ParentProductionItemId,
-                ParentProductionItemTitle = productionItem.ParentProductionItemId.HasValue ? _dbManager.GetProductionItemById(productionItem.ParentProductionItemId).Title : "",
                 ProductionItemQuantums = productionItem.ProductionItemQuantums != null ? productionItem.ProductionItemQuantums.Select(d => ConvertProductionItemQuantum(d)).ToList() : null
+            };
+
+            return productionItemDto;
+        }
+
+        internal ProductionItemDto ConvertProductionItemForView(ProductionItem productionItem)
+        {
+            var productionItemDto = new ProductionItemDto()
+            {
+                Id = productionItem.Id,
+                Title = productionItem.Title,
+                Description = productionItem.Description,
+                DetailsCount = productionItem.ProductionItemQuantums.Count,
+                ChildrenProductionItemsCount = productionItem.ChildrenProductionItemsIds.Length == 0 ? 0 : productionItem.ChildrenProductionItemsIds.Split(',').Length
             };
 
             return productionItemDto;
@@ -227,9 +238,9 @@ namespace Scheduler.Dto
             {
                 Title = productionItemDto.Title,
                 Description = productionItemDto.Description,
-                IsNode = productionItemDto.IsNode,
-                ParentProductionItemId = productionItemDto.ParentProductionItemId.HasValue ? productionItemDto.ParentProductionItemId : null,
-                ProductionItemQuantums = productionItemDto.ProductionItemQuantums != null ? productionItemDto.ProductionItemQuantums.Select(d => ConvertProductionItemQuantum(d)).ToList() : null
+                ChildrenProductionItemsIds = String.Join(",", productionItemDto.AddingItems.Where(p => p.Type == ProductDto.ProductType.ProductionItem).Select(p => p.Id.ToString()).ToArray()),
+                ProductionItemQuantums = productionItemDto.AddingItems.Where(p => p.Type == ProductDto.ProductType.Detail)
+                .Select(d => ConvertProductDto(d)).ToList()
             };
 
             return productionItem;
@@ -241,9 +252,7 @@ namespace Scheduler.Dto
                 Id = productionItem.Id,
                 Title = productionItem.Title,
                 Description = productionItem.Description,
-                IsNode = productionItem.IsNode,
-                ParentProductionItemId = productionItem.ParentProductionItemId,
-                ParentProductionItemTitle = productionItem.ParentProductionItemId.HasValue ? _dbManager.GetProductionItemById(productionItem.ParentProductionItemId).Title : "",
+
                 ProductionItemQuantums = productionItem.ProductionItemQuantums != null ? productionItem.ProductionItemQuantums.Select(d => ConvertProductionItemQuantumForViewing(d)).ToList() : null,
                 ProductionItemQuantumsGroups = productionItem.ProductionItemQuantumsGroups.Select(d => ConvertProductionItemQuantumsGroupForViewing(d)).ToList()
             };
@@ -300,6 +309,16 @@ namespace Scheduler.Dto
             {
                 Count = productionItemQuantumDto.Count,
                 Detail = ConvertDetail(productionItemQuantumDto.Detail),
+            };
+
+            return productionItemQuantum;
+        }
+        internal ProductionItemQuantum ConvertProductDto(ProductDto productDto)
+        {
+            var productionItemQuantum = new ProductionItemQuantum()
+            {
+                Count = productDto.Count,
+                DetailId = productDto.Id,
             };
 
             return productionItemQuantum;

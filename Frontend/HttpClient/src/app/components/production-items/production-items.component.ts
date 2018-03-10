@@ -17,7 +17,7 @@ export class ProductionItemsComponent implements OnInit {
 
     public productionItems: ProductionItem[] = [];
     public dataSource: ProductionItemsDataSource | null;
-    public displayedColumns = ['title', 'description', 'is-node', 'openButton', 'deleteButton'];
+    public displayedColumns = ['title', 'description', 'details-count', 'сhildren-count', 'openButton', 'deleteButton'];
 
     public pageSizeOptions: number[] = env.pageSizeOptions;
     public pageNumber = 0;

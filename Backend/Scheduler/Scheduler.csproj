@@ -86,6 +86,7 @@
     <Compile Include="Dto\OperationDto.cs" />
     <Compile Include="Dto\OrderDto.cs" />
     <Compile Include="Dto\OrderQuantumDto.cs" />
+    <Compile Include="Dto\ProductDto.cs" />
     <Compile Include="Dto\ProductionItemDto.cs" />
     <Compile Include="Dto\ProductionItemQuantumDto.cs" />
     <Compile Include="Dto\ProductionItemQuantumsGroupDto.cs" />
@@ -112,6 +113,10 @@
     <Compile Include="Migrations\201802101933599_AddOperationSequenceToRoute.cs" />
     <Compile Include="Migrations\201802101933599_AddOperationSequenceToRoute.Designer.cs">
       <DependentUpon>201802101933599_AddOperationSequenceToRoute.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201803101353575_AddedChildrenProductionItems.cs" />
+    <Compile Include="Migrations\201803101353575_AddedChildrenProductionItems.Designer.cs">
+      <DependentUpon>201803101353575_AddedChildrenProductionItems.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
@@ -156,6 +161,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802101933599_AddOperationSequenceToRoute.resx">
       <DependentUpon>201802101933599_AddOperationSequenceToRoute.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803101353575_AddedChildrenProductionItems.resx">
+      <DependentUpon>201803101353575_AddedChildrenProductionItems.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

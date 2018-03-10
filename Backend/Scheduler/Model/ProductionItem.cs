@@ -16,12 +16,7 @@ namespace Scheduler.Model
 
         public string Description { get; set; }
 
-        /// <summary>
-        /// Если элемент является узлом, то у него есть "родитель" в виде узла или изделия
-        /// </summary>
-        public int? ParentProductionItemId { get; set; }
-
-        public bool IsNode { get; set; } = false;
+        public string ChildrenProductionItemsIds { get; set; }
 
         public virtual List<ProductionItemQuantum> ProductionItemQuantums { get; set; }
 

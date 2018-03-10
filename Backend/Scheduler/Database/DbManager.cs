@@ -216,9 +216,10 @@ namespace Scheduler.Database
                 _context.ProductionItemQuantums.Add(new ProductionItemQuantum()
                 {
                     Count = productionItemQuantum.Count,
-                    DetailId = productionItemQuantum.Detail.Id,
+                    DetailId = productionItemQuantum.DetailId,
                 });
             productionItem.ProductionItemQuantums = productionItemQuantums;
+            productionItem.ChildrenProductionItemsIds = productionItem.ChildrenProductionItemsIds;
 
             _context.ProductionItems.Add(productionItem);
             _context.SaveChanges();
@@ -229,7 +230,16 @@ namespace Scheduler.Database
         public void DeleteProductionItem(int id)
         {
             _context.ProductionItems.Remove(_context.ProductionItems.First(d => d.Id == id));
-            _context.ProductionItems.Where(pi => pi.ParentProductionItemId == id).ToList().ForEach(p => p.ParentProductionItemId = null);
+
+            foreach (var pi in _context.ProductionItems)
+            {
+                var childrenIds = pi.ChildrenProductionItemsIds.Length == 0 ? new List<int>() : pi.ChildrenProductionItemsIds.Split(',').Select(s => Convert.ToInt32(s)).ToList();
+                if (childrenIds.Contains(id))
+                {
+                    childrenIds.Remove(id);
+                    pi.ChildrenProductionItemsIds = String.Join(",", childrenIds);
+                }
+            }
             _context.SaveChanges();
         }
         #endregion

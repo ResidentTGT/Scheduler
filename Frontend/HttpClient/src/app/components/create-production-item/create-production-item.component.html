@@ -1,48 +1,9 @@
-<!-- <div class="form-container">
-    <mat-form-field>
-        <input matInput [(ngModel)]="title" placeholder="Наименование">
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput [(ngModel)]="description" placeholder="Описание">
-    </mat-form-field>
-    <mat-slide-toggle [(ngModel)]="isNode">Является узлом</mat-slide-toggle>
-    <mat-form-field>
-        <mat-select [(ngModel)]="productionItemId" placeholder="Родительский элемент">
-            <mat-option *ngFor="let productionItem of productionItems" [value]="productionItem.id">
-                {{ productionItem.title }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <mat-divider></mat-divider>
-    <mat-form-field>
-        <mat-select placeholder="Деталь" [(ngModel)]="detail">
-            <mat-option *ngFor="let detail of viewDetails" [value]="detail">
-                {{ detail.title }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput [(ngModel)]="detailsCount" placeholder="Количество деталей">
-    </mat-form-field> 
-    <button mat-button (click)="addDetail()" [disabled]="!detailsCount||!detail">Добавить часть продукции</button>
-<mat-divider></mat-divider>
-    <mat-list class="production-item-quantums-list">
-        <mat-list-item *ngFor="let productionItem of productionItemQuantums">                     
-            <p matLine>
-                <span>{{productionItem.detail.title}}</span>
-                <span> {{productionItem.count}} </span>
-            </p>
-        </mat-list-item>
-    </mat-list>
-
-
-    <button mat-button (click)="createProductionItem()" [disabled]="!title||!productionItemQuantums.length">Создать продукцию</button>
-</div>
-
-<button mat-button (click)="closeDialog()">Закрыть</button> -->
 <div class="create-production-item-layout">
     <mat-card>
+        <div class="loading" *ngIf="savingLoading">
+            <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+        </div>
+
         <header>
             <mat-form-field class="title">
                 <input matInput [(ngModel)]="title" placeholder="Наименование">
@@ -50,12 +11,11 @@
             <mat-form-field class="description">
                 <input matInput [(ngModel)]="description" placeholder="Описание">
             </mat-form-field>
-            <button mat-raised-button color="primary">Создать продукцию</button>
+            <button mat-raised-button color="primary" [disabled]="!title||!selectedItems.length||selectedItems.length<2" (click)="createProductionItem()">Создать продукцию</button>
         </header>
         <mat-divider></mat-divider>
         <main>
             <div class="column first">
-
                 <mat-radio-group [(ngModel)]="viewDetails">
                     <mat-radio-button [value]="true">Детали</mat-radio-button>
                     <mat-radio-button [value]="false">Продукция</mat-radio-button>
@@ -64,11 +24,31 @@
                 <mat-divider></mat-divider>
 
                 <div class="table-container">
-                    <div class="loading" *ngIf="loading">
+                    <div class="loading" *ngIf="detailsLoading&&viewDetails">
                         <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
                     </div>
-                    <mat-table #table [dataSource]="dataSource">
 
+                    <div class="loading" *ngIf="productionItemsLoading&&!viewDetails">
+                        <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+                    </div>
+
+                    <mat-table *ngIf="viewDetails" #table [dataSource]="detailsDataSource">
+                        <ng-container matColumnDef="title">
+                            <mat-header-cell *matHeaderCellDef class="title"> Название </mat-header-cell>
+                            <mat-cell *matCellDef="let detail" class="title"> {{detail.title}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="description">
+                            <mat-header-cell *matHeaderCellDef class="description"> Описание </mat-header-cell>
+                            <mat-cell *matCellDef="let detail" class="description"> {{detail.description}} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="detailsDisplayedColumns"></mat-header-row>
+                        <mat-row (click)="selectItem(detail,1)" *matRowDef="let detail; columns: detailsDisplayedColumns;" [ngClass]="isAlreadySelected(detail,1)?'already-selected':
+                        (selectedItem&&selectedItem.type===1&&selectedItem.id===detail.id?'current-selected':'')"></mat-row>
+                    </mat-table>
+
+                    <mat-table *ngIf="!viewDetails" #table [dataSource]="productionItemsDataSource">
                         <ng-container matColumnDef="title">
                             <mat-header-cell *matHeaderCellDef class="title"> Название </mat-header-cell>
                             <mat-cell *matCellDef="let productionItem" class="title"> {{productionItem.title}} </mat-cell>
@@ -76,28 +56,74 @@
 
                         <ng-container matColumnDef="description">
                             <mat-header-cell *matHeaderCellDef class="description"> Описание </mat-header-cell>
-                            <mat-cell *matCellDef="let productionItem" class="title"> {{productionItem.title}} </mat-cell>
+                            <mat-cell *matCellDef="let productionItem" class="description"> {{productionItem.title}} </mat-cell>
                         </ng-container>
 
-                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                        <mat-header-row *matHeaderRowDef="productionItemsDisplayedColumns"></mat-header-row>
+                        <mat-row (click)="selectItem(productionItem,2)" *matRowDef="let productionItem; columns: productionItemsDisplayedColumns;"
+                            [ngClass]="isAlreadySelected(productionItem,2)?'already-selected':
+                            (selectedItem&&selectedItem.type===2&&selectedItem.id===productionItem.id?'current-selected':'')"></mat-row>
                     </mat-table>
-                </div>
 
-                <mat-divider></mat-divider>
+                    <mat-divider></mat-divider>
 
-                <div class="current-selected">
+                    <div class="current-selecting">
+                        <div>{{selectedItem.title}}</div>
+                        <mat-form-field class="count">
+                            <input matInput type="number" [(ngModel)]="selectedItem.count" placeholder="Количество">
+                        </mat-form-field>
+                        <button mat-mini-fab color="primary" [disabled]="!selectedItem.id||!selectedItem.count||isAlreadySelected(selectedItem,selectedItem.type)"
+                            (click)="addProduct()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
 
-                </div>
+                    <mat-divider></mat-divider>
 
-                <mat-divider></mat-divider>
-
-                <div>
-                    <mat-paginator [length]="pageLength" [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)"></mat-paginator>
+                    <div>
+                        <mat-paginator *ngIf="viewDetails" [length]="detailsPageLength" [pageIndex]="detailsPageNumber" [pageSize]="detailsPageSize"
+                            [pageSizeOptions]="pageSizeOptions" (page)="handleDetailsPageEvent($event)"></mat-paginator>
+                        <mat-paginator *ngIf="!viewDetails" [length]="productionItemsPageLength" [pageIndex]="productionItemsPageNumber" [pageSize]="productionItemsPageSize"
+                            [pageSizeOptions]="pageSizeOptions" (page)="handleProductionItemsPageEvent($event)"></mat-paginator>
+                    </div>
                 </div>
             </div>
 
-            <div class="column second"></div>
+            <div class="column second">
+                <mat-table #table [dataSource]="selectedItemsDataSource">
+                    <ng-container matColumnDef="title">
+                        <mat-header-cell *matHeaderCellDef class="title"> Название </mat-header-cell>
+                        <mat-cell *matCellDef="let item" class="title"> {{item.title}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef class="description"> Описание </mat-header-cell>
+                        <mat-cell *matCellDef="let item" class="description"> {{item.description}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="type">
+                        <mat-header-cell *matHeaderCellDef class="type"> Тип </mat-header-cell>
+                        <mat-cell *matCellDef="let item" class="type"> {{item.type===1?'Деталь':'Продукция'}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="count">
+                        <mat-header-cell *matHeaderCellDef class="count"> Кол-во </mat-header-cell>
+                        <mat-cell *matCellDef="let item" class="count"> {{item.count}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="deleteButton">
+                        <mat-header-cell class="delete-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="delete-button" *matCellDef="let item">
+                            <button mat-mini-fab color="primary" (click)="deleteItem(item)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="selectedItemsDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let item; columns: selectedItemsDisplayedColumns;"></mat-row>
+                </mat-table>
+            </div>
         </main>
     </mat-card>
 

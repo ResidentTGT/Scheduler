@@ -8,20 +8,19 @@ using System.Threading.Tasks;
 
 namespace Scheduler.Dto
 {
-   public class ProductionItemDto
+    public class ProductionItemDto
     {
-
         public int? Id { get; set; }
 
         public string Title { get; set; }
 
         public string Description { get; set; }
 
-        public int? ParentProductionItemId { get; set; }
+        public int DetailsCount { get; set; }
 
-        public string ParentProductionItemTitle { get; set; }
+        public int ChildrenProductionItemsCount { get; set; }
 
-        public bool IsNode { get; set; } = false;
+        public List<ProductDto> AddingItems { get; set; }
 
         public List<ProductionItemQuantumDto> ProductionItemQuantums { get; set; }
 

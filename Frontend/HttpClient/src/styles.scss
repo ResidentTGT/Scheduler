@@ -1,9 +1,8 @@
 $roboto-font-path: '../node_modules/roboto-fontface/fonts';
 @import "node_modules/roboto-fontface/css/roboto/sass/roboto-fontface.scss";
 @import 'src/scheduler-colors.scss';
-
 body {
-    font-family: 'Roboto-Light'; 
+    font-family: 'Roboto-Light';
     width: 100%;
     height: 100%;
     position: relative;
@@ -19,4 +18,15 @@ mat-toolbar.site-header {
 
 html {
     height: 100%;
+}
+
+.particles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: #FAFAFA;
+    .particles-container {
+        height: 100%;
+    }
 }

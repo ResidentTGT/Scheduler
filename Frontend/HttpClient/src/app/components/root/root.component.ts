@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { particlesParams } from '../../common/particles-params';
 
 @Component({
     selector: 'sch-root',
@@ -6,4 +7,5 @@ import { Component } from '@angular/core';
     styleUrls: ['./root.component.scss']
 })
 export class RootComponent {
+    public particlesParams: object = particlesParams;
 }

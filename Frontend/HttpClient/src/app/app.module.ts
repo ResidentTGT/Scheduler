@@ -33,6 +33,7 @@ import { ViewProductionItemQuantumsGroupsComponent } from './components/view-cal
 import { ViewProductionItemQuantumGroupComponent } from './components/view-calculate-results/view-production-item-quantum-group/view-production-item-quantum-group.component';
 import { MatPaginatorIntlRu } from './extenders/MatPaginatorIntlRu';
 import { HelperService } from './services/helper.service';
+import { ParticlesModule } from 'angular-particle';
 
 
 const appRoutes: Routes = [
@@ -108,7 +109,8 @@ const appRoutes: Routes = [
         MatRadioModule,
         MatTableModule,
         MatDividerModule,
-        MatMenuModule
+        MatMenuModule,
+        ParticlesModule
     ],
     providers: [
         BackendApiService,

@@ -46,6 +46,9 @@ $paginator-height:56px;
                     .delete-button {
                         max-width: 60px;
                         button {
+                            &:hover {
+                                background: rgba(0, 0, 0, 0.12);
+                            }
                             margin: 7px;
                         }
                     }

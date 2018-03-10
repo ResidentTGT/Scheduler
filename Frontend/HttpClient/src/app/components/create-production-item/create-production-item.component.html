@@ -114,7 +114,7 @@
                     <ng-container matColumnDef="deleteButton">
                         <mat-header-cell class="delete-button" *matHeaderCellDef></mat-header-cell>
                         <mat-cell class="delete-button" *matCellDef="let item">
-                            <button mat-mini-fab color="primary" (click)="deleteItem(item)">
+                            <button mat-icon-button color="primary" (click)="deleteItem(item)">
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </mat-cell>

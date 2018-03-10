@@ -34,7 +34,7 @@
                     <ng-container matColumnDef="openButton">
                         <mat-header-cell class="open-button" *matHeaderCellDef></mat-header-cell>
                         <mat-cell class="open-button" *matCellDef="let productionItem">
-                            <button mat-mini-fab color="primary" (click)="openProductionItem(productionItem)">
+                            <button mat-icon-button color="primary" (click)="openProductionItem(productionItem)">
                                 <mat-icon>open_with</mat-icon>
                             </button>
                         </mat-cell>
@@ -43,7 +43,7 @@
                     <ng-container matColumnDef="deleteButton">
                         <mat-header-cell class="delete-button" *matHeaderCellDef></mat-header-cell>
                         <mat-cell class="delete-button" *matCellDef="let productionItem">
-                            <button mat-mini-fab color="primary" (click)="deleteProductionItem(productionItem)">
+                            <button mat-icon-button color="primary" (click)="deleteProductionItem(productionItem)">
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </mat-cell>

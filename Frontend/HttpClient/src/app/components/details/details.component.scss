@@ -34,8 +34,7 @@ $paginator-height:56px;
         main {
             width: calc(100% - #{$create-form});
             height: 100%;
-            position: relative;
-           // background-color: #FAFAFA;
+            position: relative; // background-color: #FAFAFA;
             mat-card {
                 @include mat-elevation(4);
                 max-width: 1000px;
@@ -70,6 +69,9 @@ $paginator-height:56px;
                     .delete-button {
                         max-width: 60px;
                         button {
+                            &:hover {
+                                background: rgba(0, 0, 0, 0.12);
+                            }
                             margin: 7px;
                         }
                     }

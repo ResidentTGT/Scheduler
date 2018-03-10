@@ -198,8 +198,6 @@ export class CreateOperationComponent implements OnInit {
 
         return true;
     }
-
-
 }
 
 

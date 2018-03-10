@@ -25,7 +25,7 @@ namespace Scheduler.Database
             if (pageSize > 0)
             {
                 details = _context.Details.ToList();
-                if (equipmentId > 0)
+                if (equipmentId > 0 && GetEquipment(equipmentId).Type == EquipmentType.AssemblyWorkplace)
                 {
                     foreach (var detail in details)
                     {
@@ -81,7 +81,7 @@ namespace Scheduler.Database
         }
         #endregion
 
-        #region EquipmentMethods
+        #region Equipment
         public IEnumerable<Equipment> GetEquipments(int pageNumber, int pageSize, OperationType? operationType)
         {
             var equipments = new List<Equipment>() as IEnumerable<Equipment>;
@@ -99,9 +99,6 @@ namespace Scheduler.Database
             {
                 equipments = _context.Equipments.Include("Operations");
             }
-
-
-
             return equipments as IEnumerable<Equipment>;
         }
 
@@ -113,16 +110,17 @@ namespace Scheduler.Database
             return equipment.Id;
         }
 
+        public Equipment GetEquipment(int id)
+        {
+            return _context.Equipments.Include(e => e.Conveyor).Include(e => e.Workshop).Single(e => e.Id == id);
+        }
+
         public void DeleteEquipment(int id)
         {
             _context.Equipments.Remove(_context.Equipments.First(d => d.Id == id));
             _context.SaveChanges();
         }
-        public Equipment GetEquipmentById(int? id)
-        {
-            var equipment = _context.Equipments.First(pi => pi.Id == id);
-            return equipment;
-        }
+
         public Equipment GetEquipmentByOperationId(int id)
         {
             var equipment = _context.Operations.Include(o => o.Equipment.Conveyor).First(o => o.Id == id).Equipment;

@@ -96,6 +96,14 @@ export class BackendApiService {
             .map(response => response.json().map(e => Operation.fromJSON(e)));
     }
 
+    getOperationsByDetailId(detailId: number, pageNumber: number = 0, pageSize: number = 0): Observable<Operation[]> {
+        const query = `${env.backendUrl}operations?detailId=${detailId}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
+        return this.http
+            .get(query)
+            .map(response => response.json().map(e => Operation.fromJSON(e)));
+    }
+
     createOperation(operation: Operation): Observable<number> {
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers });

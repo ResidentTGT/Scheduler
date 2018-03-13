@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Rx';
 import { Route } from '../../models/route';
 import { DetailsDataSource } from '../details/details.component';
 import { environment as env } from '../../../environments/environment';
+import { OperationsDataSource } from '../operations/operations.component';
 
 @Component({
     selector: 'sch-create-route',
@@ -18,8 +19,10 @@ export class CreateRouteComponent implements OnInit {
     public name: string;
     public description: string;
     public selectedDetail: Detail = null;
+    public selectedOperations: Operation[] = [];
 
     public detailsLoading: boolean;
+    public operationsLoading: boolean;
 
     public details: Detail[] = [];
     public detailsDataSource: DetailsDataSource | null;
@@ -28,6 +31,13 @@ export class CreateRouteComponent implements OnInit {
     public detailsPageSize: number = env.pageSizeOptions[0];
     public detailsPageLength: number;
 
+    public operations: Operation[] = [];
+    public operationsDataSource: OperationsDataSource | null;
+    public operationsDisplayedColumns = ['name', 'description', 'equipment', 'add-button'];
+    public operationsPageNumber = 0;
+    public operationsPageSize: number = env.pageSizeOptions[0];
+    public operationsPageLength: number;
+
     public pageSizeOptions: number[] = env.pageSizeOptions;
 
     constructor(private _api: BackendApiService) {
@@ -35,7 +45,6 @@ export class CreateRouteComponent implements OnInit {
 
     ngOnInit() {
         this.getDetails(this.detailsPageNumber, this.detailsPageSize).subscribe();
-        //  this.getOperations();
     }
 
     // public createRoute() {
@@ -81,6 +90,12 @@ export class CreateRouteComponent implements OnInit {
             : (this.detailsPageNumber + 2) * this.detailsPageSize;
     }
 
+    updateOperationsPaginatorFields() {
+        this.operationsPageLength = (this.operations.length < this.operationsPageSize)
+            ? this.operations.length + this.operationsPageNumber * this.operationsPageSize
+            : (this.operationsPageNumber + 2) * this.operationsPageSize;
+    }
+
     public handleDetailsPageEvent(event: any) {
         this.detailsPageNumber = event.pageIndex;
         this.detailsPageSize = event.pageSize;
@@ -88,19 +103,28 @@ export class CreateRouteComponent implements OnInit {
         this.getDetails(this.detailsPageNumber, this.detailsPageSize).subscribe();
     }
 
-    public selectDetail(detail: Detail) {
-        this.selectedDetail = detail;
+    public handleOperationsPageEvent(event: any) {
+        this.operationsPageNumber = event.pageIndex;
+        this.operationsPageSize = event.pageSize;
+
+        this.getOperationsByDetailId(+this.selectedDetail.id, this.operationsPageNumber, this.operationsPageSize).subscribe();
     }
 
-    // private getOperations() {
-    //     this._api.getOperations()
-    //         .do(operations => this.operations = operations)
-    //         .catch(resp => {
-    //             alert(`Не удалось загрузить список операций по причине: ${JSON.stringify(resp.json())}`);
-    //             return Observable.empty();
-    //         })
-    //         .subscribe();
-    // }
+    private getOperationsByDetailId(detailId: number, pageNumber: number, pageSize: number): Observable<Operation[] | {}> {
+        this.operationsLoading = true;
+        return this._api.getOperationsByDetailId(detailId, pageNumber, pageSize)
+            .do(operations => {
+                this.operations = operations;
+                this.operationsDataSource = new OperationsDataSource(this.operations);
+                this.updateOperationsPaginatorFields();
+                this.operationsLoading = false;
+            })
+            .catch(resp => {
+                alert(`Не удалось загрузить список операций по причине: ${JSON.stringify(resp, null, 4)}`);
+                this.operationsLoading = false;
+                return Observable.empty();
+            });
+    }
 
     // public addOperation() {
     //     this.addedOperations.push(this.operation);
@@ -108,6 +132,13 @@ export class CreateRouteComponent implements OnInit {
 
     //     this.operation = null;
     // }
+
+    public selectDetail(detail: Detail): void {
+        this.selectedDetail = detail;
+        this._api.getOperationsByDetailId(+this.selectedDetail.id, this.operationsPageNumber, this.operationsPageSize).subscribe();
+    }
+
+
 
     // public filterOperations(detail: Detail) {
     //     if (this.operations) {

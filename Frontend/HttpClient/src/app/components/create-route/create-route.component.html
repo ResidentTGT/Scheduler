@@ -56,52 +56,91 @@
     </footer>
 </div> -->
 <div class="create-route-layout">
-    <aside class="first-column">
-        <div class="form-container">
-            <div class="form-text">1. Введите основные параметры
-                <br>и выберите деталь</div>
-            <mat-form-field>
+    <mat-card>
+        <div class="loading" *ngIf="savingLoading">
+            <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+        </div>
+
+        <header>
+            <mat-form-field class="name">
                 <input matInput [(ngModel)]="name" placeholder="Название">
             </mat-form-field>
-            <mat-form-field class="description-form">
-                <textarea class="description-text" matInput [(ngModel)]="description" placeholder="Описание"></textarea>
+            <mat-form-field class="description">
+                <input matInput [(ngModel)]="description" placeholder="Описание">
             </mat-form-field>
-        </div>
 
+            <button mat-raised-button color="primary" (click)="createRoute()">Создать маршрут</button>
+        </header>
         <mat-divider></mat-divider>
+        <main>
+            <div class="column first">
 
-        <div class="table-container">
-            <div class="loading" *ngIf="detailsLoading">
-                <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+                <div class="table-container">
+                    <div class="loading" *ngIf="detailsLoading">
+                        <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+                    </div>
+
+                    <mat-table #table [dataSource]="detailsDataSource">
+                        <ng-container matColumnDef="title">
+                            <mat-header-cell *matHeaderCellDef class="title"> Название </mat-header-cell>
+                            <mat-cell *matCellDef="let detail" class="title"> {{detail.title}} </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="description">
+                            <mat-header-cell *matHeaderCellDef class="description"> Описание </mat-header-cell>
+                            <mat-cell *matCellDef="let detail" class="description"> {{detail.description}} </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="detailsDisplayedColumns"></mat-header-row>
+                        <mat-row (click)="selectDetail(detail)" *matRowDef="let detail; columns: detailsDisplayedColumns;"></mat-row>
+                    </mat-table>
+
+                    <mat-divider></mat-divider>
+
+                    <div>
+                        <mat-paginator [length]="detailsPageLength" [pageIndex]="detailsPageNumber" [pageSize]="detailsPageSize"
+                            [pageSizeOptions]="pageSizeOptions" (page)="handleDetailsPageEvent($event)"></mat-paginator>
+                    </div>
+                </div>
             </div>
 
-            <mat-table #table [dataSource]="detailsDataSource">
-                <ng-container matColumnDef="title">
-                    <mat-header-cell *matHeaderCellDef class="title"> Название </mat-header-cell>
-                    <mat-cell *matCellDef="let detail" class="title"> {{detail.title}} </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="description">
-                    <mat-header-cell *matHeaderCellDef class="description"> Описание </mat-header-cell>
-                    <mat-cell *matCellDef="let detail" class="description"> {{detail.description}} </mat-cell>
-                </ng-container>
-                <mat-header-row *matHeaderRowDef="detailsDisplayedColumns"></mat-header-row>
-                <mat-row (click)="selectDetail(detail)" [ngClass]="selectedDetail&&selectedDetail.id===detail.id?'selected':''" *matRowDef="let detail; columns: detailsDisplayedColumns;"></mat-row>
-            </mat-table>
+            <div class="column second">
+                <mat-table #table [dataSource]="operationsDataSource">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef class="name"> Название </mat-header-cell>
+                        <mat-cell *matCellDef="let operation" class="name"> {{operation.name}} </mat-cell>
+                    </ng-container>
 
-            <mat-divider></mat-divider>
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef class="description"> Описание </mat-header-cell>
+                        <mat-cell *matCellDef="let operation" class="description"> {{operation.description}} </mat-cell>
+                    </ng-container>
 
-            <mat-paginator [length]="detailsPageLength" [pageIndex]="detailsPageNumber" [pageSize]="detailsPageSize" [pageSizeOptions]="pageSizeOptions"
-                (page)="handleDetailsPageEvent($event)"></mat-paginator>
-        </div>
-    </aside>
-    <aside class="column second">
+                    <ng-container matColumnDef="equipment">
+                        <mat-header-cell *matHeaderCellDef class="equipment"> Оборудование </mat-header-cell>
+                        <mat-cell *matCellDef="let operation" class="equipment"> {{operation.equipment.name}} </mat-cell>
+                    </ng-container>
 
+                    <ng-container matColumnDef="add-button">
+                        <mat-header-cell class="add-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="add-button" *matCellDef="let operation">
+                            <button mat-icon-button color="primary" (click)="addOperation(operation)">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
 
-    </aside>
+                    <mat-header-row *matHeaderRowDef="operationsDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let operation; columns: operationsDisplayedColumns;"></mat-row>
+                </mat-table>
+                <mat-divider></mat-divider>
 
-    <aside class="column third">
-
-
-    </aside>
+                    <div>
+                        <mat-paginator [length]="operationsPageLength" [pageIndex]="operationsPageNumber" [pageSize]="operationsPageSize"
+                            [pageSizeOptions]="pageSizeOptions" (page)="handleOperationsPageEvent($event)"></mat-paginator>
+                    </div>
+            </div>
+        </main>
+    </mat-card>
 
 </div>

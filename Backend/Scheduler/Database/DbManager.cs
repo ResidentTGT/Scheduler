@@ -273,14 +273,35 @@ namespace Scheduler.Database
             return operations as IEnumerable<Operation>;
         }
 
-        public IEnumerable<Operation> GetOperationsByDetailId(int detailId)
+        public IEnumerable<Operation> GetOperationsByDetailId(int detailId, int pageNumber = 0, int pageSize = 0)
         {
-            var operations = _context.Operations.Where(o => o.DetailId == detailId)
+            var operations = new List<Operation>() as IEnumerable<Operation>;
+
+            if (pageSize > 0)
+            {
+                operations = _context.Operations
+                .Where(o => o.DetailId == detailId)
                 .Include(o => o.Detail)
                 .Include(o => o.Equipment)
                 .Include(o => o.Equipment.Conveyor)
                 .Include(o => o.Equipment.Workshop)
-                .Include(o => o.Routes);
+                .OrderByDescending(d => d.Id)
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize)
+                .ToList();
+            }
+            else
+            {
+                operations = _context.Operations
+                .Where(o => o.DetailId == detailId)
+                .Include(o => o.Detail)
+                .Include(o => o.Equipment)
+                .Include(o => o.Equipment.Conveyor)
+                .Include(o => o.Equipment.Workshop)
+                .Include(o => o.Routes)
+                .ToList();
+            }
+
             return operations as IEnumerable<Operation>;
         }
 

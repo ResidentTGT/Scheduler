@@ -33,7 +33,7 @@ export class CreateRouteComponent implements OnInit {
 
     public operations: Operation[] = [];
     public operationsDataSource: OperationsDataSource | null;
-    public operationsDisplayedColumns = ['name', 'description', 'equipment', 'add-button'];
+    public operationsDisplayedColumns = ['name', 'equipment', 'add-button'];
     public operationsPageNumber = 0;
     public operationsPageSize: number = env.pageSizeOptions[0];
     public operationsPageLength: number;
@@ -126,16 +126,17 @@ export class CreateRouteComponent implements OnInit {
             });
     }
 
-    // public addOperation() {
-    //     this.addedOperations.push(this.operation);
-    //     this.viewOperations.splice(this.viewOperations.indexOf(this.operation), 1);
-
-    //     this.operation = null;
-    // }
+    public selectOperation(operation: Operation): void {
+        this.selectedOperations.push(operation);
+    }
 
     public selectDetail(detail: Detail): void {
         this.selectedDetail = detail;
-        this._api.getOperationsByDetailId(+this.selectedDetail.id, this.operationsPageNumber, this.operationsPageSize).subscribe();
+        this.getOperationsByDetailId(+this.selectedDetail.id, this.operationsPageNumber, this.operationsPageSize).subscribe();
+    }
+
+    public isOperationSelected(operation: Operation): boolean {
+        return this.selectedOperations.some(o => o.id === operation.id);
     }
 
 

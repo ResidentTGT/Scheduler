@@ -97,7 +97,7 @@ export class BackendApiService {
     }
 
     getOperationsByDetailId(detailId: number, pageNumber: number = 0, pageSize: number = 0): Observable<Operation[]> {
-        const query = `${env.backendUrl}operations?detailId=${detailId}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        const query = `${env.backendUrl}detail-operations?detailId=${detailId}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
         return this.http
             .get(query)

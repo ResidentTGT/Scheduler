@@ -48,7 +48,7 @@ namespace Scheduler.HttpServer
             Get["/delete-production-item"] = DeleteProductionItem;
 
             Get["/operations"] = GetOperations;
-            Get["/operations?detailId={detailId}"] = GetOperationsByDetailId;
+            Get["/detail-operations"] = GetOperationsByDetailId;
             Post["/create-operation"] = CreateOperation;
             Get["/delete-operation"] = DeleteOperation;
 
@@ -208,7 +208,10 @@ namespace Scheduler.HttpServer
         private object GetOperationsByDetailId(dynamic parameters)
         {
             int detailId = Request.Query["detailId"];
-            var operations = _dbManager.GetOperationsByDetailId(detailId).ToList();
+            int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
+            int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
+
+            var operations = _dbManager.GetOperationsByDetailId(detailId, pageNumber, pageSize).ToList();
             var dtoOperations = operations.Select(d => _dtoConverter.ConvertOperation(d)).ToList();
 
             return dtoOperations;

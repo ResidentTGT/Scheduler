@@ -20,14 +20,15 @@ $paginator-height:56px;
         height: calc(100% - 40px);
         @include mat-elevation(4);
         padding: 0;
-        min-width: 1020px;
+        min-width: 1150px;
+        width: 1300px;
         max-width: 100%;
         background-color: #F2F2F2;
         margin: auto;
         header {
             display: flex;
             height: 70px;
-            padding: 0 20px;
+            padding: 0 15px;
             position: relative;
             mat-form-field {
                 align-self: center;
@@ -50,14 +51,17 @@ $paginator-height:56px;
             flex: 1;
             display: flex;
             position: relative;
+            mat-paginator {
+                background-color: #F2F2F2;
+            }
             .column {
                 height: 100%;
                 position: relative;
+                min-width: 340px;
                 &.first {
                     border-right: 1px solid rgba(0, 0, 0, 0.12);
-                    width: 30%;
-                    min-width: 340px;
-                    max-width: 30%;
+                    width: 20%;
+                    max-width: 20%;
                     .table-container {
                         height: calc(100% - 1px);
                         position: relative;
@@ -66,29 +70,58 @@ $paginator-height:56px;
                             background-color: #F2F2F2;
                             height: calc(100% - #{$paginator-height});
                             overflow-y: auto;
+                            mat-header-row {
+                                padding: 0 15px;
+                            }
                             mat-row {
+                                padding: 0 15px;
                                 &:hover {
                                     background: rgba(0, 0, 0, 0.06);
                                     cursor: pointer;
                                     transition-duration: 0.3s;
                                 }
+                                &.selected {
+                                    background-color: map-get($scheduler-primary, 100);
+                                }
                             }
-                        }
-                        mat-paginator {
-                            background-color: #F2F2F2;
                         }
                     }
                 }
                 &.second {
                     width: 40%;
                     max-width: 40%;
+                    border-right: 1px solid rgba(0, 0, 0, 0.12);
                     mat-table {
                         background-color: #F2F2F2;
-                        height: calc(100% - 1px);
+                        height: calc(100% - 1px - #{$paginator-height});
+                        overflow-y: auto;
+                        margin-top: 1px;
+                        mat-row {
+                            &.selected {
+                                background-color: map-get($scheduler-primary, 100);
+                            }
+                        }
+                        .add-button {
+                            max-width: 50px;
+                            button {
+                                &:hover:not([disabled]) {
+                                    background: rgba(0, 0, 0, 0.12);
+                                }
+                                margin: 7px;
+                            }
+                        }
+                    }
+                }
+                &.third {
+                    width: 40%;
+                    max-width: 40%;
+                    mat-table {
+                        background-color: #F2F2F2;
+                        height: calc(100% - 1px - #{$paginator-height});
                         overflow-y: auto;
                         margin-top: 1px;
                         .add-button {
-                            max-width: 60px;
+                            max-width: 50px;
                             button {
                                 &:hover {
                                     background: rgba(0, 0, 0, 0.12);

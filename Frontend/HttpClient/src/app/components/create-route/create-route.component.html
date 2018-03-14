@@ -127,7 +127,7 @@
                     </ng-container>
 
                     <mat-header-row *matHeaderRowDef="operationsDisplayedColumns"></mat-header-row>
-                    <mat-row  [ngClass]="isOperationSelected(operation)?'selected':''" *matRowDef="let operation; columns: operationsDisplayedColumns;"></mat-row>
+                    <mat-row [ngClass]="isOperationSelected(operation)?'selected':''" *matRowDef="let operation; columns: operationsDisplayedColumns;"></mat-row>
                 </mat-table>
                 <mat-divider></mat-divider>
 
@@ -141,8 +141,30 @@
                 <div #listElem>
                     <mat-list>
                         <ng-container *ngFor="let departmentOperation of departmentOperations">
-                            <mat-list-item class="department-operation">{{departmentOperation.departmentName}}</mat-list-item>
-                            <mat-list-item class="operation" *ngFor="let operation of departmentOperation.operations">{{operation.name}}</mat-list-item>
+                            <mat-list-item class="department-operation">
+                                {{departmentOperation.departmentName}}
+                                <button mat-icon-button color="primary" (click)="moveUpDepartment(departmentOperation)" [disabled]="departmentOperations.length<2">
+                                    <mat-icon>expand_less</mat-icon>
+                                </button>
+                                <button mat-icon-button color="primary" (click)="moveDownDepartment(departmentOperation)" [disabled]="departmentOperations.length<2">
+                                    <mat-icon>expand_more</mat-icon>
+                                </button>
+                                <button mat-icon-button color="primary" (click)="deleteDepartment(departmentOperation)" [disabled]="">
+                                    <mat-icon>clear</mat-icon>
+                                </button>
+                            </mat-list-item>
+                            <mat-list-item class="operation" *ngFor="let operation of departmentOperation.operations">
+                                {{operation.name}}
+                                <button mat-icon-button color="primary" (click)="moveUpOperation(operation)" [disabled]="">
+                                    <mat-icon>expand_less</mat-icon>
+                                </button>
+                                <button mat-icon-button color="primary" (click)="moveDownOperation(operation)" [disabled]="">
+                                    <mat-icon>expand_more</mat-icon>
+                                </button>
+                                <button mat-icon-button color="primary" (click)="deleteOperation(operation)" [disabled]="">
+                                    <mat-icon>clear</mat-icon>
+                                </button>
+                            </mat-list-item>
                         </ng-container>
                     </mat-list>
                 </div>

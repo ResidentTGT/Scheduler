@@ -176,10 +176,6 @@ export class CreateOperationComponent implements OnInit {
     }
 
     private clearForm(): void {
-        this.mainTime = null;
-        this.name = '';
-        this.description = '';
-        this.additionalTime = null;
         this.operationType = OperationType[OperationType.Undefined];
         this.selectedEquipment = null;
         this.selectedDetail = null;

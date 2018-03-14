@@ -156,7 +156,6 @@ export class CreateRouteComponent implements OnInit {
                     operations: [operation]
                 });
         }
-
     }
 
     public selectDetail(detail: Detail): void {
@@ -170,6 +169,38 @@ export class CreateRouteComponent implements OnInit {
         return this.selectedOperations.some(o => o.id === operation.id);
     }
 
+    public moveUpDepartment(department: DepartmentOperations): void {
+        const index = this.departmentOperations.indexOf(department);
+
+        if (index !== 0) {
+            const a = this.departmentOperations[index - 1];
+            const b = this.departmentOperations[index];
+            this.departmentOperations[index] = a;
+            this.departmentOperations[index - 1] = b;
+        }
+    }
+
+    public moveDownDepartment(department: DepartmentOperations): void {
+        const index = this.departmentOperations.indexOf(department);
+
+        if (index !== this.departmentOperations.length - 1) {
+            const a = this.departmentOperations[index];
+            const b = this.departmentOperations[index + 1];
+            this.departmentOperations[index] = b;
+            this.departmentOperations[index + 1] = a;
+        }
+    }
+
+    public deleteDepartment(department: DepartmentOperations): void {
+        department.operations.forEach(o =>
+            this.selectedOperations
+                .splice(this.selectedOperations.indexOf(this.selectedOperations.filter(oper => oper.id === o.id)[0]), 1));
+
+
+        this.departmentOperations.splice(this.departmentOperations
+            .indexOf(this.departmentOperations
+                .filter(d => d.departmentId === department.departmentId && d.departmentType === department.departmentType)[0]), 1);
+    }
 
 
     // public filterOperations(detail: Detail) {

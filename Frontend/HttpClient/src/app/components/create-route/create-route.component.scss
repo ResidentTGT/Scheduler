@@ -116,13 +116,13 @@ $paginator-height:56px;
                     width: 40%;
                     max-width: 40%;
                     position: relative;
-                   mat-list{
-                       height: 100%;
-                       position: relative;
-                       .operation{
-                           padding: 0 30px;
-                       }
-                   }
+                    mat-list {
+                        height: 100%;
+                        position: relative;
+                        .operation {
+                            padding: 0 30px;
+                        }
+                    }
                 }
             }
         }

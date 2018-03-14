@@ -120,14 +120,14 @@
                     <ng-container matColumnDef="add-button">
                         <mat-header-cell class="add-button" *matHeaderCellDef></mat-header-cell>
                         <mat-cell class="add-button" *matCellDef="let operation">
-                            <button mat-icon-button color="primary" (click)="addOperation(operation)" [disabled]="isOperationSelected(operation)">
+                            <button mat-icon-button color="primary" (click)="selectOperation(operation)" [disabled]="isOperationSelected(operation)">
                                 <mat-icon>add</mat-icon>
                             </button>
                         </mat-cell>
                     </ng-container>
 
                     <mat-header-row *matHeaderRowDef="operationsDisplayedColumns"></mat-header-row>
-                    <mat-row (click)="selectOperation(operation)" [ngClass]="isOperationSelected(operation)?'selected':''" *matRowDef="let operation; columns: operationsDisplayedColumns;"></mat-row>
+                    <mat-row  [ngClass]="isOperationSelected(operation)?'selected':''" *matRowDef="let operation; columns: operationsDisplayedColumns;"></mat-row>
                 </mat-table>
                 <mat-divider></mat-divider>
 
@@ -138,35 +138,13 @@
             </div>
 
             <div class="column third">
-                <mat-table #table [dataSource]="operationsDataSource">
-                    <ng-container matColumnDef="name">
-                        <mat-header-cell *matHeaderCellDef class="name"> Название </mat-header-cell>
-                        <mat-cell *matCellDef="let operation" class="name"> {{operation.name}} </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="equipment">
-                        <mat-header-cell *matHeaderCellDef class="equipment"> Оборудование </mat-header-cell>
-                        <mat-cell *matCellDef="let operation" class="equipment"> {{operation.equipment.name}} ({{operation.equipment.workshop?operation.equipment.workshop.name: (operation.equipment.conveyor?operation.equipment.conveyor.name:'')}})
-                        </mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="add-button">
-                        <mat-header-cell class="add-button" *matHeaderCellDef></mat-header-cell>
-                        <mat-cell class="add-button" *matCellDef="let operation">
-                            <button mat-icon-button color="primary" (click)="addOperation(operation)">
-                                <mat-icon>add</mat-icon>
-                            </button>
-                        </mat-cell>
-                    </ng-container>
-
-                    <mat-header-row *matHeaderRowDef="operationsDisplayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let operation; columns: operationsDisplayedColumns;"></mat-row>
-                </mat-table>
-                <mat-divider></mat-divider>
-
-                <div>
-                    <mat-paginator [length]="operationsPageLength" [pageIndex]="operationsPageNumber" [pageSize]="operationsPageSize" [pageSizeOptions]="pageSizeOptions"
-                        (page)="handleOperationsPageEvent($event)"></mat-paginator>
+                <div #listElem>
+                    <mat-list>
+                        <ng-container *ngFor="let departmentOperation of departmentOperations">
+                            <mat-list-item class="department-operation">{{departmentOperation.departmentName}}</mat-list-item>
+                            <mat-list-item class="operation" *ngFor="let operation of departmentOperation.operations">{{operation.name}}</mat-list-item>
+                        </ng-container>
+                    </mat-list>
                 </div>
             </div>
         </main>

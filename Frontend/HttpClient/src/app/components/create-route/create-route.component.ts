@@ -20,6 +20,7 @@ export class CreateRouteComponent implements OnInit {
     public description: string;
     public selectedDetail: Detail = null;
     public selectedOperations: Operation[] = [];
+    public departmentOperations: DepartmentOperations[] = [];
 
     public detailsLoading: boolean;
     public operationsLoading: boolean;
@@ -128,10 +129,40 @@ export class CreateRouteComponent implements OnInit {
 
     public selectOperation(operation: Operation): void {
         this.selectedOperations.push(operation);
+
+        let department, type;
+        if (operation.equipment.workshop) {
+            type = 1;
+            department = operation.equipment.workshop;
+        } else {
+            type = 2;
+            department = operation.equipment.conveyor;
+        }
+
+
+        if (this.departmentOperations.some(o => o.departmentId === department.id && o.departmentType === type)) {
+            const departmentOperations = this.departmentOperations
+                .filter(d => d.departmentId === department.id && d.departmentType === type)[0];
+
+            if (!departmentOperations.operations.some(o => o.id === operation.id)) {
+                departmentOperations.operations.push(operation);
+            }
+        } else {
+            this.departmentOperations.push(
+                {
+                    departmentId: department.id,
+                    departmentName: department.name,
+                    departmentType: type,
+                    operations: [operation]
+                });
+        }
+
     }
 
     public selectDetail(detail: Detail): void {
         this.selectedDetail = detail;
+        this.operations = [];
+        this.departmentOperations = [];
         this.getOperationsByDetailId(+this.selectedDetail.id, this.operationsPageNumber, this.operationsPageSize).subscribe();
     }
 
@@ -177,4 +208,12 @@ export class CreateRouteComponent implements OnInit {
     //     }
     // }
 
+}
+
+class DepartmentOperations {
+    public departmentId: number;
+    public departmentName: string;
+    // 0 - workshop, 1 - conveyor
+    public departmentType: number;
+    public operations: Operation[] = [];
 }

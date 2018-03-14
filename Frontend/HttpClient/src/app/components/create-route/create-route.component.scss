@@ -115,21 +115,14 @@ $paginator-height:56px;
                 &.third {
                     width: 40%;
                     max-width: 40%;
-                    mat-table {
-                        background-color: #F2F2F2;
-                        height: calc(100% - 1px - #{$paginator-height});
-                        overflow-y: auto;
-                        margin-top: 1px;
-                        .add-button {
-                            max-width: 50px;
-                            button {
-                                &:hover {
-                                    background: rgba(0, 0, 0, 0.12);
-                                }
-                                margin: 7px;
-                            }
-                        }
-                    }
+                    position: relative;
+                   mat-list{
+                       height: 100%;
+                       position: relative;
+                       .operation{
+                           padding: 0 30px;
+                       }
+                   }
                 }
             }
         }

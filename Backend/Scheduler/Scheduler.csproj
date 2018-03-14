@@ -118,6 +118,10 @@
     <Compile Include="Migrations\201803101353575_AddedChildrenProductionItems.Designer.cs">
       <DependentUpon>201803101353575_AddedChildrenProductionItems.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201803142139425_AddManyRoutesToDetail.cs" />
+    <Compile Include="Migrations\201803142139425_AddManyRoutesToDetail.Designer.cs">
+      <DependentUpon>201803142139425_AddManyRoutesToDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
     <Compile Include="Model\Detail.cs" />
@@ -164,6 +168,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201803101353575_AddedChildrenProductionItems.resx">
       <DependentUpon>201803101353575_AddedChildrenProductionItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201803142139425_AddManyRoutesToDetail.resx">
+      <DependentUpon>201803142139425_AddManyRoutesToDetail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -30,7 +30,6 @@ namespace Scheduler.HttpServer
             Get["/"] = Index;
 
             Get["/details"] = GetDetails;
-            Get["/details-without-routes"] = GetDetailsWithoutRoutes;
             Post["/create-detail"] = CreateDetail;
             Get["/delete-detail"] = DeleteDetail;
 
@@ -82,14 +81,6 @@ namespace Scheduler.HttpServer
 
             var details = _dbManager.GetDetails(pageNumber, pageSize, equipmentId);
 
-            var dtoDetails = details.Select(d => _dtoConverter.ConvertDetail(d)).ToList();
-
-            return dtoDetails;
-        }
-
-        private object GetDetailsWithoutRoutes(dynamic parameters)
-        {
-            var details = _dbManager.GetDetailsWithoutRoutes();
             var dtoDetails = details.Select(d => _dtoConverter.ConvertDetail(d)).ToList();
 
             return dtoDetails;

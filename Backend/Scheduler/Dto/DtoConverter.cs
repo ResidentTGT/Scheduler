@@ -26,7 +26,7 @@ namespace Scheduler.Dto
                 Description = detail.Description,
                 Id = detail.Id,
                 IsPurchased = detail.IsPurchased,
-                RouteName = detail.Route != null ? detail.Route.Name : null,
+                RouteName = detail.Routes.FirstOrDefault() != null ? detail.Routes.First().Name : null,
                 Title = detail.Title,
                 WorkshopSequence = detail.WorkshopSequence
             };
@@ -42,7 +42,7 @@ namespace Scheduler.Dto
                 Description = detail.Description,
                 Id = detail.Id,
                 IsPurchased = detail.IsPurchased,
-                RouteName = detail.Route != null ? detail.Route.Name : null,
+                RouteName = detail.Routes.First() != null ? detail.Routes.First().Name : null,
                 Title = detail.Title,
                 WorkshopSequence = detail.WorkshopSequence,
                 EquipmentsIdSequence = detail.EquipmentsIdSequence,

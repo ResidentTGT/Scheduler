@@ -24,6 +24,7 @@ export class CreateRouteComponent implements OnInit {
 
     public detailsLoading: boolean;
     public operationsLoading: boolean;
+    public savingLoading: boolean;
 
     public details: Detail[] = [];
     public detailsDataSource: DetailsDataSource | null;
@@ -48,26 +49,40 @@ export class CreateRouteComponent implements OnInit {
         this.getDetails(this.detailsPageNumber, this.detailsPageSize).subscribe();
     }
 
-    // public createRoute() {
-    //     const route: Route = {
-    //         description: this.description,
-    //         name: this.name,
-    //         operations: this.addedOperations,
-    //         detail: this.detail,
-    //         operationsSequence: this.addedOperations.map(o => +o.id)
-    //     };
+    public createRoute() {
+        this.savingLoading = true;
 
-    //     this._api.createRoute(route)
-    //         .catch(resp => {
-    //             alert(`Не удалось добавить маршрут по причине: ${JSON.stringify(resp.json())}`);
-    //             return Observable.empty();
-    //         })
-    //         .subscribe(id => {
-    //             route.id = id;
-    //             this.routes.push(route);
-    //             this.closeDialog();
-    //         });
-    // }
+        const operationsSequence = new Array<number>();
+        this.departmentOperations.forEach(d => {
+            d.operations.filter(o => o.type.toString() !== OperationType[OperationType.Assembling].toString())
+                .forEach(o => operationsSequence.push(+o.id));
+        });
+        this.departmentOperations.forEach(d => {
+            d.operations.filter(o => o.type.toString() === OperationType[OperationType.Assembling].toString())
+                .forEach(o => operationsSequence.push(+o.id));
+        });
+        debugger;
+        const route: Route = {
+            description: this.description,
+            name: this.name,
+            operations: this.selectedOperations,
+            detail: this.selectedDetail,
+            operationsSequence: operationsSequence
+        };
+
+        this._api.createRoute(route)
+            .catch(resp => {
+                alert(`Не удалось добавить маршрут по причине: ${JSON.stringify(resp.json())}`);
+                this.savingLoading = false;
+                return Observable.empty();
+            })
+            .subscribe(id => {
+                this.savingLoading = false;
+                this.selectedDetail = null;
+                this.selectedOperations = [];
+                this.departmentOperations = [];
+            });
+    }
 
     private getDetails(pageNumber: number, pageSize: number): Observable<Detail[] | {}> {
         this.detailsLoading = true;
@@ -203,41 +218,54 @@ export class CreateRouteComponent implements OnInit {
     }
 
 
-    // public filterOperations(detail: Detail) {
-    //     if (this.operations) {
-    //         this.viewOperations = this.operations.filter(o => o.detail.id === detail.id);
-    //     }
-    // }
+    public deleteOperation(department: DepartmentOperations, operation: Operation): void {
+        this.selectedOperations
+            .splice(this.selectedOperations.indexOf(this.selectedOperations.filter(oper => oper.id === operation.id)[0]), 1);
+
+        department.operations
+            .splice(department.operations.indexOf(department.operations.filter(oper => oper.id === operation.id)[0]), 1);
+
+        if (department.operations.length === 0) {
+            this.deleteDepartment(department);
+        }
+    }
 
 
-    // public moveUp(operation: Operation): void {
-    //     const index = this.addedOperations.indexOf(operation);
+    public moveUpOperation(department: DepartmentOperations, operation: Operation): void {
+        const index = department.operations.indexOf(operation);
 
-    //     if (index !== 0) {
-    //         const a = this.addedOperations[index - 1];
-    //         const b = this.addedOperations[index];
-    //         this.addedOperations[index] = a;
-    //         this.addedOperations[index - 1] = b;
-    //     }
-    // }
+        if (index !== 0) {
+            const a = department.operations[index - 1];
+            const b = department.operations[index];
+            department.operations[index] = a;
+            department.operations[index - 1] = b;
+        }
+    }
 
-    // public moveDown(operation: Operation): void {
-    //     const index = this.addedOperations.indexOf(operation);
+    public moveDownOperation(department: DepartmentOperations, operation: Operation): void {
+        const index = department.operations.indexOf(operation);
 
-    //     if (index !== this.addedOperations.length - 1) {
-    //         const a = this.addedOperations[index];
-    //         const b = this.addedOperations[index + 1];
-    //         this.addedOperations[index] = b;
-    //         this.addedOperations[index + 1] = a;
-    //     }
-    // }
+        if (index !== department.operations.length - 1) {
+            const a = department.operations[index];
+            const b = department.operations[index + 1];
+            department.operations[index] = b;
+            department.operations[index + 1] = a;
+        }
+    }
 
-    // public isValidSequence(): boolean {
-    //     if (this.addedOperations.some(o => OperationType[o.type.toString()] === OperationType.Machining)
-    //         && this.addedOperations.filter(o => OperationType[o.type.toString()] === OperationType.Assembling).length === 1) {
-    //         return true;
-    //     }
-    // }
+    public isValidSequence(): boolean {
+        if (this.selectedOperations.some(o => OperationType[o.type.toString()] === OperationType.Machining)
+            && this.selectedOperations.filter(o => OperationType[o.type.toString()] === OperationType.Assembling).length === 1) {
+            return true;
+        }
+    }
+
+    public isAssemblinOperationAlreadySelected(oper: Operation): boolean {
+
+        console.log()
+        return this.selectedOperations.some(o => o.type.toString() === OperationType[OperationType.Assembling].toString())
+            && oper.type.toString() === OperationType[OperationType.Assembling].toString());
+    }
 
 }
 

@@ -10,7 +10,6 @@ namespace Scheduler.Model
 {
     public class Route
     {
-        [ForeignKey("Detail")]
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -22,6 +21,7 @@ namespace Scheduler.Model
         public virtual List<Operation> Operations { get; set; }
 
         public virtual Detail Detail { get; set; }
+        public int? DetailId { get; set; }
 
     }
 }

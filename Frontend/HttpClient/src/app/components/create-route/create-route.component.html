@@ -1,60 +1,3 @@
-<!-- <div class="create-route-layout">
-    <div class="form-container">
-        <div class="first-form">
-            <mat-form-field>
-                <input matInput [(ngModel)]="name" placeholder="Название">
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput [(ngModel)]="description" placeholder="Описание">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-select placeholder="Деталь" (change)="filterOperations(detail)" [(ngModel)]="detail">
-                    <mat-option *ngFor="let detail of details" [value]="detail">
-                        {{ detail.title }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <mat-divider></mat-divider>
-
-        <mat-form-field>
-            <mat-select placeholder="Операция" [disabled]="!detail" [(ngModel)]="operation">
-                <mat-option *ngFor="let operation of viewOperations" [value]="operation">
-                    {{ operation.name }} ({{ operation.equipment.conveyor?.name||operation.equipment.workshop?.name }})
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <button mat-raised-button class="add-operation-button" color="primary" (click)="addOperation()" [disabled]="!operation">Добавить операцию</button>
-
-        <div class="warning-message">
-            Расположите операции в том порядке, в котором деталь должна их проходить.
-            <br> У детали должна быть одна операция сборки и >1 операций обработки.
-            <br> Если операции по цехам перепутаны местами, то порядок цехов будет выбран автоматически.
-        </div>
-
-        <div class="operations-list">
-            <div class="list-item" id="{{operation.id}}" *ngFor="let operation of addedOperations;let i =index;">
-                <div class="mat-line">
-                    <span class="operation-name">{{ operation.name }} ({{ operation.equipment.conveyor?.name||operation.equipment.workshop?.name }})</span>
-                    <button [disabled]="addedOperations.length<2" mat-mini-fab color="primary" (click)="moveDown(operation)">
-                        <mat-icon>expand_more</mat-icon>
-                    </button>
-                    <button [disabled]="addedOperations.length<2" mat-mini-fab color="primary" (click)="moveUp(operation)">
-                        <mat-icon>expand_less</mat-icon>
-                    </button>
-                </div>
-                <mat-divider></mat-divider>
-            </div>
-        </div>
-
-    </div>
-
-    <footer>
-        <button mat-raised-button color="primary" (click)="createRoute()" [disabled]="!name||!addedOperations.length||!isValidSequence()">Создать маршрут</button>
-        <div style="flex:1"></div>
-        <button mat-raised-button color="primary" (click)="closeDialog()">Закрыть</button>
-    </footer>
-</div> -->
 <div class="create-route-layout">
     <mat-card>
         <div class="loading" *ngIf="savingLoading">
@@ -69,7 +12,11 @@
                 <input matInput [(ngModel)]="description" placeholder="Описание">
             </mat-form-field>
 
-            <button mat-raised-button color="primary" (click)="createRoute()">Создать маршрут</button>
+            <mat-form-field class="detail" *ngIf="selectedDetail">
+                    <input matInput disabled [(ngModel)]="selectedDetail.title" placeholder="Деталь">
+                </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="createRoute()" [disabled]="!isValidSequence()||!this.name">Создать маршрут</button>
         </header>
         <mat-divider></mat-divider>
         <main>
@@ -120,14 +67,15 @@
                     <ng-container matColumnDef="add-button">
                         <mat-header-cell class="add-button" *matHeaderCellDef></mat-header-cell>
                         <mat-cell class="add-button" *matCellDef="let operation">
-                            <button mat-icon-button color="primary" (click)="selectOperation(operation)" [disabled]="isOperationSelected(operation)">
+                            <button mat-icon-button color="primary" (click)="selectOperation(operation)" [disabled]="isOperationSelected(operation)||isAssemblinOperationAlreadySelected(operation)">
                                 <mat-icon>add</mat-icon>
                             </button>
                         </mat-cell>
                     </ng-container>
 
                     <mat-header-row *matHeaderRowDef="operationsDisplayedColumns"></mat-header-row>
-                    <mat-row [ngClass]="isOperationSelected(operation)?'selected':''" *matRowDef="let operation; columns: operationsDisplayedColumns;"></mat-row>
+                    <mat-row [ngClass]="isOperationSelected(operation)?'selected':(isAssemblinOperationAlreadySelected(operation)?'assembling-selected':'')"
+                        *matRowDef="let operation; columns: operationsDisplayedColumns;"></mat-row>
                 </mat-table>
                 <mat-divider></mat-divider>
 
@@ -138,36 +86,47 @@
             </div>
 
             <div class="column third">
-                <div #listElem>
+                <div class="warning-message">
+                    Расположите операции в том порядке, в котором деталь должна их проходить. У детали должна быть хотя бы одна операция сборки и
+                    обработки.
+                </div>
+                <div class="list">
                     <mat-list>
                         <ng-container *ngFor="let departmentOperation of departmentOperations">
                             <mat-list-item class="department-operation">
-                                {{departmentOperation.departmentName}}
+                                <div class="name">
+                                    {{departmentOperation.departmentName}}
+                                </div>
                                 <button mat-icon-button color="primary" (click)="moveUpDepartment(departmentOperation)" [disabled]="departmentOperations.length<2">
                                     <mat-icon>expand_less</mat-icon>
                                 </button>
                                 <button mat-icon-button color="primary" (click)="moveDownDepartment(departmentOperation)" [disabled]="departmentOperations.length<2">
                                     <mat-icon>expand_more</mat-icon>
                                 </button>
-                                <button mat-icon-button color="primary" (click)="deleteDepartment(departmentOperation)" [disabled]="">
+                                <button mat-icon-button color="primary" (click)="deleteDepartment(departmentOperation)">
                                     <mat-icon>clear</mat-icon>
                                 </button>
                             </mat-list-item>
                             <mat-list-item class="operation" *ngFor="let operation of departmentOperation.operations">
-                                {{operation.name}}
-                                <button mat-icon-button color="primary" (click)="moveUpOperation(operation)" [disabled]="">
+                                <div class="name">
+                                    {{operation.name}}
+                                </div>
+
+                                <button mat-icon-button color="primary" (click)="moveUpOperation(departmentOperation,operation)" [disabled]="departmentOperation.operations.length<2">
                                     <mat-icon>expand_less</mat-icon>
                                 </button>
-                                <button mat-icon-button color="primary" (click)="moveDownOperation(operation)" [disabled]="">
+                                <button mat-icon-button color="primary" (click)="moveDownOperation(departmentOperation,operation)" [disabled]="departmentOperation.operations.length<2">
                                     <mat-icon>expand_more</mat-icon>
                                 </button>
-                                <button mat-icon-button color="primary" (click)="deleteOperation(operation)" [disabled]="">
+                                <button mat-icon-button color="primary" (click)="deleteOperation(departmentOperation,operation)" [disabled]="">
                                     <mat-icon>clear</mat-icon>
                                 </button>
+
                             </mat-list-item>
                         </ng-container>
                     </mat-list>
                 </div>
+
             </div>
         </main>
     </mat-card>

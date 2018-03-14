@@ -32,12 +32,14 @@ $paginator-height:56px;
             position: relative;
             mat-form-field {
                 align-self: center;
-                &.name {
+                &.name,
+                &.detail {
                     width: 200px;
+                    margin: 0 20px 0 0;
                 }
                 &.description {
                     flex: 1;
-                    margin: 0 20px;
+                    margin: 0 20px 0 0;
                 }
             }
             button {
@@ -100,6 +102,9 @@ $paginator-height:56px;
                             &.selected {
                                 background-color: map-get($scheduler-primary, 100);
                             }
+                            &.assembling-selected {
+                                background-color: map-get($scheduler-accent, 100);
+                            }
                         }
                         .add-button {
                             max-width: 50px;
@@ -116,11 +121,29 @@ $paginator-height:56px;
                     width: 40%;
                     max-width: 40%;
                     position: relative;
-                    mat-list {
-                        height: 100%;
+                    .warning-message {
+                        padding: 5px;
+                        height: 68px;
+                    }
+                    .list {
+                        height: calc(100% - 88px);
                         position: relative;
-                        .operation {
-                            padding: 0 30px;
+                        mat-list {
+                            height: 100%;
+                            position: relative;
+                            overflow-y: auto;
+                            .department-operation {
+                                background: rgba(0, 0, 0, 0.06);
+                                .name {
+                                    flex: 1;
+                                }
+                            }
+                            .operation {
+                                padding: 0 0 0 30px;
+                                .name {
+                                    flex: 1;
+                                }
+                            }
                         }
                     }
                 }

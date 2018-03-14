@@ -49,12 +49,6 @@ namespace Scheduler.Database
             return details as IEnumerable<Detail>;
         }
 
-        public IEnumerable<Detail> GetDetailsWithoutRoutes()
-        {
-            var details = _context.Details.Where(d => d.Route == null).Include("Route").Include("ProductionItems").Include("ProductionItemQuantums").Include("Operations");
-            return details as IEnumerable<Detail>;
-        }
-
         public int CreateDetail(Detail detail)
         {
             _context.Details.Add(detail);
@@ -67,8 +61,9 @@ namespace Scheduler.Database
         {
             var detail = _context.Details.First(d => d.Id == id);
 
-            if (detail.Route != null)
-                _context.Routes.Remove(detail.Route);
+            var routes = _context.Routes.Where(r => r.DetailId == id);
+            _context.Routes.RemoveRange(routes);
+
             _context.Details.Remove(detail);
 
             _context.SaveChanges();
@@ -316,7 +311,7 @@ namespace Scheduler.Database
             var operations = _context.ProductionItems
                 .First(p => p.Id == id)
                 .ProductionItemQuantums
-                .Select(piq => piq.Detail.Route)
+                .Select(piq => piq.Detail.Routes.First())
                 .SelectMany(d => d.Operations);
 
             return operations;

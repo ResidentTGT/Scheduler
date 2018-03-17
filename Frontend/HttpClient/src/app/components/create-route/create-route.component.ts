@@ -261,8 +261,6 @@ export class CreateRouteComponent implements OnInit {
     }
 
     public isAssemblinOperationAlreadySelected(oper: Operation): boolean {
-
-        console.log()
         return this.selectedOperations.some(o => o.type.toString() === OperationType[OperationType.Assembling].toString())
             && oper.type.toString() === OperationType[OperationType.Assembling].toString());
     }

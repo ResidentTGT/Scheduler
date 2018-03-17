@@ -355,10 +355,10 @@ namespace Scheduler.Database
             route.Operations = new List<Operation>();
             _context.Routes.Add(route);
 
-            //foreach (var operId in Array.ConvertAll(route.OperationsSequence.Split(','), int.Parse))
-            //{
-            //    route.Operations.Add(GetOperationById(operId));
-            //}
+            foreach (var operId in Array.ConvertAll(route.OperationsSequence.Split(','), int.Parse))
+            {
+                route.Operations.Add(GetOperationById(operId));
+            }
 
             _context.SaveChanges();
 

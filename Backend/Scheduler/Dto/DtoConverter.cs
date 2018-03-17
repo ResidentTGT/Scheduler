@@ -389,8 +389,7 @@ namespace Scheduler.Dto
                 Name = routeDto.Name,
                 Operations = routeDto.Operations.ToList().Select(o => ConvertOperation(o)).ToList(),
                 OperationsSequence = String.Join(",", routeDto.OperationsSequence),
-                DetailId = routeDto.Detail.Id,
-                Detail = ConvertDetail(routeDto.Detail)
+                DetailId = routeDto.Detail.Id
             };
 
             return route;

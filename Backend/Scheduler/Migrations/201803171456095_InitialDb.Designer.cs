@@ -7,13 +7,13 @@ namespace Scheduler.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddedWorkshopSequenceToDetail : IMigrationMetadata
+    public sealed partial class InitialDb : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedWorkshopSequenceToDetail));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialDb));
         
         string IMigrationMetadata.Id
         {
-            get { return "201711271827181_AddedWorkshopSequenceToDetail"; }
+            get { return "201803171456095_InitialDb"; }
         }
         
         string IMigrationMetadata.Source

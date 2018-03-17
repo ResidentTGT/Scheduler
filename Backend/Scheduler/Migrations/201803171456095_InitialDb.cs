@@ -13,6 +13,8 @@ namespace Scheduler.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
+                        TransportTime = c.Time(nullable: false, precision: 7),
+                        ReadjustingTime = c.Time(nullable: false, precision: 7),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -61,6 +63,7 @@ namespace Scheduler.Migrations
                         Description = c.String(),
                         Cost = c.Int(),
                         IsPurchased = c.Boolean(),
+                        WorkshopSequenceStr = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -86,8 +89,7 @@ namespace Scheduler.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Title = c.String(),
                         Description = c.String(),
-                        ParentProductionItemId = c.Int(),
-                        IsNode = c.Boolean(nullable: false),
+                        ChildrenProductionItemsIds = c.String(),
                         Detail_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -127,13 +129,15 @@ namespace Scheduler.Migrations
                 "dbo.Routes",
                 c => new
                     {
-                        Id = c.Int(nullable: false),
+                        Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
                         Description = c.String(),
+                        OperationsSequence = c.String(),
+                        DetailId = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Details", t => t.Id)
-                .Index(t => t.Id);
+                .ForeignKey("dbo.Details", t => t.DetailId)
+                .Index(t => t.DetailId);
             
             CreateTable(
                 "dbo.Workshops",
@@ -167,7 +171,7 @@ namespace Scheduler.Migrations
             DropForeignKey("dbo.Operations", "DetailId", "dbo.Details");
             DropForeignKey("dbo.RouteOperations", "Operation_Id", "dbo.Operations");
             DropForeignKey("dbo.RouteOperations", "Route_Id", "dbo.Routes");
-            DropForeignKey("dbo.Routes", "Id", "dbo.Details");
+            DropForeignKey("dbo.Routes", "DetailId", "dbo.Details");
             DropForeignKey("dbo.ProductionItems", "Detail_Id", "dbo.Details");
             DropForeignKey("dbo.ProductionItemQuantums", "ProductionItemId", "dbo.ProductionItems");
             DropForeignKey("dbo.OrderQuantums", "ProductionItemId", "dbo.ProductionItems");
@@ -175,7 +179,7 @@ namespace Scheduler.Migrations
             DropForeignKey("dbo.ProductionItemQuantums", "DetailId", "dbo.Details");
             DropIndex("dbo.RouteOperations", new[] { "Operation_Id" });
             DropIndex("dbo.RouteOperations", new[] { "Route_Id" });
-            DropIndex("dbo.Routes", new[] { "Id" });
+            DropIndex("dbo.Routes", new[] { "DetailId" });
             DropIndex("dbo.OrderQuantums", new[] { "OrderId" });
             DropIndex("dbo.OrderQuantums", new[] { "ProductionItemId" });
             DropIndex("dbo.ProductionItems", new[] { "Detail_Id" });

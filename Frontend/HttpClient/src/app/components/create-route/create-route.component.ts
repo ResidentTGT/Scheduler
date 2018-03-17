@@ -61,7 +61,6 @@ export class CreateRouteComponent implements OnInit {
             d.operations.filter(o => o.type.toString() === OperationType[OperationType.Assembling].toString())
                 .forEach(o => operationsSequence.push(+o.id));
         });
-        debugger;
         const route: Route = {
             description: this.description,
             name: this.name,

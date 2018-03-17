@@ -98,29 +98,9 @@
     <Compile Include="HttpServer\HttpServerFactory.cs" />
     <Compile Include="HttpServer\NancyServer.cs" />
     <Compile Include="Log\Logger.cs" />
-    <Compile Include="Migrations\201711210849299_InitialDb.cs" />
-    <Compile Include="Migrations\201711210849299_InitialDb.Designer.cs">
-      <DependentUpon>201711210849299_InitialDb.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711231840474_AddTimesToConveyor.cs" />
-    <Compile Include="Migrations\201711231840474_AddTimesToConveyor.Designer.cs">
-      <DependentUpon>201711231840474_AddTimesToConveyor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201711271827181_AddedWorkshopSequenceToDetail.cs" />
-    <Compile Include="Migrations\201711271827181_AddedWorkshopSequenceToDetail.Designer.cs">
-      <DependentUpon>201711271827181_AddedWorkshopSequenceToDetail.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802101933599_AddOperationSequenceToRoute.cs" />
-    <Compile Include="Migrations\201802101933599_AddOperationSequenceToRoute.Designer.cs">
-      <DependentUpon>201802101933599_AddOperationSequenceToRoute.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803101353575_AddedChildrenProductionItems.cs" />
-    <Compile Include="Migrations\201803101353575_AddedChildrenProductionItems.Designer.cs">
-      <DependentUpon>201803101353575_AddedChildrenProductionItems.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201803142139425_AddManyRoutesToDetail.cs" />
-    <Compile Include="Migrations\201803142139425_AddManyRoutesToDetail.Designer.cs">
-      <DependentUpon>201803142139425_AddManyRoutesToDetail.cs</DependentUpon>
+    <Compile Include="Migrations\201803171456095_InitialDb.cs" />
+    <Compile Include="Migrations\201803171456095_InitialDb.Designer.cs">
+      <DependentUpon>201803171456095_InitialDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
@@ -154,23 +134,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201711210849299_InitialDb.resx">
-      <DependentUpon>201711210849299_InitialDb.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711231840474_AddTimesToConveyor.resx">
-      <DependentUpon>201711231840474_AddTimesToConveyor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201711271827181_AddedWorkshopSequenceToDetail.resx">
-      <DependentUpon>201711271827181_AddedWorkshopSequenceToDetail.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802101933599_AddOperationSequenceToRoute.resx">
-      <DependentUpon>201802101933599_AddOperationSequenceToRoute.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803101353575_AddedChildrenProductionItems.resx">
-      <DependentUpon>201803101353575_AddedChildrenProductionItems.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201803142139425_AddManyRoutesToDetail.resx">
-      <DependentUpon>201803142139425_AddManyRoutesToDetail.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201803171456095_InitialDb.resx">
+      <DependentUpon>201803171456095_InitialDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

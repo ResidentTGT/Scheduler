@@ -162,7 +162,6 @@ export class BackendApiService {
     }
 
     createRoute(route: Route): Observable<number> {
-        debugger;
         return this.http.post(`${env.backendUrl}create-route`, route)
             .map(resp => resp.json() as number);
     }

@@ -1,54 +1,81 @@
-<div class="orders-layout">
-    <div class="table">
-        <div class="table-header">
-            <div class="name word-limitation">
-                Название
+<div class="orders-items-layout">
+    <main>
+        <mat-card>
+            <div class="table-container">
+
+                <div class="loading" *ngIf="loading">
+                    <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+                </div>
+
+                <mat-table #table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef class="name"> Название </mat-header-cell>
+                        <mat-cell *matCellDef="let order" class="name"> {{order.name}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef> Описание </mat-header-cell>
+                        <mat-cell *matCellDef="let order"> {{order.description}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="state">
+                        <mat-header-cell *matHeaderCellDef class="state"> Статус </mat-header-cell>
+                        <mat-cell *matCellDef="let order" class="state">{{order.state|orderState}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="begin-date">
+                        <mat-header-cell *matHeaderCellDef class="begin-date"> План. время начала </mat-header-cell>
+                        <mat-cell *matCellDef="let order" class="begin-date">{{order.plannedBeginDate|date:"mediumDate"}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="end-date">
+                        <mat-header-cell *matHeaderCellDef class="end-date"> План. время конца </mat-header-cell>
+                        <mat-cell *matCellDef="let order" class="end-date">{{order.plannedBeginDate|date:"mediumDate"}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="products">
+                        <mat-header-cell *matHeaderCellDef class="products"> Кол-во продукции </mat-header-cell>
+                        <mat-cell *matCellDef="let order" class="products">{{order.orderQuantumsCount}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="openButton">
+                        <mat-header-cell class="open-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="open-button" *matCellDef="let order">
+                            <button mat-icon-button color="primary" (click)="openOrder(productionItem)">
+                                <mat-icon>open_with</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="deleteButton">
+                        <mat-header-cell class="delete-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="delete-button" *matCellDef="let order">
+                            <button mat-icon-button color="primary" (click)="deleteOrder(order)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                </mat-table>
+
+                <mat-divider></mat-divider>
+
+                <footer>
+                    <button color="primary" mat-raised-button (click)="createOrder()">Создать заказ</button>
+                    <mat-paginator [length]="pageLength" [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)">
+                    </mat-paginator>
+                </footer>
+
             </div>
-            <div class="description word-limitation">
-                Описание
-            </div>
-            <div class="order-quantums word-limitation">
-                Состав продукции
-            </div>
-            <div class="state word-limitation">
-                Состояние
-            </div>
-            <div class="planned-dates word-limitation">
-                План. времена начала и конца
-            </div>
-        </div>
-        <mat-list>
-            <mat-list-item *ngFor="let order of orders">
-                <span class="name word-limitation">
-                    {{order.name}}
-                </span>
-                <span class="description word-limitation">
-                    {{order.description}}
-                </span>
-                <span class="order-quantums word-limitation">
-                    <mat-list class="order-quantums-list">
-                        <mat-list-item *ngFor="let orderQuantum of order.orderQuantums">
-                            <p matLine>
-                                <span>{{orderQuantum.productionItem.title}}</span>
-                                <span> {{orderQuantum.count}} </span>
-                                <span> {{orderQuantum.itemsCountInOnePart}} </span>
-                            </p>
-                        </mat-list-item>
-                    </mat-list>
-                </span>
-                <span class="state word-limitation">
-                    {{order.state|orderState}}
-                </span>
-                <span class="planned-dates word-limitation">
-                    {{order.plannedBeginDate|date:"dd.MM.y"}} {{order.plannedEndDate|date:"dd.MM.y"}}
-                </span>
-                <button mat-button class="delete-button" (click)="deleteOrder(order)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </mat-list-item>
-        </mat-list>
-    </div>
-    <div>
-        <button mat-button color="warn" (click)="openDialog()">Создать заказ</button>
-    </div>
+        </mat-card>
+    </main>
+
 </div>

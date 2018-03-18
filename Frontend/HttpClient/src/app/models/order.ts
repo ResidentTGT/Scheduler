@@ -8,6 +8,7 @@ export class Order {
     public plannedBeginDate: Date;
     public plannedEndDate: Date;
     public orderQuantums: OrderQuantum[];
+    public orderQuantumsCount: number;
 
     static fromJSON(obj: any) {
         if (!obj) {

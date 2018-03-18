@@ -30,6 +30,7 @@ namespace Scheduler.HttpServer
             Get["/"] = Index;
 
             Get["/details"] = GetDetails;
+            Get["/details-with-routes"] = GetDetailsWithRoutes;
             Post["/create-detail"] = CreateDetail;
             Get["/delete-detail"] = DeleteDetail;
 
@@ -86,6 +87,18 @@ namespace Scheduler.HttpServer
             return dtoDetails;
         }
 
+        private object GetDetailsWithRoutes(dynamic parameters)
+        {
+            int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
+            int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
+
+            var details = _dbManager.GetDetailsWithRoutes(pageNumber, pageSize);
+
+            var dtoDetails = details.Select(d => _dtoConverter.ConvertDetail(d)).ToList();
+
+            return dtoDetails;
+        }
+
         private object CreateDetail(dynamic parameters)
         {
             var requestBody = this.Bind<DetailDto>();
@@ -135,7 +148,10 @@ namespace Scheduler.HttpServer
         #region OrderApi
         private object GetOrders(dynamic parameters)
         {
-            var orders = _dbManager.GetOrders();
+            int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
+            int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
+
+            var orders = _dbManager.GetOrders(pageNumber, pageSize);
             var dtoOrders = orders.Select(d => _dtoConverter.ConvertOrder(d)).ToList();
 
             return dtoOrders;

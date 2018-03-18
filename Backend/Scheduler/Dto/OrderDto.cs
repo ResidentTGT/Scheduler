@@ -22,5 +22,7 @@ namespace Scheduler.Dto
         public DateTime? PlannedEndDate { get; set; }
 
         public List<OrderQuantumDto> OrderQuantums { get; set; }
+
+        public int OrderQuantumsCount { get; set; }
     }
 }

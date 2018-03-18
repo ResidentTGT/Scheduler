@@ -64,9 +64,12 @@ namespace Scheduler.Core.Grouping
 
                     foreach (var oper in sortedOpers)
                     {
-                        equipmentsIdSequence.Add(oper.Equipment.Id);
-                        equipmentsNameSequence.Add(oper.Equipment.Name);
-                        workshopSequence.Add((int)oper.Equipment.WorkshopId);
+                        if (oper.Equipment.WorkshopId.HasValue)
+                        {
+                            equipmentsIdSequence.Add(oper.Equipment.Id);
+                            equipmentsNameSequence.Add(oper.Equipment.Name);
+                            workshopSequence.Add((int)oper.Equipment.WorkshopId);
+                        }
                     }
                     productionItemQuantum.Detail.WorkshopSequence = workshopSequence.ToList();
                     productionItemQuantum.Detail.EquipmentsIdSequence = equipmentsIdSequence;

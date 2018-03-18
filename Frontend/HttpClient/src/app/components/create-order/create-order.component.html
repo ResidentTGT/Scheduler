@@ -1,55 +1,113 @@
-<div class="create-order-layout">
-    <div class="form-container">
-        <mat-form-field>
-            <input matInput [(ngModel)]="name" placeholder="Название">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [(ngModel)]="description" placeholder="Описание">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [(ngModel)]="plannedBeginDate" [matDatepicker]="pickerFrom" placeholder="План. время начала">
-            <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
-            <mat-datepicker #pickerFrom></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [(ngModel)]="plannedEndDate" [matDatepicker]="pickerTo" placeholder="План. время конца">
-            <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
-            <mat-datepicker #pickerTo></mat-datepicker>
-        </mat-form-field>
+<div class="create-order-item-layout">
+    <mat-card>
+        <div class="loading" *ngIf="savingLoading">
+            <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+        </div>
 
+        <header>
+            <mat-form-field class="name">
+                <input matInput [(ngModel)]="name" placeholder="Название">
+            </mat-form-field>
+
+            <mat-form-field class="description">
+                <input matInput [(ngModel)]="description" placeholder="Описание">
+            </mat-form-field>
+
+            <mat-form-field class="date" (click)="fromPicker.open()">
+                <input matInput color="primary" readonly [(ngModel)]="plannedBeginDate" [matDatepicker]="fromPicker" placeholder="Начало">
+                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="date" (click)="toPicker.open()">
+                <input matInput color="primary" readonly [(ngModel)]="plannedEndDate" [matDatepicker]="toPicker" placeholder="Конец">
+                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                <mat-datepicker #toPicker></mat-datepicker>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" [disabled]="isNullOrWhitespace()||!orderQuantums.length" (click)="createOrder()">Создать заказ</button>
+
+        </header>
         <mat-divider></mat-divider>
+        <main>
+            <div class="column first">
 
-        <mat-form-field>
-            <mat-select placeholder="Продукция" [(ngModel)]="productionItem">
-                <mat-option *ngFor="let productionItem of productionItems" [value]="productionItem">
-                    {{ productionItem.title }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [(ngModel)]="productionItemsCount" placeholder="Количество продукции">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [(ngModel)]="itemsCountInOnePart" placeholder="Кол-во продукции в части партии">
-        </mat-form-field>
-        <button mat-button (click)="addProductionItemPart()" [disabled]="!itemsCountInOnePart||!productionItem||!productionItemsCount">Добавить часть заказа</button>
+                <div class="table-container">
 
-        <mat-list class="order-quantums-list">
-            <mat-list-item *ngFor="let orderQuantum of orderQuantums">
-                <p matLine>
-                    <span>{{orderQuantum.productionItem.title}}</span>
-                    <span> {{orderQuantum.count}} </span>
-                    <span> {{orderQuantum.itemsCountInOnePart}} </span>
-                </p>
-            </mat-list-item>
-        </mat-list>
+                    <div class="loading" *ngIf="productionItemsLoading">
+                        <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+                    </div>
 
+                    <mat-table #table [dataSource]="productionItemsDataSource">
+                        <ng-container matColumnDef="title">
+                            <mat-header-cell *matHeaderCellDef class="title"> Название </mat-header-cell>
+                            <mat-cell *matCellDef="let productionItem" class="title"> {{productionItem.title}} </mat-cell>
+                        </ng-container>
 
-        <mat-divider></mat-divider>
+                        <ng-container matColumnDef="description">
+                            <mat-header-cell *matHeaderCellDef class="description"> Описание </mat-header-cell>
+                            <mat-cell *matCellDef="let productionItem" class="description"> {{productionItem.title}} </mat-cell>
+                        </ng-container>
 
-        <button mat-button (click)="createOrder()" [disabled]="!name||!orderQuantums.length">Создать заказ</button>
+                        <mat-header-row *matHeaderRowDef="productionItemsDisplayedColumns"></mat-header-row>
+                        <mat-row (click)="selectProductionItem(productionItem)" *matRowDef="let productionItem; columns: productionItemsDisplayedColumns;"
+                            [ngClass]="isAlreadySelected(productionItem)?'already-selected':
+                        (selectedProductionItem.id===productionItem.id?'current-selected':'')"></mat-row>
+                    </mat-table>
 
-    </div>
+                    <mat-divider></mat-divider>
 
-    <button mat-button (click)="closeDialog()">Закрыть</button>
+                    <div class="current-selecting">
+                        <mat-form-field class="count">
+                            <input matInput type="number" [(ngModel)]="productionItemsCount" placeholder="Кол-во изделий">
+                        </mat-form-field>
+                        <mat-form-field class="count-in-batch">
+                            <input matInput type="number" [(ngModel)]="itemsCountInOnePart" placeholder="Кол-во изделий в партии">
+                        </mat-form-field>
+                        <button mat-mini-fab color="primary" [disabled]="!isValidOrderQuatnum()" (click)="addOrderQuantum()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+
+                    <mat-divider></mat-divider>
+
+                    <mat-paginator [length]="productionItemsPageLength" [pageIndex]="productionItemsPageNumber" [pageSize]="productionItemsPageSize"
+                        [pageSizeOptions]="pageSizeOptions" (page)="handleProductionItemsPageEvent($event)"></mat-paginator>
+
+                </div>
+            </div>
+
+            <div class="column second">
+                <mat-table #table [dataSource]="orderQuantumsDataSource">
+                    <ng-container matColumnDef="title">
+                        <mat-header-cell *matHeaderCellDef class="title"> Название </mat-header-cell>
+                        <mat-cell *matCellDef="let orderQuantum" class="title"> {{orderQuantum.productionItem.title}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="count">
+                        <mat-header-cell *matHeaderCellDef class="count"> Кол-во изделий</mat-header-cell>
+                        <mat-cell *matCellDef="let orderQuantum" class="count"> {{orderQuantum.count}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="count-in-batch">
+                        <mat-header-cell *matHeaderCellDef class="count-in-batch"> Кол-во изделий в партии</mat-header-cell>
+                        <mat-cell *matCellDef="let orderQuantum" class="count-in-batch"> {{orderQuantum.itemsCountInOnePart}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="delete-button">
+                        <mat-header-cell class="delete-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="delete-button" *matCellDef="let orderQuantum">
+                            <button mat-icon-button color="primary" (click)="deleteOrderQuantum(orderQuantum)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="orderQuantumsDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let orderQuantum; columns: orderQuantumsDisplayedColumns;"></mat-row>
+                </mat-table>
+            </div>
+        </main>
+    </mat-card>
+
 </div>

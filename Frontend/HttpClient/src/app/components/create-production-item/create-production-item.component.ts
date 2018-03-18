@@ -51,13 +51,13 @@ export class CreateProductionItemComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getDetails(this.detailsPageNumber, this.detailsPageSize).subscribe();
+        this.getDetailsWithRoutes(this.detailsPageNumber, this.detailsPageSize).subscribe();
         this.getProductionItems(this.productionItemsPageNumber, this.productionItemsPageSize).subscribe();
     }
 
-    private getDetails(pageNumber: number, pageSize: number): Observable<Detail[] | {}> {
+    private getDetailsWithRoutes(pageNumber: number, pageSize: number): Observable<Detail[] | {}> {
         this.detailsLoading = true;
-        return this._api.getDetails(pageNumber, pageSize)
+        return this._api.getDetailsWithRoutes(pageNumber, pageSize)
             .do(details => {
                 this.details = details;
                 this.detailsDataSource = new DetailsDataSource(this.details);
@@ -103,7 +103,7 @@ export class CreateProductionItemComponent implements OnInit {
         this.detailsPageNumber = event.pageIndex;
         this.detailsPageSize = event.pageSize;
 
-        this.getDetails(this.detailsPageNumber, this.detailsPageSize).subscribe();
+        this.getDetailsWithRoutes(this.detailsPageNumber, this.detailsPageSize).subscribe();
     }
 
     public handleProductionItemsPageEvent(event: any) {

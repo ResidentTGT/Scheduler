@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     MatButtonModule, MatToolbarModule, MatIconModule, MatPaginatorModule, MatListModule, MatProgressSpinnerModule, MatSlideToggleModule,
@@ -34,13 +34,16 @@ import { ViewProductionItemQuantumGroupComponent } from './components/view-calcu
 import { MatPaginatorIntlRu } from './extenders/MatPaginatorIntlRu';
 import { HelperService } from './services/helper.service';
 import { ParticlesModule } from 'angular-particle';
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
+registerLocaleData(localeRu, 'ru');
 
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/', pathMatch: 'full' },
     { path: 'details', component: DetailsComponent },
     { path: 'equipment', component: EquipmentsComponent },
-    { path: 'orders', component: OrdersComponent },
+
     {
         path: 'production-items',
         children: [
@@ -65,7 +68,16 @@ const appRoutes: Routes = [
             { path: 'create', component: CreateRouteComponent }
         ]
     },
-    { path: 'calculate-orders', component: CalculateOrdersComponent },
+    {
+        path: 'orders',
+        children: [
+            { path: '', redirectTo: 'view', pathMatch: 'full' },
+            { path: 'view', component: OrdersComponent },
+            { path: 'create', component: CreateOrderComponent },
+            { path: 'calculate', component: CalculateOrdersComponent },
+        ]
+    },
+
     // { path: '**', component: PageNotFoundComponent },
 ];
 
@@ -124,10 +136,8 @@ const appRoutes: Routes = [
         HelperService,
         { provide: MAT_DATE_LOCALE, useValue: 'ru-RU' },
         { provide: MatPaginatorIntl, useClass: MatPaginatorIntlRu },
+        { provide: LOCALE_ID, useValue: 'ru' },
     ],
     bootstrap: [RootComponent],
-    entryComponents: [
-        CreateOrderComponent,
-    ]
 })
 export class AppModule { }

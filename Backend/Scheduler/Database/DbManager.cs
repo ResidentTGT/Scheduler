@@ -49,6 +49,18 @@ namespace Scheduler.Database
             return details as IEnumerable<Detail>;
         }
 
+        public IEnumerable<Detail> GetDetailsWithRoutes(int pageNumber = 0, int pageSize = 0)
+        {
+            var details = _context.Details
+            .Where(d => d.Routes.Any())
+            .OrderByDescending(d => d.Id)
+            .Skip(pageNumber * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+            return details as IEnumerable<Detail>;
+        }
+
         public int CreateDetail(Detail detail)
         {
             _context.Details.Add(detail);
@@ -124,14 +136,20 @@ namespace Scheduler.Database
         #endregion
 
         #region Orders
-        public IEnumerable<Order> GetOrders()
+        public IEnumerable<Order> GetOrders(int pageNumber = 0, int pageSize = 0)
         {
-            var orders = _context.Orders
-                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem))
-                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums))
-                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail)))
-                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations)))
-                .Include(o => o.OrderQuantums.Select(op => op.ProductionItem.ProductionItemQuantums.Select(pi => pi.Detail).Select(d => d.Operations.Select(oper => oper.Equipment))));
+            var orders = new List<Order>() as IEnumerable<Order>;
+
+            if (pageSize > 0)
+            {
+                orders = _context.Orders
+                .OrderByDescending(d => d.Id)
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize)
+                .ToList();
+            }
+            else
+                orders = _context.Orders;
 
             return orders as IEnumerable<Order>;
         }

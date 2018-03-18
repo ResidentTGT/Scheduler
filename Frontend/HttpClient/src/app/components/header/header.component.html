@@ -2,8 +2,6 @@
     <a mat-button routerLink="/">Главная</a>
     <a mat-button routerLink="/details" routerLinkActive="active button">Детали</a>
     <a mat-button routerLink="/equipment" routerLinkActive="active button">Оборудование</a>
-    <a mat-button routerLink="/orders" routerLinkActive="active button">Заказы</a>
-    <a mat-button routerLink="/calculate-orders" routerLinkActive="active button">Рассчитать заказы</a>
     <a mat-button [matMenuTriggerFor]="productionitemsmenu" routerLinkActive="active button">
         Продукция
         <mat-menu class="menu" #productionitemsmenu="matMenu" [overlapTrigger]="false">
@@ -19,10 +17,18 @@
         </mat-menu>
     </a>
     <a mat-button [matMenuTriggerFor]="routesmenu" routerLinkActive="active button">
-            Маршруты деталей
-            <mat-menu class="menu" #routesmenu="matMenu" [overlapTrigger]="false">
-                <button mat-menu-item routerLink="/routes/view" routerLinkActive="active menu">Просмотр</button>
-                <button mat-menu-item routerLink="/routes/create" routerLinkActive="active menu">Создание</button>
-            </mat-menu>
-        </a>
+        Маршруты деталей
+        <mat-menu class="menu" #routesmenu="matMenu" [overlapTrigger]="false">
+            <button mat-menu-item routerLink="/routes/view" routerLinkActive="active menu">Просмотр</button>
+            <button mat-menu-item routerLink="/routes/create" routerLinkActive="active menu">Создание</button>
+        </mat-menu>
+    </a>
+    <a mat-button [matMenuTriggerFor]="ordersmenu" routerLinkActive="active button">
+        Заказы
+        <mat-menu class="menu" #ordersmenu="matMenu" [overlapTrigger]="false">
+            <button mat-menu-item routerLink="/orders/view" routerLinkActive="active menu">Просмотр</button>
+            <button mat-menu-item routerLink="/orders/create" routerLinkActive="active menu">Создание</button>
+            <button mat-menu-item routerLink="/orders/calculate" routerLinkActive="active menu">Расчет</button>
+        </mat-menu>
+    </a>
 </mat-toolbar>

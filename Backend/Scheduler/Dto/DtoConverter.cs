@@ -112,7 +112,7 @@ namespace Scheduler.Dto
                 PlannedBeginDate = order.PlannedBeginDate,
                 PlannedEndDate = order.PlannedEndDate,
                 State = order.State,
-                OrderQuantums = order.OrderQuantums != null ? order.OrderQuantums.Select(d => ConvertOrderQuantum(d)).ToList() : null
+                OrderQuantumsCount = order.OrderQuantums.Count()
             };
 
             return orderDto;

@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, Inject } from '@angular/core';
 import { BackendApiService } from '../../services/backend-api.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Operation, OperationType } from '../../models/operation';
 import { Detail } from '../../models/detail';
 import { Observable } from 'rxjs/Rx';
@@ -261,7 +260,7 @@ export class CreateRouteComponent implements OnInit {
 
     public isAssemblinOperationAlreadySelected(oper: Operation): boolean {
         return this.selectedOperations.some(o => o.type.toString() === OperationType[OperationType.Assembling].toString())
-            && oper.type.toString() === OperationType[OperationType.Assembling].toString());
+            && oper.type.toString() === OperationType[OperationType.Assembling].toString();
     }
 
 }

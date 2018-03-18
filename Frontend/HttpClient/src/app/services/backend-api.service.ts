@@ -26,6 +26,14 @@ export class BackendApiService {
             .map(response => response.json() as Detail[]);
     }
 
+    getDetailsWithRoutes(pageNumber: number = 0, pageSize: number = 0): Observable<Detail[]> {
+        const query = `${env.backendUrl}details-with-routes?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
+        return this.http
+            .get(query)
+            .map(response => response.json() as Detail[]);
+    }
+
     getDetailsWithoutRoutes(): Observable<Detail[]> {
         return this.http
             .get(`${env.backendUrl}details-without-routes`)
@@ -129,9 +137,10 @@ export class BackendApiService {
             .map(response => response.json() as Workshop[]);
     }
 
-    getOrders(): Observable<Order[]> {
+    getOrders(pageNumber: number = 0, pageSize: number = 0): Observable<Order[]> {
+        const query = `${env.backendUrl}orders?pageNumber=${pageNumber}&pageSize=${pageSize}`;
         return this.http
-            .get(`${env.backendUrl}orders`)
+            .get(query)
             .map(response => response.json().map(e => Order.fromJSON(e)));
     }
 

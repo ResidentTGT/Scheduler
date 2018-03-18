@@ -1,12 +1,141 @@
-.create-order-layout {
-    .form-container {
-        width: 500px;
-        max-width: 500px;
-        margin: 15px 30px;
-        color: rgb(63, 81, 181)
+@import '~@angular/material/_theming.scss';
+@import 'src/scheduler-colors.scss';
+$paginator-height:56px;
+$selector-height:50px;
+$selected-item-height:65px;
+.create-order-item-layout {
+    .loading {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.06);
     }
-    .order-quantums-list {
-        max-height: 200px;
-        overflow-y: auto;
+    height: 100%;
+    display: flex;
+    flex: 1;
+    mat-card {
+        margin-top: 20px;
+        height: calc(100% - 40px);
+        @include mat-elevation(4);
+        padding: 0;
+        min-width: 1000px;
+        width: 1100px;
+        background-color: #F2F2F2;
+        margin: auto;
+        header {
+            display: flex;
+            height: 70px;
+            padding: 0 20px;
+            position: relative;
+            mat-form-field {
+                align-self: center;
+                &.name {
+                    width: 200px;
+                    margin: 0 10px 0 0;
+                }
+                &.description {
+                    flex: 1;
+                    margin: 0 10px 0 0;
+                }
+                &.date{
+                    width: 150px;
+                    margin: 0 10px 0 0;
+                }
+            }
+            button {
+                height: 36px;
+                align-self: center;
+                width: 170px;
+            }
+        }
+        main {
+            height: calc(100% - 70px);
+            flex: 1;
+            display: flex;
+            position: relative;
+            .column {
+                height: 100%;
+                position: relative;
+                &.first {
+                    border-right: 1px solid rgba(0, 0, 0, 0.12);
+                    width: 40%;
+                    max-width: 40%;
+                    mat-radio-group {
+                        display: flex;
+                        position: relative;
+                        justify-content: space-around;
+                        height: 50px;
+                        mat-radio-button {
+                            align-self: center;
+                        }
+                    }
+                    .table-container {
+                        height: 100%;
+                        position: relative;
+                        margin-top: 1px;
+                        mat-table {
+                            background-color: #F2F2F2;
+                            height: calc(100% - #{$paginator-height} - #{$selected-item-height});
+                            overflow-y: auto;
+                            mat-row {
+                                &:hover {
+                                    background: rgba(0, 0, 0, 0.06);
+                                    cursor: pointer;
+                                    transition-duration: 0.3s;
+                                }
+                                &.already-selected {
+                                    background-color: map-get($scheduler-primary, 200);
+                                }
+                                &.current-selected {
+                                    background-color: map-get($scheduler-primary, 100);
+                                }
+                            }
+                        }
+                        .current-selecting {
+                            height: 65px;
+                            display: flex;
+                            justify-content: space-between;
+                            mat-form-field,
+                            button {
+                                align-self: center;
+                                margin: 0 10px;
+                            }
+                            .count {
+                                width: 140px;
+                            }
+                            .count-in-batch {
+                                flex: 1;
+                            }
+                        }
+                        mat-paginator {
+                            background-color: #F2F2F2;
+                        }
+                    }
+                }
+                &.second {
+                    width: 60%;
+                    max-width: 60%;
+                    mat-table {
+                        background-color: #F2F2F2;
+                        height: calc(100% - 1px);
+                        overflow-y: auto;
+                        margin-top: 1px;
+                        .delete-button {
+                            max-width: 60px;
+                            button {
+                                &:hover {
+                                    background: rgba(0, 0, 0, 0.12);
+                                }
+                                margin: 7px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -21,6 +21,12 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" min='0' [(ngModel)]="riggingCost" placeholder="Стоимость оснастки">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" min='0' [(ngModel)]="riggingStorageCost" placeholder="Стоимость хранения оснастки">
+            </mat-form-field>
         </div>
     </aside>
     <aside class="column second">
@@ -102,7 +108,7 @@
         </div>
     </aside>
     <main>
-        <div class="loading message" *ngIf="!isFormValid()">Не вся форма заполнена</div>
+        <div class="loading message" *ngIf="!isFormValid()">Форма заполнена неполностью или неверно</div>
         <div class="form-text">4. Завершение создания операции</div>
         <div class="form">
             <div>Наименование: {{name?name:'Не введено'}}</div>

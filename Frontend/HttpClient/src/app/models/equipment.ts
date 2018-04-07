@@ -8,6 +8,10 @@ export class Equipment {
     public type: EquipmentType;
     public workshop: Workshop;
     public conveyor: Conveyor;
+    public cost: number;
+    public maintenanceCost: number;
+    public usingTimeResource: number;
+    public loadFactor: number;
 
     static fromJSON(obj: any) {
         if (!obj) {

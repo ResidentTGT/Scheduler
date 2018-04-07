@@ -20,6 +20,8 @@ namespace Scheduler.Dto
 
         public int ChildrenProductionItemsCount { get; set; }
 
+        public int OneItemIncome { get; set; }
+
         public List<ProductDto> AddingItems { get; set; }
 
         public List<ProductionItemQuantumDto> ProductionItemQuantums { get; set; }

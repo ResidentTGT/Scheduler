@@ -23,6 +23,8 @@ export class CreateOperationComponent implements OnInit {
     public name: string;
     public description: string;
     public additionalTime: number;
+    public riggingCost = 0;
+    public riggingStorageCost = 0;
     public operationType: string = OperationType[OperationType.Undefined];
     public selectedEquipment: Equipment = null;
     public selectedDetail: Detail = null;
@@ -165,6 +167,8 @@ export class CreateOperationComponent implements OnInit {
             mainTime: this.mainTime,
             name: this.name,
             type: this.operationType || OperationType[this.operationType],
+            riggingCost: this.riggingCost,
+            riggingStorageCost: this.riggingStorageCost
         };
 
         this._api.createOperation(operation)
@@ -189,6 +193,10 @@ export class CreateOperationComponent implements OnInit {
         }
 
         if (this.additionalTime === 0 || (this.additionalTime && this.additionalTime < 1)) {
+            return false;
+        }
+
+        if (isNaN(this.riggingCost) || this.riggingCost < 0 || isNaN(this.riggingStorageCost) || this.riggingStorageCost < 0) {
             return false;
         }
 

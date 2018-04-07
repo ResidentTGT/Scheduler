@@ -29,6 +29,18 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" min='0' [(ngModel)]="cost" placeholder="Стоимость оборудования">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" min='0' [(ngModel)]="usingTimeResource" placeholder="Ресурс времени оборудования">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" min='0' max='1' [(ngModel)]="loadFactor" placeholder="Коэффициент загрузки">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" min='0' [(ngModel)]="maintenanceCost" placeholder="Стоимость обслуживания">
+            </mat-form-field>
             <button mat-raised-button color="primary" [disabled]="!isFormValid()" (click)="createEquipment()">Создать оборудование</button>
         </div>
     </aside>
@@ -63,6 +75,34 @@
                         <mat-header-cell class="system" *matHeaderCellDef> Система </mat-header-cell>
                         <mat-cell class="system" *matCellDef="let equipment">
                             {{equipment.conveyor?.name||equipment.workshop?.name}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="cost">
+                        <mat-header-cell class="cost" *matHeaderCellDef> Стоимость </mat-header-cell>
+                        <mat-cell class="cost" *matCellDef="let equipment">
+                            {{equipment.cost}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="maintenanceCost">
+                        <mat-header-cell class="maintenanceCost" *matHeaderCellDef> Стоимость обслуживания </mat-header-cell>
+                        <mat-cell class="maintenanceCost" *matCellDef="let equipment">
+                            {{equipment.maintenanceCost}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="usingTimeResource">
+                        <mat-header-cell class="usingTimeResource" *matHeaderCellDef> Ресурс, ч. </mat-header-cell>
+                        <mat-cell class="usingTimeResource" *matCellDef="let equipment">
+                            {{equipment.usingTimeResource}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="loadFactor">
+                        <mat-header-cell class="loadFactor" *matHeaderCellDef> Коэф. загрузки </mat-header-cell>
+                        <mat-cell class="loadFactor" *matCellDef="let equipment">
+                            {{equipment.loadFactor}}
                         </mat-cell>
                     </ng-container>
 

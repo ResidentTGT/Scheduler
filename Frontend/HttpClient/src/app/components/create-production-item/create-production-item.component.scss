@@ -40,6 +40,9 @@ $selected-item-height:65px;
                     flex: 1;
                     margin: 0 20px;
                 }
+                &.one-item-income {
+                    margin: 0 20px 0 0;
+                }
             }
             button {
                 height: 36px;

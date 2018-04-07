@@ -17,7 +17,8 @@ export class OperationsComponent implements OnInit {
 
     public operations: Operation[] = [];
     public dataSource: OperationsDataSource | null;
-    public displayedColumns = ['name', 'description', 'main-time', 'additional-time', 'operation-type', 'equipment', 'detail', 'deleteButton'];
+    public displayedColumns = ['name', 'description', 'main-time', 'additional-time',
+        'operation-type', 'equipment', 'detail', 'riggingCost', 'riggingStorageCost', 'deleteButton'];
 
     public pageSizeOptions: number[] = env.pageSizeOptions;
     public pageNumber = 0;

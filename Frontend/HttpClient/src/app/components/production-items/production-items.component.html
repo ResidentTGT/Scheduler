@@ -31,6 +31,12 @@
                         </mat-cell>
                     </ng-container>
 
+                    <ng-container matColumnDef="oneItemIncome">
+                        <mat-header-cell *matHeaderCellDef class="oneItemIncome"> Доход с 1 продукции, руб. </mat-header-cell>
+                        <mat-cell *matCellDef="let productionItem" class="oneItemIncome">{{productionItem.oneItemIncome}}
+                        </mat-cell>
+                    </ng-container>
+
                     <ng-container matColumnDef="openButton">
                         <mat-header-cell class="open-button" *matHeaderCellDef></mat-header-cell>
                         <mat-cell class="open-button" *matCellDef="let productionItem">

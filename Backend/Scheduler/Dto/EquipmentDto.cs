@@ -20,5 +20,16 @@ namespace Scheduler.Dto
         public WorkshopDto Workshop { get; set; }
 
         public ConveyorDto Conveyor { get; set; }
+
+        public int Cost { get; set; }
+
+        /// <summary>
+        /// в часах
+        /// </summary>
+        public int UsingTimeResource { get; set; }
+
+        public double LoadFactor { get; set; }
+
+        public int MaintenanceCost { get; set; }
     }
 }

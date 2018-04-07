@@ -20,6 +20,7 @@ export class CreateProductionItemComponent implements OnInit {
 
     public title: string;
     public description: string;
+    public oneItemIncome = 0;
     public selectedItem: Product = new Product();
     public selectedItems: Product[] = [];
     public selectedItemsDataSource: ProductsDataSource | null;
@@ -139,7 +140,8 @@ export class CreateProductionItemComponent implements OnInit {
         const productionItem: ProductionItem = {
             title: this.title,
             description: this.description,
-            addingItems: this.selectedItems
+            addingItems: this.selectedItems,
+            oneItemIncome: this.oneItemIncome
         };
         this._api.createProductionItem(productionItem)
             .catch(resp => {
@@ -151,6 +153,14 @@ export class CreateProductionItemComponent implements OnInit {
                 this.savingLoading = false;
                 window.location.reload();
             });
+    }
+
+    public isFormValid(): boolean {
+        if (!this.title || !this.selectedItems.length || isNaN(this.oneItemIncome) || this.oneItemIncome < 0) {
+            return false;
+        }
+
+        return true;
     }
 
 }

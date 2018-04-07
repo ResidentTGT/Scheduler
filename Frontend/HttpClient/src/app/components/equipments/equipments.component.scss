@@ -10,6 +10,7 @@ $paginator-height:56px;
             width:#{$create-form};
             height: 100%;
             position: relative;
+            overflow-y: auto;
             background-color: #F2F2F2;
             @include mat-elevation(4);
             z-index: 900;
@@ -36,7 +37,7 @@ $paginator-height:56px;
            // background-color: #FAFAFA;
             mat-card {
                 @include mat-elevation(4);
-                max-width: 1000px;
+                max-width: 1500px;
                 padding: 0;
                 position: relative;
                 margin: auto;

@@ -11,6 +11,8 @@ export class Operation {
     public type: OperationType = OperationType.Undefined;
     public equipment: Equipment;
     public detail?: Detail;
+    public riggingCost: number;
+    public riggingStorageCost: number;
 
     static fromJSON(obj: any) {
         if (!obj) {

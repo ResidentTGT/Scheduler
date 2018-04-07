@@ -9,12 +9,11 @@ $paginator-height:56px;
         main {
             flex: 1;
             height: 100%;
-            position: relative;
-            //background-color: #FAFAFA;
+            position: relative; //background-color: #FAFAFA;
             mat-card {
                 @include mat-elevation(4);
                 min-width: 1000px;
-                max-width: 1500px;
+                max-width: 1700px;
                 padding: 0;
                 position: relative;
                 margin: auto;
@@ -63,6 +62,9 @@ $paginator-height:56px;
                     .detail,
                     .name {
                         max-width: 300px;
+                    }
+                    .rigging-storage-cost {
+                        max-width: 200px;
                     }
                 }
                 footer {

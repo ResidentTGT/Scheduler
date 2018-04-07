@@ -12,4 +12,5 @@ export class ProductionItem {
     public addingItems: Product[] = [];
     public detailsCount?: number;
     public childrenProductionItemsCount?: number;
+    public oneItemIncome: number;
 }

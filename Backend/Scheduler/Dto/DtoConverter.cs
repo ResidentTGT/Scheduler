@@ -80,7 +80,11 @@ namespace Scheduler.Dto
                 Name = equipment.Name,
                 Type = equipment.Type,
                 Conveyor = equipment.Conveyor != null ? ConvertConveyor(equipment.Conveyor) : null,
-                Workshop = equipment.Workshop != null ? ConvertWorkshop(equipment.Workshop) : null
+                Workshop = equipment.Workshop != null ? ConvertWorkshop(equipment.Workshop) : null,
+                Cost = equipment.Cost,
+                LoadFactor = equipment.LoadFactor,
+                MaintenanceCost = equipment.MaintenanceCost,
+                UsingTimeResource = equipment.UsingTimeResource.Hours
             };
 
             return equipmentDto;
@@ -94,7 +98,11 @@ namespace Scheduler.Dto
                 Name = equipmentDto.Name,
                 Type = equipmentDto.Type,
                 ConveyorId = equipmentDto.Conveyor != null ? equipmentDto.Conveyor.Id : null,
-                WorkshopId = equipmentDto.Workshop != null ? equipmentDto.Workshop.Id : null
+                WorkshopId = equipmentDto.Workshop != null ? equipmentDto.Workshop.Id : null,
+                Cost = equipmentDto.Cost,
+                LoadFactor = equipmentDto.LoadFactor,
+                MaintenanceCost = equipmentDto.MaintenanceCost,
+                UsingTimeResource = new TimeSpan(equipmentDto.UsingTimeResource, 0, 0)
             };
 
             return equipment;
@@ -226,7 +234,8 @@ namespace Scheduler.Dto
                 Title = productionItem.Title,
                 Description = productionItem.Description,
                 DetailsCount = productionItem.ProductionItemQuantums.Count,
-                ChildrenProductionItemsCount = productionItem.ChildrenProductionItemsIds.Length == 0 ? 0 : productionItem.ChildrenProductionItemsIds.Split(',').Length
+                ChildrenProductionItemsCount = productionItem.ChildrenProductionItemsIds.Length == 0 ? 0 : productionItem.ChildrenProductionItemsIds.Split(',').Length,
+                OneItemIncome = productionItem.OneItemIncome
             };
 
             return productionItemDto;
@@ -240,7 +249,8 @@ namespace Scheduler.Dto
                 Description = productionItemDto.Description,
                 ChildrenProductionItemsIds = String.Join(",", productionItemDto.AddingItems.Where(p => p.Type == ProductDto.ProductType.ProductionItem).Select(p => p.Id.ToString()).ToArray()),
                 ProductionItemQuantums = productionItemDto.AddingItems.Where(p => p.Type == ProductDto.ProductType.Detail)
-                .Select(d => ConvertProductDto(d)).ToList()
+                .Select(d => ConvertProductDto(d)).ToList(),
+                OneItemIncome = productionItemDto.OneItemIncome
             };
 
             return productionItem;
@@ -337,7 +347,9 @@ namespace Scheduler.Dto
                 Description = operation.Description,
                 Type = operation.Type,
                 Detail = operation.Detail != null ? ConvertDetail(operation.Detail) : null,
-                Equipment = operation.Equipment != null ? ConvertEquipment(operation.Equipment) : null
+                Equipment = operation.Equipment != null ? ConvertEquipment(operation.Equipment) : null,
+                RiggingCost = operation.RiggingCost,
+                RiggingStorageCost = operation.RiggingStorageCost
             };
 
             return operationDto;
@@ -347,14 +359,15 @@ namespace Scheduler.Dto
         {
             var operation = new Operation()
             {
-
                 Name = operationDto.Name,
                 MainTime = new TimeSpan(operationDto.MainTime),
                 AdditionalTime = new TimeSpan(operationDto.AdditionalTime),
                 Description = operationDto.Description,
                 Type = operationDto.Type,
                 DetailId = operationDto.Detail.Id,
-                EquipmentId = operationDto.Equipment.Id
+                EquipmentId = operationDto.Equipment.Id,
+                RiggingCost = operationDto.RiggingCost,
+                RiggingStorageCost = operationDto.RiggingStorageCost
             };
             if (operationDto.Id.HasValue)
                 operation.Id = (int)operationDto.Id;

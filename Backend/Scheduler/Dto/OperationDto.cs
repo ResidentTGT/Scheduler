@@ -26,5 +26,9 @@ namespace Scheduler.Dto
         public DetailDto Detail { get; set; }
 
         public int DetailId { get; set; }
+
+        public int RiggingCost { get; set; }
+
+        public int RiggingStorageCost { get; set; }
     }
 }

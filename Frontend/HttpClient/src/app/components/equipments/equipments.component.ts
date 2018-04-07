@@ -18,7 +18,8 @@ export class EquipmentsComponent implements OnInit {
 
     equipments: Equipment[] = [];
     public dataSource: EquipmentsDataSource | null;
-    public displayedColumns = ['name', 'description', 'type', 'system', 'deleteButton'];
+    public displayedColumns =
+        ['name', 'description', 'type', 'system', 'cost', 'maintenanceCost', 'usingTimeResource', 'loadFactor', 'deleteButton'];
 
     public pageSizeOptions: number[] = env.pageSizeOptions;
     public pageNumber = 0;
@@ -33,6 +34,10 @@ export class EquipmentsComponent implements OnInit {
     public typeOptions: string[] = [];
     public workshop: Workshop;
     public conveyor: Conveyor;
+    public cost: number;
+    public maintenanceCost = 0;
+    public usingTimeResource: number;
+    public loadFactor = 1;
 
     public conveyors: Conveyor[] = [];
     public workshops: Workshop[] = [];
@@ -71,6 +76,10 @@ export class EquipmentsComponent implements OnInit {
             type: this.type || EquipmentType[this.type],
             workshop: this.workshop,
             conveyor: this.conveyor,
+            cost: this.cost,
+            loadFactor: this.loadFactor,
+            maintenanceCost: this.maintenanceCost,
+            usingTimeResource: this.usingTimeResource
         };
 
         this._api.createEquipment(equipment)
@@ -113,7 +122,10 @@ export class EquipmentsComponent implements OnInit {
 
     public isFormValid(): boolean {
         if (this._helper.isNullOrWhitespace(this.name)
-            || ((!this.conveyor && !this.workshop) && this.type !== 'Transport')) {
+            || ((!this.conveyor && !this.workshop) && this.type !== 'Transport')
+            || isNaN(this.cost) || this.cost <= 0 || isNaN(this.maintenanceCost) || this.maintenanceCost < 0
+            || isNaN(this.loadFactor) || this.loadFactor <= 0 || this.loadFactor > 1
+            || isNaN(this.usingTimeResource) || this.usingTimeResource <= 0) {
             return false;
         } else {
             return true;

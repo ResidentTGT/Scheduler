@@ -18,6 +18,11 @@ namespace Scheduler.Model
 
         public string ChildrenProductionItemsIds { get; set; }
 
+        /// <summary>
+        /// Доход, получаемый с реализации одной продукции
+        /// </summary>
+        public int OneItemIncome { get; set; }
+
         public virtual List<ProductionItemQuantum> ProductionItemQuantums { get; set; }
 
         public virtual List<OrderQuantum> OrderQuantums { get; set; }

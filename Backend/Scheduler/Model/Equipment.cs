@@ -27,6 +27,26 @@ namespace Scheduler.Model
 
         public EquipmentType Type { get; set; }
 
+        /// <summary>
+        /// Стоимость оборудования
+        /// </summary>
+        public int Cost { get; set; }
+
+        /// <summary>
+        /// Ресурс времени использования оборудования в течение исследуемого интервала времени
+        /// </summary>
+        public TimeSpan UsingTimeResource { get; set; }
+
+        /// <summary>
+        /// Загрузка оборудования
+        /// </summary>
+        public double LoadFactor { get; set; }
+
+        /// <summary>
+        /// Стоимость обслуживания
+        /// </summary>
+        public int MaintenanceCost { get; set; }
+
         public int? WorkshopId { get; set; }
         public Workshop Workshop { get; set; }
 

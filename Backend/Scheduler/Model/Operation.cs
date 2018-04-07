@@ -32,6 +32,17 @@ namespace Scheduler.Model
         /// </summary>
         public TimeSpan AdditionalTime { get; set; }
 
+        /// <summary>
+        /// Стоимость оснастки для данной операции
+        /// </summary>
+        public int RiggingCost { get; set; }
+
+
+        /// <summary>
+        /// Стоимость хранения оснастки для данной операции
+        /// </summary>
+        public int RiggingStorageCost { get; set; }
+
         public OperationType Type { get; set; }
 
         public Equipment Equipment { get; set; }

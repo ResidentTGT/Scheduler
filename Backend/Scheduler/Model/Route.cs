@@ -18,6 +18,11 @@ namespace Scheduler.Model
 
         public string OperationsSequence { get; set; }
 
+        /// <summary>
+        /// Затраты на изготовление детали по этому маршруту
+        /// </summary>
+        public int Cost { get; set; }
+
         public virtual List<Operation> Operations { get; set; }
 
         public virtual Detail Detail { get; set; }

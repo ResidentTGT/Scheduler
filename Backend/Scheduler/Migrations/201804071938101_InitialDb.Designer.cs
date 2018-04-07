@@ -7,13 +7,13 @@ namespace Scheduler.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddedCostProperties : IMigrationMetadata
+    public sealed partial class InitialDb : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedCostProperties));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialDb));
         
         string IMigrationMetadata.Id
         {
-            get { return "201804071031329_AddedCostProperties"; }
+            get { return "201804071938101_InitialDb"; }
         }
         
         string IMigrationMetadata.Source

@@ -26,7 +26,7 @@ namespace Scheduler.Dto
         /// <summary>
         /// в часах
         /// </summary>
-        public int UsingTimeResource { get; set; }
+        public double UsingTimeResource { get; set; }
 
         public double LoadFactor { get; set; }
 

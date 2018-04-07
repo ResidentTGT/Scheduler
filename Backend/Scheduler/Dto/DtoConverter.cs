@@ -84,7 +84,7 @@ namespace Scheduler.Dto
                 Cost = equipment.Cost,
                 LoadFactor = equipment.LoadFactor,
                 MaintenanceCost = equipment.MaintenanceCost,
-                UsingTimeResource = equipment.UsingTimeResource.Hours
+                UsingTimeResource = equipment.UsingTimeResource
             };
 
             return equipmentDto;
@@ -102,7 +102,7 @@ namespace Scheduler.Dto
                 Cost = equipmentDto.Cost,
                 LoadFactor = equipmentDto.LoadFactor,
                 MaintenanceCost = equipmentDto.MaintenanceCost,
-                UsingTimeResource = new TimeSpan(equipmentDto.UsingTimeResource, 0, 0)
+                UsingTimeResource = equipmentDto.UsingTimeResource
             };
 
             return equipment;
@@ -415,7 +415,9 @@ namespace Scheduler.Dto
             var workshopDto = new WorkshopDto()
             {
                 Id = workshop.Id,
-                Name = workshop.Name
+                Name = workshop.Name,
+                Description = workshop.Description,
+                EquipmentsCount = workshop.Equipments.Count
             };
 
             return workshopDto;
@@ -424,7 +426,8 @@ namespace Scheduler.Dto
         {
             var workshop = new Workshop()
             {
-                Name = workshopDto.Name
+                Name = workshopDto.Name,
+                Description = workshopDto.Description
             };
             return workshop;
         }
@@ -433,7 +436,9 @@ namespace Scheduler.Dto
             var conveyorDto = new ConveyorDto()
             {
                 Id = conveyor.Id,
-                Name = conveyor.Name
+                Name = conveyor.Name,
+                Description = conveyor.Description,
+                EquipmentsCount = conveyor.Equipments.Count
             };
 
             return conveyorDto;
@@ -442,7 +447,8 @@ namespace Scheduler.Dto
         {
             var conveyor = new Conveyor()
             {
-                Name = conveyorDto.Name
+                Name = conveyorDto.Name,
+                Description = conveyorDto.Description
             };
             return conveyor;
         }

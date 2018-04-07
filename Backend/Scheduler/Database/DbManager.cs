@@ -394,9 +394,16 @@ namespace Scheduler.Database
 
 
         #region ConveyorsAndWorkshops
-        public IEnumerable<Conveyor> GetConveyors()
+        public IEnumerable<Conveyor> GetConveyors(int pageNumber = 0, int pageSize = 0)
         {
-            var conveyors = _context.Conveyors;
+            var conveyors = _context.Conveyors.ToList();
+            if (pageSize > 0)
+            {
+                conveyors = conveyors
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize)
+                .ToList();
+            }
             return conveyors as IEnumerable<Conveyor>;
         }
 
@@ -406,9 +413,17 @@ namespace Scheduler.Database
             return conveyor;
         }
 
-        public IEnumerable<Workshop> GetWorkshops()
+        public IEnumerable<Workshop> GetWorkshops(int pageNumber = 0, int pageSize = 0)
         {
-            var workshops = _context.Workshops;
+            var workshops = _context.Workshops.ToList();
+            if (pageSize > 0)
+            {
+                workshops = workshops
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize)
+                .ToList();
+            }
+
             return workshops as IEnumerable<Workshop>;
         }
 
@@ -416,6 +431,36 @@ namespace Scheduler.Database
         {
             var conveyor = _context.Equipments.First(c => c.Id == id).Conveyor;
             return conveyor;
+        }
+
+        public int CreateWorkshop(Workshop workshop)
+        {
+            _context.Workshops.Add(workshop);
+            _context.SaveChanges();
+
+            return workshop.Id;
+        }
+
+        public int CreateConveyor(Conveyor conveyor)
+        {
+            _context.Conveyors.Add(conveyor);
+            _context.SaveChanges();
+
+            return conveyor.Id;
+        }
+
+        public void DeleteWorkshop(int id)
+        {
+            _context.Workshops.Remove(_context.Workshops.First(w => w.Id == id));
+
+            _context.SaveChanges();
+        }
+
+        public void DeleteConveyor(int id)
+        {
+            _context.Conveyors.Remove(_context.Conveyors.First(w => w.Id == id));
+
+            _context.SaveChanges();
         }
         #endregion
     }

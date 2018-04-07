@@ -1,0 +1,63 @@
+<div class="workshops-layout">
+    <aside>
+        <div class="form-container">
+            <div class="form-text">Форма создания цеха</div>
+            <mat-form-field>
+                <input matInput [(ngModel)]="name" placeholder="Название">
+            </mat-form-field>
+            <mat-form-field>
+                <textarea class="description" matInput [(ngModel)]="description" placeholder="Описание"></textarea>
+            </mat-form-field>
+            <button mat-raised-button color="primary" [disabled]="isNullOrWhitespace()" (click)="createWorkshop()">Создать цех</button>
+        </div>
+    </aside>
+    <main>
+        <mat-card>
+            <div class="table-container">
+
+                <div class="loading" *ngIf="loading">
+                    <mat-progress-spinner color="primary" mode="indeterminate" [strokeWidth]="8"></mat-progress-spinner>
+                </div>
+
+                <mat-table #table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef> Название </mat-header-cell>
+                        <mat-cell *matCellDef="let workshop"> {{workshop.name}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef> Описание </mat-header-cell>
+                        <mat-cell *matCellDef="let workshop"> {{workshop.description}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="equipments-count">
+                        <mat-header-cell *matHeaderCellDef> Кол-во оборудования </mat-header-cell>
+                        <mat-cell *matCellDef="let workshop"> {{workshop.equipmentsCount}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="deleteButton">
+                        <mat-header-cell class="delete-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="delete-button" *matCellDef="let workshop">
+                            <button mat-icon-button color="primary" [disabled]="workshop.equipmentsCount>0" (click)="deleteWorkshop(workshop)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                </mat-table>
+
+                <mat-divider></mat-divider>
+
+                <footer>
+                    <mat-paginator [length]="pageLength" [pageIndex]="pageNumber" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="handlePageEvent($event)"></mat-paginator>
+                </footer>
+
+            </div>
+        </mat-card>
+    </main>
+
+</div>

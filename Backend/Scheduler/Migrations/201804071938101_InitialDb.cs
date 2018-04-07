@@ -13,6 +13,7 @@ namespace Scheduler.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
+                        Description = c.String(),
                         TransportTime = c.Time(nullable: false, precision: 7),
                         ReadjustingTime = c.Time(nullable: false, precision: 7),
                     })
@@ -26,6 +27,10 @@ namespace Scheduler.Migrations
                         Name = c.String(),
                         Description = c.String(),
                         Type = c.Int(nullable: false),
+                        Cost = c.Int(nullable: false),
+                        UsingTimeResource = c.Double(nullable: false),
+                        LoadFactor = c.Double(nullable: false),
+                        MaintenanceCost = c.Int(nullable: false),
                         WorkshopId = c.Int(),
                         ConveyorId = c.Int(),
                     })
@@ -44,6 +49,8 @@ namespace Scheduler.Migrations
                         Description = c.String(),
                         MainTime = c.Time(nullable: false, precision: 7),
                         AdditionalTime = c.Time(nullable: false, precision: 7),
+                        RiggingCost = c.Int(nullable: false),
+                        RiggingStorageCost = c.Int(nullable: false),
                         Type = c.Int(nullable: false),
                         EquipmentId = c.Int(nullable: false),
                         DetailId = c.Int(nullable: false),
@@ -90,6 +97,7 @@ namespace Scheduler.Migrations
                         Title = c.String(),
                         Description = c.String(),
                         ChildrenProductionItemsIds = c.String(),
+                        OneItemIncome = c.Int(nullable: false),
                         Detail_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -133,6 +141,7 @@ namespace Scheduler.Migrations
                         Name = c.String(),
                         Description = c.String(),
                         OperationsSequence = c.String(),
+                        Cost = c.Int(nullable: false),
                         DetailId = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -145,6 +154,7 @@ namespace Scheduler.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
+                        Description = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             

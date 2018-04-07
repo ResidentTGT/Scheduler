@@ -36,6 +36,8 @@ import { HelperService } from './services/helper.service';
 import { ParticlesModule } from 'angular-particle';
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
+import { WorkshopsComponent } from './components/workshops/workshops.component';
+import { ConveyorsComponent } from './components/conveyors/conveyors.component';
 registerLocaleData(localeRu, 'ru');
 
 
@@ -77,6 +79,13 @@ const appRoutes: Routes = [
             { path: 'calculate', component: CalculateOrdersComponent },
         ]
     },
+    {
+        path: 'systems',
+        children: [
+            { path: 'workshops', component: WorkshopsComponent },
+            { path: 'conveyors', component: ConveyorsComponent }
+        ]
+    },
 
     // { path: '**', component: PageNotFoundComponent },
 ];
@@ -101,7 +110,9 @@ const appRoutes: Routes = [
         CalculateOrdersComponent,
         ViewOrderQuantumsComponent,
         ViewProductionItemQuantumsGroupsComponent,
-        ViewProductionItemQuantumGroupComponent
+        ViewProductionItemQuantumGroupComponent,
+        WorkshopsComponent,
+        ConveyorsComponent
     ],
     imports: [
         RouterModule.forRoot(appRoutes),

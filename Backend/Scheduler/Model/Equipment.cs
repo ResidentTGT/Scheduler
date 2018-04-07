@@ -35,7 +35,7 @@ namespace Scheduler.Model
         /// <summary>
         /// Ресурс времени использования оборудования в течение исследуемого интервала времени
         /// </summary>
-        public TimeSpan UsingTimeResource { get; set; }
+        public double UsingTimeResource { get; set; }
 
         /// <summary>
         /// Загрузка оборудования

@@ -57,7 +57,12 @@ namespace Scheduler.HttpServer
             Get["/delete-route"] = DeleteRoute;
 
             Get["/conveyors"] = GetConveyors;
+            Post["/create-conveyor"] = CreateConveyor;
+            Get["/delete-conveyor"] = DeleteConveyor;
+
             Get["/workshops"] = GetWorkshops;
+            Post["/create-workshop"] = CreateWorkshop;
+            Get["/delete-workshop"] = DeleteWorkshop;
         }
 
         private object Index(dynamic parameters)
@@ -206,7 +211,7 @@ namespace Scheduler.HttpServer
             int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
             int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
 
-            var operations = _dbManager.GetOperations(pageNumber,pageSize).ToList();
+            var operations = _dbManager.GetOperations(pageNumber, pageSize).ToList();
             var dtoOperations = operations.Select(d => _dtoConverter.ConvertOperation(d)).ToList();
 
             return dtoOperations;
@@ -272,7 +277,10 @@ namespace Scheduler.HttpServer
         #region ConveyorsAndWorkshops
         private object GetConveyors(dynamic parameters)
         {
-            var conveyors = _dbManager.GetConveyors().ToList();
+            int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
+            int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
+
+            var conveyors = _dbManager.GetConveyors(pageNumber, pageSize).ToList();
             var dtoConveyors = conveyors.Select(d => _dtoConverter.ConvertConveyor(d)).ToList();
 
             return dtoConveyors;
@@ -280,10 +288,43 @@ namespace Scheduler.HttpServer
 
         private object GetWorkshops(dynamic parameters)
         {
-            var workshops = _dbManager.GetWorkshops().ToList();
+            int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
+            int pageSize = Int32.Parse(Request.Query["pageSize"].Value);
+
+            var workshops = _dbManager.GetWorkshops(pageNumber, pageSize).ToList();
             var dtoWorkshops = workshops.Select(d => _dtoConverter.ConvertWorkshop(d)).ToList();
 
             return dtoWorkshops;
+        }
+
+        private object CreateWorkshop(dynamic parameters)
+        {
+            var requestBody = this.Bind<WorkshopDto>();
+            var workshopId = _dbManager.CreateWorkshop(_dtoConverter.ConvertWorkshop(requestBody));
+
+            return Response.AsJson(workshopId);
+        }
+
+        private object DeleteWorkshop(dynamic parameters)
+        {
+            _dbManager.DeleteWorkshop(Request.Query["id"]);
+
+            return HttpStatusCode.OK;
+        }
+
+        private object CreateConveyor(dynamic parameters)
+        {
+            var requestBody = this.Bind<ConveyorDto>();
+            var conveyorId = _dbManager.CreateConveyor(_dtoConverter.ConvertConveyor(requestBody));
+
+            return Response.AsJson(conveyorId);
+        }
+
+        private object DeleteConveyor(dynamic parameters)
+        {
+            _dbManager.DeleteConveyor(Request.Query["id"]);
+
+            return HttpStatusCode.OK;
         }
         #endregion
     }

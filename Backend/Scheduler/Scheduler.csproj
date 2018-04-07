@@ -98,13 +98,9 @@
     <Compile Include="HttpServer\HttpServerFactory.cs" />
     <Compile Include="HttpServer\NancyServer.cs" />
     <Compile Include="Log\Logger.cs" />
-    <Compile Include="Migrations\201803171456095_InitialDb.cs" />
-    <Compile Include="Migrations\201803171456095_InitialDb.Designer.cs">
-      <DependentUpon>201803171456095_InitialDb.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201804071031329_AddedCostProperties.cs" />
-    <Compile Include="Migrations\201804071031329_AddedCostProperties.Designer.cs">
-      <DependentUpon>201804071031329_AddedCostProperties.cs</DependentUpon>
+    <Compile Include="Migrations\201804071938101_InitialDb.cs" />
+    <Compile Include="Migrations\201804071938101_InitialDb.Designer.cs">
+      <DependentUpon>201804071938101_InitialDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
@@ -138,11 +134,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201803171456095_InitialDb.resx">
-      <DependentUpon>201803171456095_InitialDb.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201804071031329_AddedCostProperties.resx">
-      <DependentUpon>201804071031329_AddedCostProperties.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201804071938101_InitialDb.resx">
+      <DependentUpon>201804071938101_InitialDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

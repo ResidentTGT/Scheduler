@@ -12,6 +12,8 @@ namespace Scheduler.Model
 
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public TimeSpan TransportTime { get; set; }
 
         public TimeSpan ReadjustingTime { get; set; }

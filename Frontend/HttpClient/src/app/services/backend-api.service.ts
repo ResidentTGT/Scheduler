@@ -26,6 +26,22 @@ export class BackendApiService {
             .map(response => response.json() as Detail[]);
     }
 
+    getWorkshops(pageNumber: number = 0, pageSize: number = 0): Observable<Workshop[]> {
+        const query = `${env.backendUrl}workshops?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
+        return this.http
+            .get(query)
+            .map(response => response.json() as Workshop[]);
+    }
+
+    getConveyors(pageNumber: number = 0, pageSize: number = 0): Observable<Conveyor[]> {
+        const query = `${env.backendUrl}conveyors?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
+        return this.http
+            .get(query)
+            .map(response => response.json() as Conveyor[]);
+    }
+
     getDetailsWithRoutes(pageNumber: number = 0, pageSize: number = 0): Observable<Detail[]> {
         const query = `${env.backendUrl}details-with-routes?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
@@ -46,12 +62,37 @@ export class BackendApiService {
 
         return this.http.post(`${env.backendUrl}create-detail`, JSON.stringify(detail), options)
             .map(resp => resp.json() as number);
+    }
 
+    createWorkshop(workshop: Workshop): Observable<number> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const options = new RequestOptions({ headers: headers });
+
+        return this.http.post(`${env.backendUrl}create-workshop`, JSON.stringify(workshop), options)
+            .map(resp => resp.json() as number);
+    }
+
+    createConveyor(conveyor: Conveyor): Observable<number> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const options = new RequestOptions({ headers: headers });
+
+        return this.http.post(`${env.backendUrl}create-conveyor`, JSON.stringify(conveyor), options)
+            .map(resp => resp.json() as number);
     }
 
     deleteDetail(id: number | {}) {
         return this.http
             .get(`${env.backendUrl}delete-detail?id=${id}`);
+    }
+
+    deleteWorkshop(id: number | {}) {
+        return this.http
+            .get(`${env.backendUrl}delete-workshop?id=${id}`);
+    }
+
+    deleteConveyor(id: number | {}) {
+        return this.http
+            .get(`${env.backendUrl}delete-conveyor?id=${id}`);
     }
 
     getEquipments(pageNumber: number = 0, pageSize: number = 0, operationType: number = OperationType.Undefined): Observable<Equipment[]> {
@@ -123,18 +164,6 @@ export class BackendApiService {
     deleteOperation(id: number | {}) {
         return this.http
             .get(`${env.backendUrl}delete-operation?id=${id}`);
-    }
-
-    getConveyors(): Observable<Conveyor[]> {
-        return this.http
-            .get(`${env.backendUrl}conveyors`)
-            .map(response => response.json() as Conveyor[]);
-    }
-
-    getWorkshops(): Observable<Workshop[]> {
-        return this.http
-            .get(`${env.backendUrl}workshops`)
-            .map(response => response.json() as Workshop[]);
     }
 
     getOrders(pageNumber: number = 0, pageSize: number = 0): Observable<Order[]> {

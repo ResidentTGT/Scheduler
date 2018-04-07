@@ -26,18 +26,6 @@ namespace Scheduler
             server.Start();
             Logger.Log($"Http-server started. Hosted on: http://localhost:{_port}", LogLevel.Info);
 
-
-            //var ctx = new SchedulerContext();
-            //var oper = new Operation() { Name = "oper" };
-            //var opers = new List<Operation>() { oper };
-            //var eq = new Equipment()
-            //{
-            //    Name = "eq",
-            //    Operations = opers
-            //};
-            //ctx.Equipments.Add(eq);
-            //ctx.SaveChanges();
-
             ConsoleClosure.WaitForExit();
             server.Stop();
         }

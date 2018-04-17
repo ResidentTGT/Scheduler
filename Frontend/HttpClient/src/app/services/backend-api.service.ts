@@ -19,7 +19,7 @@ export class BackendApiService {
     constructor(private http: Http) { }
 
     getDetails(pageNumber: number = 0, pageSize: number = 0, equipmentId: number = 0): Observable<Detail[]> {
-        const query = `${env.backendUrl}details?pageNumber=${pageNumber}&pageSize=${pageSize}&equipmentId=${equipmentId}`;
+        const query = `${env.backendUrl}api/details?pageNumber=${pageNumber}&pageSize=${pageSize}&equipmentId=${equipmentId}`;
 
         return this.http
             .get(query)
@@ -27,7 +27,7 @@ export class BackendApiService {
     }
 
     getWorkshops(pageNumber: number = 0, pageSize: number = 0): Observable<Workshop[]> {
-        const query = `${env.backendUrl}workshops?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        const query = `${env.backendUrl}api/workshops?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
         return this.http
             .get(query)
@@ -35,7 +35,7 @@ export class BackendApiService {
     }
 
     getConveyors(pageNumber: number = 0, pageSize: number = 0): Observable<Conveyor[]> {
-        const query = `${env.backendUrl}conveyors?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        const query = `${env.backendUrl}api/conveyors?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
         return this.http
             .get(query)
@@ -43,7 +43,7 @@ export class BackendApiService {
     }
 
     getDetailsWithRoutes(pageNumber: number = 0, pageSize: number = 0): Observable<Detail[]> {
-        const query = `${env.backendUrl}details-with-routes?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        const query = `${env.backendUrl}api/details-with-routes?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
         return this.http
             .get(query)
@@ -52,7 +52,7 @@ export class BackendApiService {
 
     getDetailsWithoutRoutes(): Observable<Detail[]> {
         return this.http
-            .get(`${env.backendUrl}details-without-routes`)
+            .get(`${env.backendUrl}api/details-without-routes`)
             .map(response => response.json() as Detail[]);
     }
 
@@ -60,7 +60,7 @@ export class BackendApiService {
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers });
 
-        return this.http.post(`${env.backendUrl}create-detail`, JSON.stringify(detail), options)
+        return this.http.post(`${env.backendUrl}api/create-detail`, JSON.stringify(detail), options)
             .map(resp => resp.json() as number);
     }
 
@@ -68,7 +68,7 @@ export class BackendApiService {
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers });
 
-        return this.http.post(`${env.backendUrl}create-workshop`, JSON.stringify(workshop), options)
+        return this.http.post(`${env.backendUrl}api/create-workshop`, JSON.stringify(workshop), options)
             .map(resp => resp.json() as number);
     }
 
@@ -76,27 +76,27 @@ export class BackendApiService {
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers });
 
-        return this.http.post(`${env.backendUrl}create-conveyor`, JSON.stringify(conveyor), options)
+        return this.http.post(`${env.backendUrl}api/create-conveyor`, JSON.stringify(conveyor), options)
             .map(resp => resp.json() as number);
     }
 
     deleteDetail(id: number | {}) {
         return this.http
-            .get(`${env.backendUrl}delete-detail?id=${id}`);
+            .get(`${env.backendUrl}api/delete-detail?id=${id}`);
     }
 
     deleteWorkshop(id: number | {}) {
         return this.http
-            .get(`${env.backendUrl}delete-workshop?id=${id}`);
+            .get(`${env.backendUrl}api/delete-workshop?id=${id}`);
     }
 
     deleteConveyor(id: number | {}) {
         return this.http
-            .get(`${env.backendUrl}delete-conveyor?id=${id}`);
+            .get(`${env.backendUrl}api/delete-conveyor?id=${id}`);
     }
 
     getEquipments(pageNumber: number = 0, pageSize: number = 0, operationType: number = OperationType.Undefined): Observable<Equipment[]> {
-        const query = `${env.backendUrl}equipments?pageNumber=${pageNumber}&pageSize=${pageSize}&operationType=${operationType}`;
+        const query = `${env.backendUrl}api/equipments?pageNumber=${pageNumber}&pageSize=${pageSize}&operationType=${operationType}`;
 
         return this.http
             .get(query)
@@ -107,17 +107,17 @@ export class BackendApiService {
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers });
 
-        return this.http.post(`${env.backendUrl}create-equipment`, JSON.stringify(equipment), options)
+        return this.http.post(`${env.backendUrl}api/create-equipment`, JSON.stringify(equipment), options)
             .map(resp => resp.json() as number);
     }
 
     deleteEquipment(id: number | {}) {
         return this.http
-            .get(`${env.backendUrl}delete-equipment?id=${id}`);
+            .get(`${env.backendUrl}api/delete-equipment?id=${id}`);
     }
 
     getProductionItems(pageNumber: number = 0, pageSize: number = 0): Observable<ProductionItem[]> {
-        const query = `${env.backendUrl}production-items?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        const query = `${env.backendUrl}api/production-items?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
         return this.http
             .get(query)
@@ -128,17 +128,17 @@ export class BackendApiService {
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers });
 
-        return this.http.post(`${env.backendUrl}create-production-item`, JSON.stringify(productionItem), options)
+        return this.http.post(`${env.backendUrl}api/create-production-item`, JSON.stringify(productionItem), options)
             .map(resp => resp.json() as number);
     }
 
     deleteProductionItem(id: number | {}) {
         return this.http
-            .get(`${env.backendUrl}delete-production-item?id=${id}`);
+            .get(`${env.backendUrl}api/delete-production-item?id=${id}`);
     }
 
     getOperations(pageNumber: number = 0, pageSize: number = 0): Observable<Operation[]> {
-        const query = `${env.backendUrl}operations?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        const query = `${env.backendUrl}api/operations?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
         return this.http
             .get(query)
@@ -146,7 +146,7 @@ export class BackendApiService {
     }
 
     getOperationsByDetailId(detailId: number, pageNumber: number = 0, pageSize: number = 0): Observable<Operation[]> {
-        const query = `${env.backendUrl}detail-operations?detailId=${detailId}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        const query = `${env.backendUrl}api/detail-operations?detailId=${detailId}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
         return this.http
             .get(query)
@@ -157,17 +157,17 @@ export class BackendApiService {
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers });
 
-        return this.http.post(`${env.backendUrl}create-operation`, JSON.stringify(operation), options)
+        return this.http.post(`${env.backendUrl}api/create-operation`, JSON.stringify(operation), options)
             .map(resp => resp.json() as number);
     }
 
     deleteOperation(id: number | {}) {
         return this.http
-            .get(`${env.backendUrl}delete-operation?id=${id}`);
+            .get(`${env.backendUrl}api/delete-operation?id=${id}`);
     }
 
     getOrders(pageNumber: number = 0, pageSize: number = 0): Observable<Order[]> {
-        const query = `${env.backendUrl}orders?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        const query = `${env.backendUrl}api/orders?pageNumber=${pageNumber}&pageSize=${pageSize}`;
         return this.http
             .get(query)
             .map(response => response.json().map(e => Order.fromJSON(e)));
@@ -177,36 +177,36 @@ export class BackendApiService {
         const headers = new Headers({ 'Content-Type': 'application/json' });
         const options = new RequestOptions({ headers: headers });
 
-        return this.http.post(`${env.backendUrl}create-order`, JSON.stringify(order), options)
+        return this.http.post(`${env.backendUrl}api/create-order`, JSON.stringify(order), options)
             .map(resp => resp.json() as number);
     }
 
     deleteOrder(id: number | {}) {
         return this.http
-            .get(`${env.backendUrl}delete-order?id=${id}`);
+            .get(`${env.backendUrl}api/delete-order?id=${id}`);
     }
 
     calculateOrder(id: number | {}): Observable<Order> {
         return this.http
-            .get(`${env.backendUrl}calculate-order?id=${id}`)
+            .get(`${env.backendUrl}api/calculate-order?id=${id}`)
             .map(resp => resp.json() as Order);
     }
 
     getRoutes(pageNumber: number = 0, pageSize: number = 0): Observable<Route[]> {
-        const query = `${env.backendUrl}routes?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        const query = `${env.backendUrl}api/routes?pageNumber=${pageNumber}&pageSize=${pageSize}`;
         return this.http
             .get(query)
             .map(response => response.json() as Route[]);
     }
 
     createRoute(route: Route): Observable<number> {
-        return this.http.post(`${env.backendUrl}create-route`, route)
+        return this.http.post(`${env.backendUrl}api/create-route`, route)
             .map(resp => resp.json() as number);
     }
 
     deleteRoute(id: number | {}) {
         return this.http
-            .get(`${env.backendUrl}delete-route?id=${id}`);
+            .get(`${env.backendUrl}api/delete-route?id=${id}`);
     }
 
 }

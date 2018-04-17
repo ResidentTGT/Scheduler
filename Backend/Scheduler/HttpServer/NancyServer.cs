@@ -28,41 +28,42 @@ namespace Scheduler.HttpServer
         private void ConfigureRoutes()
         {
             Get["/"] = Index;
+            Get[@"^(^(?i)((?!/api/).)*$)$"] = Index;
 
-            Get["/details"] = GetDetails;
-            Get["/details-with-routes"] = GetDetailsWithRoutes;
-            Post["/create-detail"] = CreateDetail;
-            Get["/delete-detail"] = DeleteDetail;
+            Get["/api/details"] = GetDetails;
+            Get["/api/details-with-routes"] = GetDetailsWithRoutes;
+            Post["/api/create-detail"] = CreateDetail;
+            Get["/api/delete-detail"] = DeleteDetail;
 
-            Get["/equipments"] = GetEquipments;
-            Post["/create-equipment"] = CreateEquipment;
-            Get["/delete-equipment"] = DeleteEquipment;
+            Get["/api/equipments"] = GetEquipments;
+            Post["/api/create-equipment"] = CreateEquipment;
+            Get["/api/delete-equipment"] = DeleteEquipment;
 
-            Get["/orders"] = GetOrders;
-            Post["/create-order"] = CreateOrder;
-            Get["/delete-order"] = DeleteOrder;
-            Get["/calculate-order"] = CalculateOrder;
+            Get["/api/orders"] = GetOrders;
+            Post["/api/create-order"] = CreateOrder;
+            Get["/api/delete-order"] = DeleteOrder;
+            Get["/api/calculate-order"] = CalculateOrder;
 
-            Get["/production-items"] = GetProductionItems;
-            Post["/create-production-item"] = CreateProductionItem;
-            Get["/delete-production-item"] = DeleteProductionItem;
+            Get["/api/production-items"] = GetProductionItems;
+            Post["/api/create-production-item"] = CreateProductionItem;
+            Get["/api/delete-production-item"] = DeleteProductionItem;
 
-            Get["/operations"] = GetOperations;
-            Get["/detail-operations"] = GetOperationsByDetailId;
-            Post["/create-operation"] = CreateOperation;
-            Get["/delete-operation"] = DeleteOperation;
+            Get["/api/operations"] = GetOperations;
+            Get["/api/detail-operations"] = GetOperationsByDetailId;
+            Post["/api/create-operation"] = CreateOperation;
+            Get["/api/delete-operation"] = DeleteOperation;
 
-            Get["/routes"] = GetRoutes;
-            Post["/create-route"] = CreateRoute;
-            Get["/delete-route"] = DeleteRoute;
+            Get["/api/routes"] = GetRoutes;
+            Post["/api/create-route"] = CreateRoute;
+            Get["/api/delete-route"] = DeleteRoute;
 
-            Get["/conveyors"] = GetConveyors;
-            Post["/create-conveyor"] = CreateConveyor;
-            Get["/delete-conveyor"] = DeleteConveyor;
+            Get["/api/conveyors"] = GetConveyors;
+            Post["/api/create-conveyor"] = CreateConveyor;
+            Get["/api/delete-conveyor"] = DeleteConveyor;
 
-            Get["/workshops"] = GetWorkshops;
-            Post["/create-workshop"] = CreateWorkshop;
-            Get["/delete-workshop"] = DeleteWorkshop;
+            Get["/api/workshops"] = GetWorkshops;
+            Post["/api/create-workshop"] = CreateWorkshop;
+            Get["/api/delete-workshop"] = DeleteWorkshop;
         }
 
         private object Index(dynamic parameters)

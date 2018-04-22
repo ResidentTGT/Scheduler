@@ -12,7 +12,8 @@ import { Observable } from 'rxjs/Rx';
 export class CalculateOrdersComponent implements OnInit {
 
     public orders: Order[] = [];
-    public selectedOrderId: number;
+    public loading: boolean;
+    public selectedOrderId: number | {};
 
     public selectedBlock: { orderQuantumIndex: number, offset: number };
 
@@ -27,13 +28,19 @@ export class CalculateOrdersComponent implements OnInit {
     }
 
     private getOrders() {
+        this.loading = true;
         this._api.getOrders()
             .do(orders => this.orders = orders)
             .catch(resp => {
+                this.loading = false;
                 alert(`Не удалось загрузить список заказов по причине: ${JSON.stringify(resp, null, 4)}`);
                 return Observable.empty();
             })
-            .subscribe();
+            .subscribe(_ => this.loading = false);
+    }
+
+    public selectOrder(id: number) {
+        this.selectedOrderId = id;
     }
 
     private calculateOrder() {

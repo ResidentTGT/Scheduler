@@ -1,7 +1,66 @@
-.orders-list {
+@import '~@angular/material/_theming.scss';
+@import 'src/scheduler-colors.scss';
+$orders-list:300px;
+.calculate-orders-layout {
     display: flex;
-    flex-direction: column;
-    .order-item {
-        margin: 5px;
+    height: 100%;
+    position: relative;
+    aside {
+        width:#{$orders-list};
+        height: 100%;
+        position: relative;
+        background-color: #F2F2F2;
+        @include mat-elevation(4);
+        z-index: 900;
+        .loading {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            height: calc(100% - 40px);
+            position: relative;
+            .form-text {
+                text-align: center;
+                font-size: 16px;
+                font-family: 'Roboto';
+                margin-bottom: 5px;
+                height: 30px;
+            }
+            .orders-list {
+                position: relative;
+                height: calc(100% - 40px - 20px);
+                overflow-y: auto;
+                mat-list-item {
+                    cursor: pointer;
+                    &:hover{
+                        background: rgba(0, 0, 0, 0.06);
+                        cursor: pointer;
+                        transition-duration: 0.3s;
+                    }
+                    &.already-selected {
+                        background-color: map-get($scheduler-primary, 200);
+                    }
+                }
+            }
+            .count-button {
+                margin-top: 20px;
+                height: 40px;
+            }
+        }
+    }
+    main {
+        overflow-y: auto;
+        position: relative;
+        height: 100%;
+        flex: 1;
     }
 }

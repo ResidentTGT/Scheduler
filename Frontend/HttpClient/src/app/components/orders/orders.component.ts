@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { BackendApiService } from '../../services/backend-api.service';
 import { MatDialog } from '@angular/material';
-import { Order } from '../../models/order';
+import { Order, OrderState } from '../../models/order';
 import { Observable } from 'rxjs/Rx';
 import { CreateOrderComponent } from '../create-order/create-order.component';
 import { environment as env } from '../../../environments/environment';
@@ -16,8 +16,10 @@ import { Router } from '@angular/router';
 export class OrdersComponent implements OnInit {
 
     public orders: Order[] = [];
+    public OrderState = OrderState;
     public dataSource: OrdersDataSource | null;
-    public displayedColumns = ['name', 'description', 'state', 'begin-date', 'end-date', 'products', 'openButton', 'deleteButton'];
+    public displayedColumns = ['name', 'description', 'state', 'begin-date',
+        'end-date', 'products', 'calculateOrder', 'viewGraph', 'downloadReport', 'deleteButton'];
 
     public pageSizeOptions: number[] = env.pageSizeOptions;
     public pageNumber = 0;
@@ -74,6 +76,18 @@ export class OrdersComponent implements OnInit {
 
     public createOrder(): void {
         this._router.navigateByUrl('orders/create');
+    }
+
+    public calculateOrder(order: Order) {
+        this._api.calculateOrder(order.id)
+            .catch(resp => {
+                alert(`Заказ расчета не начат из-за ошибки:${JSON.stringify(resp, null, 4)}`);
+                return Observable.empty();
+            })
+            .subscribe(_ => {
+                alert('Заказ расчета запущен.');
+                order.state = OrderState.InProcess;
+            });
     }
 
 }

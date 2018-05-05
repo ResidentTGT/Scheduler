@@ -26,7 +26,7 @@ namespace Scheduler.Core
             _dtoConverter = new DtoConverter();
         }
 
-        internal Order CalculateOrderById(int orderId)
+        internal void CalculateOrderById(int orderId)
         {
             var timer = new Stopwatch();
             timer.Start();
@@ -73,8 +73,6 @@ namespace Scheduler.Core
 
             timer.Stop();
             Logger.Log($"Расчет заказа завершен. Занятое время: {timer.Elapsed}.", LogLevel.Info);
-
-            return order;
         }
     }
 }

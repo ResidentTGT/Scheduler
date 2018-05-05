@@ -43,11 +43,29 @@
                         </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="openButton">
+                    <ng-container matColumnDef="calculateOrder">
+                        <mat-header-cell class="calculate-button" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="calculate-button" *matCellDef="let order">
+                            <button *ngIf="order.state!==OrderState.Ready" mat-icon-button color="primary" (click)="calculateOrder(order)">
+                                <mat-icon>play_arrow</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="viewGraph">
                         <mat-header-cell class="open-button" *matHeaderCellDef></mat-header-cell>
                         <mat-cell class="open-button" *matCellDef="let order">
-                            <button mat-icon-button color="primary" (click)="openOrder(productionItem)">
+                            <button *ngIf="order.state===OrderState.Ready" mat-icon-button color="primary" routerLink="graph/{{order.id}}">
                                 <mat-icon>open_with</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="downloadReport">
+                        <mat-header-cell class="report" *matHeaderCellDef></mat-header-cell>
+                        <mat-cell class="report" *matCellDef="let order">
+                            <button *ngIf="order.state===OrderState.Ready" mat-icon-button color="primary">
+                                <mat-icon>file_download</mat-icon>
                             </button>
                         </mat-cell>
                     </ng-container>

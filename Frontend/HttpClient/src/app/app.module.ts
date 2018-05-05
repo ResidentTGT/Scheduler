@@ -27,7 +27,6 @@ import { CreateOrderComponent } from './components/create-order/create-order.com
 import { OrderStatePipe } from './pipes/order-state.pipe';
 import { RoutesComponent } from './components/routes/routes.component';
 import { CreateRouteComponent } from './components/create-route/create-route.component';
-import { CalculateOrdersComponent } from './components/calculate-orders/calculate-orders.component';
 import { ViewOrderQuantumsComponent } from './components/view-calculate-results/view-order-quantums/view-order-quantums.component';
 import { ViewProductionItemQuantumsGroupsComponent } from './components/view-calculate-results/view-production-item-quantums-groups/view-production-item-quantums-groups.component';
 import { ViewProductionItemQuantumGroupComponent } from './components/view-calculate-results/view-production-item-quantum-group/view-production-item-quantum-group.component';
@@ -38,6 +37,7 @@ import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { WorkshopsComponent } from './components/workshops/workshops.component';
 import { ConveyorsComponent } from './components/conveyors/conveyors.component';
+import { ViewOrderGraphComponent } from './components/view-calculate-results/view-order-graph/view-order-graph.component';
 registerLocaleData(localeRu, 'ru');
 
 
@@ -75,8 +75,8 @@ const appRoutes: Routes = [
         children: [
             { path: '', redirectTo: 'view', pathMatch: 'full' },
             { path: 'view', component: OrdersComponent },
-            { path: 'create', component: CreateOrderComponent },
-            { path: 'calculate', component: CalculateOrdersComponent },
+            { path: 'view/graph/:id', component: ViewOrderGraphComponent },
+            { path: 'create', component: CreateOrderComponent }
         ]
     },
     {
@@ -107,12 +107,12 @@ const appRoutes: Routes = [
         OrderStatePipe,
         RoutesComponent,
         CreateRouteComponent,
-        CalculateOrdersComponent,
         ViewOrderQuantumsComponent,
         ViewProductionItemQuantumsGroupsComponent,
         ViewProductionItemQuantumGroupComponent,
         WorkshopsComponent,
-        ConveyorsComponent
+        ConveyorsComponent,
+        ViewOrderGraphComponent
     ],
     imports: [
         RouterModule.forRoot(appRoutes),

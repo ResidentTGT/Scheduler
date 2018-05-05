@@ -186,10 +186,10 @@ export class BackendApiService {
             .get(`${env.backendUrl}api/delete-order?id=${id}`);
     }
 
-    calculateOrder(id: number | {}): Observable<Order> {
+    calculateOrder(id: number | {}): Observable<string> {
         return this.http
             .get(`${env.backendUrl}api/calculate-order?id=${id}`)
-            .map(resp => resp.json() as Order);
+            .map(resp => resp.json() as string);
     }
 
     getRoutes(pageNumber: number = 0, pageSize: number = 0): Observable<Route[]> {

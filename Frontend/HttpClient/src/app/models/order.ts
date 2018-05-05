@@ -17,15 +17,13 @@ export class Order {
 
         return Object.assign(
             new Order(),
-            obj,
-            {
-                state: OrderState[obj.state]
-            }
+            obj
         );
     }
 }
 export enum OrderState {
     Undefined = 0,
     Ready = 1,
-    InProcess = 2
+    InProcess = 2,
+    Error = 3
 }

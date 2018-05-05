@@ -71,14 +71,6 @@ namespace Scheduler.HttpServer
             return View["wwwroot/index.html"];
         }
 
-        private object CalculateOrder(dynamic parameters)
-        {
-            var calculation = new Calculation();
-            var order = calculation.CalculateOrderById(Request.Query["id"]);
-
-            return _dtoConverter.ConvertOrderForViewing(order);
-        }
-
         #region DetailsApi
         private object GetDetails(dynamic parameters)
         {
@@ -162,18 +154,28 @@ namespace Scheduler.HttpServer
 
             return dtoOrders;
         }
+
         private object DeleteOrder(dynamic parameters)
         {
             _dbManager.DeleteOrder(Request.Query["id"]);
 
             return HttpStatusCode.OK;
         }
+
         private object CreateOrder(dynamic parameters)
         {
             var requestBody = this.Bind<OrderDto>();
             var orderId = _dbManager.CreateOrder(_dtoConverter.ConvertOrder(requestBody));
 
             return Response.AsJson(orderId);
+        }
+
+        private object CalculateOrder(dynamic parameters)
+        {
+            var calculation = new Calculation();
+            Task.Run(() => { calculation.CalculateOrderById(Request.Query["id"]); });
+
+            return Response.AsJson(HttpStatusCode.OK);
         }
         #endregion
 
@@ -206,7 +208,6 @@ namespace Scheduler.HttpServer
         #endregion
 
         #region Operations
-
         private object GetOperations(dynamic parameters)
         {
             int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);
@@ -247,7 +248,6 @@ namespace Scheduler.HttpServer
         #endregion
 
         #region Routes
-
         private object GetRoutes(dynamic parameters)
         {
             int pageNumber = Int32.Parse(Request.Query["pageNumber"].Value);

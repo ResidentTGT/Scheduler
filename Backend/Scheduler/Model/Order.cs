@@ -12,7 +12,9 @@ namespace Scheduler.Model
 
         Ready = 1,
 
-        InProcess = 2
+        InProcess = 2,
+
+        Error = 3
     }
 
     public class Order

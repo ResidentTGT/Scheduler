@@ -19,11 +19,7 @@
                         <mat-cell *matCellDef="let order"> {{order.description}} </mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="state">
-                        <mat-header-cell *matHeaderCellDef class="state"> Статус </mat-header-cell>
-                        <mat-cell *matCellDef="let order" class="state">{{order.state|orderState}}
-                        </mat-cell>
-                    </ng-container>
+                  
 
                     <ng-container matColumnDef="begin-date">
                         <mat-header-cell *matHeaderCellDef class="begin-date"> План. время начала </mat-header-cell>
@@ -40,6 +36,15 @@
                     <ng-container matColumnDef="products">
                         <mat-header-cell *matHeaderCellDef class="products"> Кол-во продукции </mat-header-cell>
                         <mat-cell *matCellDef="let order" class="products">{{order.orderQuantumsCount}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="state">
+                        <mat-header-cell *matHeaderCellDef class="state"> Статус </mat-header-cell>
+                        <mat-cell *matCellDef="let order" class="state">
+                                <mat-icon color="warn" class="error" *ngIf="order.state===OrderState.Error" >error</mat-icon>
+                                <mat-icon class="done" *ngIf="order.state===OrderState.Ready">done</mat-icon>
+                                <mat-icon color="accent" *ngIf="order.state===OrderState.InProcess">schedule</mat-icon>
                         </mat-cell>
                     </ng-container>
 

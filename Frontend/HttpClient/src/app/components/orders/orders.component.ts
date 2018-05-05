@@ -18,8 +18,8 @@ export class OrdersComponent implements OnInit {
     public orders: Order[] = [];
     public OrderState = OrderState;
     public dataSource: OrdersDataSource | null;
-    public displayedColumns = ['name', 'description', 'state', 'begin-date',
-        'end-date', 'products', 'calculateOrder', 'viewGraph', 'downloadReport', 'deleteButton'];
+    public displayedColumns = ['name', 'description', 'begin-date',
+        'end-date', 'products', 'state', 'calculateOrder', 'viewGraph', 'downloadReport', 'deleteButton'];
 
     public pageSizeOptions: number[] = env.pageSizeOptions;
     public pageNumber = 0;

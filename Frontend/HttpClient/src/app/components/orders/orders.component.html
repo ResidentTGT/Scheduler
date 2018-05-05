@@ -45,13 +45,14 @@
                                 <mat-icon color="warn" class="error" *ngIf="order.state===OrderState.Error" >error</mat-icon>
                                 <mat-icon class="done" *ngIf="order.state===OrderState.Ready">done</mat-icon>
                                 <mat-icon color="accent" *ngIf="order.state===OrderState.InProcess">schedule</mat-icon>
+                                <mat-icon color="primary" *ngIf="order.state===OrderState.Undefined">help</mat-icon>
                         </mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="calculateOrder">
                         <mat-header-cell class="calculate-button" *matHeaderCellDef></mat-header-cell>
                         <mat-cell class="calculate-button" *matCellDef="let order">
-                            <button *ngIf="order.state!==OrderState.Ready" mat-icon-button color="primary" (click)="calculateOrder(order)">
+                            <button *ngIf="order.state!==OrderState.Ready&&order.state!==OrderState.InProcess" mat-icon-button color="primary" (click)="calculateOrder(order)">
                                 <mat-icon>play_arrow</mat-icon>
                             </button>
                         </mat-cell>

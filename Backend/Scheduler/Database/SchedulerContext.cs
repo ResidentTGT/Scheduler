@@ -1,6 +1,7 @@
 namespace Scheduler.Database
 {
     using Scheduler.Model;
+    using Scheduler.Model.OrderReport;
     using System;
     using System.Data.Entity;
     using System.Linq;
@@ -27,6 +28,10 @@ namespace Scheduler.Database
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.OrderQuantums)
                 .WithRequired(poi => poi.Order);
+
+            modelBuilder.Entity<Order>()
+               .HasMany(o => o.OrderReports)
+               .WithRequired(r => r.Order);
 
 
             modelBuilder.Entity<ProductionItem>()
@@ -56,6 +61,23 @@ namespace Scheduler.Database
                 .HasMany(r => r.Equipments)
                 .WithOptional(o => o.Conveyor);
 
+            modelBuilder.Entity<OrderReport>()
+               .HasMany(o => o.OrderBlocks)
+               .WithRequired(b => b.OrderReport);
+
+            modelBuilder.Entity<OrderBlock>()
+               .HasMany(o => o.GroupBlocks)
+               .WithRequired(b => b.OrderBlock);
+
+            modelBuilder.Entity<GroupBlock>()
+             .HasMany(o => o.DetailsBatchBlocks)
+             .WithRequired(b => b.GroupBlock);
+            modelBuilder.Entity<GroupBlock>()
+            .HasRequired(o => o.Workshop);
+
+            modelBuilder.Entity<DetailsBatchBlock>()
+           .HasRequired(o => o.Equipment);
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -78,6 +100,14 @@ namespace Scheduler.Database
         public virtual DbSet<Workshop> Workshops { get; set; }
 
         public virtual DbSet<Conveyor> Conveyors { get; set; }
+
+        public virtual DbSet<OrderReport> OrderReports { get; set; }
+
+        public virtual DbSet<DetailsBatchBlock> DetailsBatchBlocks { get; set; }
+
+        public virtual DbSet<GroupBlock> GroupBlocks { get; set; }
+
+        public virtual DbSet<OrderBlock> OrderBlocks { get; set; }
 
     }
 

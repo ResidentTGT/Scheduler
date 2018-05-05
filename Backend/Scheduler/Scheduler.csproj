@@ -102,9 +102,17 @@
     <Compile Include="Migrations\201804071938101_InitialDb.Designer.cs">
       <DependentUpon>201804071938101_InitialDb.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805051430194_AddedOrderReportModel.cs" />
+    <Compile Include="Migrations\201805051430194_AddedOrderReportModel.Designer.cs">
+      <DependentUpon>201805051430194_AddedOrderReportModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
     <Compile Include="Model\Detail.cs" />
+    <Compile Include="Model\OrderReport\DetailsBatchBlock.cs" />
+    <Compile Include="Model\OrderReport\GroupBlock.cs" />
+    <Compile Include="Model\OrderReport\OrderBlock.cs" />
+    <Compile Include="Model\OrderReport\OrderReport.cs" />
     <Compile Include="Model\ProductionItemQuantum.cs" />
     <Compile Include="Model\ProductionItem.cs" />
     <Compile Include="Model\Equipment.cs" />
@@ -136,6 +144,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201804071938101_InitialDb.resx">
       <DependentUpon>201804071938101_InitialDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805051430194_AddedOrderReportModel.resx">
+      <DependentUpon>201805051430194_AddedOrderReportModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

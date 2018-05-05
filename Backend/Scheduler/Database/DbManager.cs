@@ -180,6 +180,7 @@ namespace Scheduler.Database
                     ProductionItemId = orderQuantum.ProductionItemId
                 });
             order.OrderQuantums = orderQuantums;
+            order.State = OrderState.Undefined;
 
             _context.Orders.Add(order);
             _context.SaveChanges();

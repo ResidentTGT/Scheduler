@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Scheduler.Model.OrderReport;
 
 namespace Scheduler.Model
 {
@@ -32,5 +33,7 @@ namespace Scheduler.Model
         public DateTime? PlannedEndDate { get; set; }
 
         public virtual List<OrderQuantum> OrderQuantums { get; set; }
+
+        public virtual List<OrderReport.OrderReport> OrderReports { get; set; }
     }
 }

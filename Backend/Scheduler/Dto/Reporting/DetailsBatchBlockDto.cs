@@ -8,6 +8,8 @@ namespace Scheduler.Dto.Reporting
 {
     public class DetailsBatchBlockDto
     {
+        public int Id { get; set; }
+
         public int DetailId { get; set; }
 
         public string DetailName { get; set; }

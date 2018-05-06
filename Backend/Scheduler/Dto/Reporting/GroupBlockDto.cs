@@ -8,7 +8,9 @@ namespace Scheduler.Dto.Reporting
 {
     public class GroupBlockDto
     {
-        public int WorkshopId { get; set; }
+        public int Id { get; set; }
+
+        public WorkshopDto Workshop { get; set; }
 
         public int GroupIndex { get; set; }
 

@@ -1,9 +1,12 @@
 import { DetailsBatchBlock } from './DetailsBatchBlock';
+import { Workshop } from '../workshop';
 
 export class GroupBlock {
+    public id: number;
+
     public groupIndex: number;
 
-    public workshopId: number;
+    public workshop: Workshop;
 
     public startTime: number;
 

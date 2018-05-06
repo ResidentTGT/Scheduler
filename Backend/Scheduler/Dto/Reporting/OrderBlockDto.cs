@@ -8,6 +8,8 @@ namespace Scheduler.Dto.Reporting
 {
     public class OrderBlockDto
     {
+        public int Id { get; set; }
+
         public int ProductionItemId { get; set; }
 
         public string ProductionItemsName { get; set; }

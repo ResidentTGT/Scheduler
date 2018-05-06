@@ -7,33 +7,29 @@
         </div>
         <div class="diagram">
             <div class="machining">
-                <div class="order-quantum-machining" *ngFor="let orderQuantum of filteredOrderQuantums; let i = index">
-                    <div *ngFor="let orderQuantumBlock of orderQuantum.machiningDurations; let j = index">
-                        <div class="order-quantum-block mach " (click)="selectBlock(i,j)" [ngStyle]="{'width.px':orderQuantum.machiningDurations[j],'left.px':getMachiningStartTime(i,j),'background-color':getBlockColor(i)}">
-                            <div class="production-name">
-                                {{order.orderQuantums[i].productionItem.title}}
-                            </div>
-                            <div class="times-view">
-                                <div class="from"> {{order.orderQuantums[i].machiningStartTimes[j]}}</div>
-                                <div class="duration"> {{order.orderQuantums[i].machiningDurations[j]}}</div>
-                                <div class="to"> {{order.orderQuantums[i].machiningEndTimes[j]}}</div>
-                            </div>
+                <div *ngFor="let orderBlock of getMachiningBlocks(); let i = index">
+                    <div class="order-quantum-block mach " (click)="selectBlock(orderBlock)" [ngStyle]="{'width.px':orderBlock.duration,'left.px':orderBlock.startTime,'background-color':getBlockColor(orderBlock.productionItemId)}">
+                        <div class="production-name">
+                            {{orderBlock.productionItemsName}}
+                        </div>
+                        <div class="times-view">
+                            <div class="from">{{GetRealOrderBlock(orderBlock.id).startTime}} </div>
+                            <div class="duration"> {{GetRealOrderBlock(orderBlock.id).duration}}</div>
+                            <div class="to"> {{GetRealOrderBlock(orderBlock.id).startTime + GetRealOrderBlock(orderBlock.id).duration}}</div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="assembling">
-                <div class="order-quantum-assembling" *ngFor="let orderQuantum of filteredOrderQuantums; let i = index">
-                    <div *ngFor="let orderQuantumBlock of orderQuantum.assemblingDurations; let j = index">
-                        <div class="order-quantum-block " [ngStyle]="{'width.px':orderQuantum.assemblingDurations[j],'left.px':getAssemblingStartTime(i,j),'background-color':getBlockColor(i)}">
-                            <div class="production-name">
-                                {{order.orderQuantums[i].productionItem.title}}
-                            </div>
-                            <div class="times-view">
-                                <div class="from"> {{order.orderQuantums[i].assemblingStartTimes[j]}}</div>
-                                <div class="duration"> {{order.orderQuantums[i].assemblingDurations[j]}}</div>
-                                <div class="to"> {{order.orderQuantums[i].assemblingEndTimes[j]}}</div>
-                            </div>
+                <div *ngFor="let orderBlock of getAssemblingBlocks(); let i = index">
+                    <div class="order-quantum-block " [ngStyle]="{'width.px':orderBlock.duration,'left.px':orderBlock.startTime,'background-color':getBlockColor(orderBlock.productionItemId)}">
+                        <div class="production-name">
+                            {{orderBlock.productionItemsName}}
+                        </div>
+                        <div class="times-view">
+                            <div class="from"> {{GetRealOrderBlock(orderBlock.id).startTime}}</div>
+                            <div class="duration"> {{GetRealOrderBlock(orderBlock.id).duration}}</div>
+                            <div class="to"> {{GetRealOrderBlock(orderBlock.id).startTime + GetRealOrderBlock(orderBlock.id).duration}}</div>
                         </div>
                     </div>
                 </div>

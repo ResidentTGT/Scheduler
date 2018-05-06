@@ -180,6 +180,7 @@ namespace Scheduler.Dto
         {
             var blockDto = new OrderBlockDto()
             {
+                Id = block.Id,
                 IsMachining = block.IsMachining,
                 ProductionItemId = block.ProductionItemId,
                 ProductionItemsCount = block.ProductionItemsCount,
@@ -196,6 +197,7 @@ namespace Scheduler.Dto
         {
             var blockDto = new DetailsBatchBlockDto()
             {
+                Id = block.Id,
                 DetailId = block.DetailId,
                 DetailName = block.DetailName,
                 DetailsCount = block.DetailsCount,
@@ -210,10 +212,11 @@ namespace Scheduler.Dto
         {
             var blockDto = new GroupBlockDto()
             {
+                Id = block.Id,
                 Duration = block.Duration,
                 StartTime = block.StartTime,
                 GroupIndex = block.GroupIndex,
-                WorkshopId = block.WorkshopId,
+                Workshop = ConvertWorkshop(block.Workshop),
                 DetailsBatchBlocks = block.DetailsBatchBlocks.Select(b => ConvertDetailsBatchBlockForView(b)).ToList()
             };
 

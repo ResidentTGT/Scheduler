@@ -1,4 +1,6 @@
 export class DetailsBatchBlock {
+    public id: number;
+
     public detailId: number;
 
     public detailName: string;

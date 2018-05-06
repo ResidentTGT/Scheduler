@@ -1,6 +1,8 @@
 import { GroupBlock } from './GroupBlock';
 
 export class OrderBlock {
+    public id: number;
+
     public productionItemId: number;
 
     public productionItemsName: string;

@@ -213,7 +213,7 @@ export class BackendApiService {
     getGraphOrderReport(orderId: number): Observable<OrderReport> {
         return this.http
             .get(`${env.backendUrl}api/order-report?id=${orderId}`)
-            .map(resp => OrderReport.fromJSON(resp));
+            .map(resp => OrderReport.fromJSON(resp.json()));
     }
 
 }

@@ -50,7 +50,9 @@ namespace Scheduler.Core.OrderReporting
                         ProductionItemsCount = orderQuantum.ItemsCountInOnePart,
                         ProductionItemsName = orderQuantum.ProductionItem.Title,
                         StartTime = orderQuantum.MachiningStartTimes[i].Ticks,
-                        GroupBlocks = GenerateGroupBlock(orderQuantum.ProductionItem, i)
+                        GroupBlocks = orderQuantum.ProductionItem.ProductionItemQuantumsGroups.Count > 1
+                        ? GenerateGroupBlock(orderQuantum.ProductionItem.ProductionItemQuantumsGroups[0], i, orderQuantum.MachiningStartTimes[i])
+                        : GenerateGroupBlock(orderQuantum.ProductionItem.ProductionItemQuantumsGroups[0], i, orderQuantum.MachiningStartTimes[i])
                     });
                 }
 
@@ -71,30 +73,26 @@ namespace Scheduler.Core.OrderReporting
             return orderBlocks;
         }
 
-        private List<GroupBlock> GenerateGroupBlock(ProductionItem productionItem, int index)
+        private List<GroupBlock> GenerateGroupBlock(ProductionItemQuantumsGroup group, int index, TimeSpan startTime)
         {
             var groupBlocks = new List<GroupBlock>();
 
-            var groups = productionItem.ProductionItemQuantumsGroups;
-            for (int i = 0; i < groups.Count; i++)
+            for (int j = 0; j < group.WorkshopSequence.Count; j++)
             {
-                for (int j = 0; j < groups[i].WorkshopSequence.Count; j++)
+                groupBlocks.Add(new GroupBlock()
                 {
-                    groupBlocks.Add(new GroupBlock()
-                    {
-                        Duration = groups[i].WorkshopDurations[j].Ticks,
-                        GroupIndex = i,
-                        StartTime = groups[i].WorkshopStartTimes[j].Ticks,
-                        WorkshopId = groups[i].WorkshopSequence[j],
-                        DetailsBatchBlocks = GenerateDetailsBatchBlocks(groups[i], groups[i].WorkshopSequence[j])
-                    });
-                }
+                    Duration = group.WorkshopDurations[j].Ticks,
+                    GroupIndex = index,
+                    StartTime = group.WorkshopStartTimes[j].Ticks + startTime.Ticks,
+                    WorkshopId = group.WorkshopSequence[j],
+                    DetailsBatchBlocks = GenerateDetailsBatchBlocks(group, group.WorkshopSequence[j], startTime)
+                });
             }
 
             return groupBlocks;
         }
 
-        private List<DetailsBatchBlock> GenerateDetailsBatchBlocks(ProductionItemQuantumsGroup productionItemQuantumsGroup, int workshopId)
+        private List<DetailsBatchBlock> GenerateDetailsBatchBlocks(ProductionItemQuantumsGroup productionItemQuantumsGroup, int workshopId, TimeSpan startTime)
         {
             var detailsBatchBlocks = new List<DetailsBatchBlock>();
 
@@ -110,7 +108,7 @@ namespace Scheduler.Core.OrderReporting
                         DetailsCount = items[i].Count,
                         Duration = items[i].MachiningDurations[j].Ticks,
                         EquipmentId = items[i].Detail.EquipmentsIdSequence[j],
-                        StartTime = items[i].StartTimes[j].Ticks
+                        StartTime = items[i].StartTimes[j].Ticks + startTime.Ticks
                     });
                 }
             }

@@ -3,6 +3,9 @@ import { Order } from '../../../models/order';
 import { ProductionItem } from '../../../models/production-item';
 import { randomColor } from 'randomcolor';
 import { ProductionItemQuantumsGroup } from '../../../models/production-item-quantums-group';
+import { OrderBlock } from '../../../models/Reporting/OrderBlock';
+import { GroupBlock } from '../../../models/Reporting/GroupBlock';
+import { Workshop } from '../../../models/workshop';
 
 @Component({
     selector: 'sch-view-production-item-quantums-groups',
@@ -10,21 +13,21 @@ import { ProductionItemQuantumsGroup } from '../../../models/production-item-qua
     styleUrls: ['./view-production-item-quantums-groups.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ViewProductionItemQuantumsGroupsComponent implements OnInit, OnChanges {
+export class ViewProductionItemQuantumsGroupsComponent implements OnInit {
 
     @Input()
     public order: Order;
 
     @Input()
-    public selectedBlock: { orderQuantumIndex: number, offset: number };
+    public selectedBlock: OrderBlock;
+
+    public filteredGroupBlocks: GroupBlock[] = [];
 
     @Output()
-    selectedGroup: EventEmitter<{ orderQuantumIndex: number, groupIndex: number, offset: number }>
-        = new EventEmitter<{ orderQuantumIndex: number, groupIndex: number, offset: number }>();
+    selectedGroup: EventEmitter<GroupBlock> = new EventEmitter<GroupBlock>();
 
-    public productionItem: ProductionItem;
-    public colors: any[] = [];
-    public allWorkshops: Set<number> = new Set<number>();
+    public colors: { groupIndex: number, color: string }[] = [];
+    public allWorkshops: Workshop[] = [];
 
     constructor() { }
 
@@ -32,110 +35,60 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit, OnChan
         this.defaultZoom();
 
         this.generateColors();
-        this.getAllWorkshops();
-    }
-
-    ngOnChanges() {
-        this.defaultZoom();
-
-        this.generateColors();
-        this.getAllWorkshops();
+        this.setAllWorkshops();
     }
 
     private generateColors() {
-        this.productionItem.productionItemQuantumsGroups.forEach(q => this.colors.push(randomColor({ luminosity: 'light' })));
+        const set = new Set<number>();
+        this.selectedBlock.groupBlocks.forEach(g => set.add(g.groupIndex));
+        set.forEach(index => this.colors.push({ groupIndex: index, color: randomColor({ luminosity: 'light' }) }));
     }
 
     public defaultZoom() {
-        this.productionItem = new ProductionItem();
-        this.productionItem.title = this.order.orderQuantums[this.selectedBlock.orderQuantumIndex].productionItem.title;
-        this.productionItem.productionItemQuantumsGroups = new Array<ProductionItemQuantumsGroup>();
-        this.order.orderQuantums[this.selectedBlock.orderQuantumIndex].productionItem.productionItemQuantumsGroups
-            .forEach(oq => this.productionItem.productionItemQuantumsGroups.push({
-                workshopSequence: Object.assign(new Array<number>(), oq.workshopSequence),
-                workshopStartTimes: Object.assign(new Array<number>(), oq.workshopStartTimes),
-                workshopEndTimes: Object.assign(new Array<number>(), oq.workshopEndTimes),
-                workshopDurations: Object.assign(new Array<number>(), oq.workshopDurations),
-            }));
+        this.filteredGroupBlocks = new Array<GroupBlock>();
+        const minTime = this.selectedBlock.groupBlocks.map(b => b.startTime).sort(function (a, b) { return a - b; })[0];
+        this.selectedBlock.groupBlocks.forEach(g => {
+            this.filteredGroupBlocks.push(Object.assign(new GroupBlock(), g));
+        });
+        this.filteredGroupBlocks.forEach(b => b.startTime -= minTime);
+    }
+
+    public getGroupsInWorkshop(workshop: Workshop) {
+        return this.filteredGroupBlocks.filter(g => g.workshop.id === workshop.id);
+    }
+
+    public GetRealGroupBlock(id: number): GroupBlock {
+        return this.selectedBlock.groupBlocks.filter(b => b.id === id)[0];
     }
 
     public zoomPlus() {
-        this.productionItem.productionItemQuantumsGroups.forEach(g => {
-            for (let i = 0; i < g.workshopDurations.length; i++) {
-                g.workshopDurations[i] *= 1.1;
-                g.workshopStartTimes[i] *= 1.1;
-            }
+        this.filteredGroupBlocks.forEach(b => {
+            b.duration *= 1.1;
+            b.startTime *= 1.1;
         });
     }
 
     public zoomMinus() {
-        this.productionItem.productionItemQuantumsGroups.forEach(g => {
-            for (let i = 0; i < g.workshopDurations.length; i++) {
-                g.workshopDurations[i] *= 0.9;
-                g.workshopStartTimes[i] *= 0.9;
+        this.filteredGroupBlocks.forEach(b => {
+            b.duration *= 0.9;
+            b.startTime *= 0.9;
+        });
+    }
+
+    public setAllWorkshops() {
+        this.selectedBlock.groupBlocks.forEach(g => {
+            if (!this.allWorkshops.some(w => w.id === g.workshop.id)) {
+                this.allWorkshops.push(g.workshop);
             }
         });
     }
 
-    public getAllWorkshops() {
-        this.allWorkshops = new Set<number>();
-        this.productionItem.productionItemQuantumsGroups.forEach(g => g.workshopSequence.forEach(s => this.allWorkshops.add(s)));
+    public getBlockColor(id: number) {
+        return this.colors.filter(c => c.groupIndex === id)[0].color;
     }
 
-
-    public isGroupInWorkshop(workshopId: number, groupIndex: number) {
-        return this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.some(s => s === workshopId);
-    }
-
-    //#region Получение времен для рисования блоков
-    public getWorkshopDuration(workshopId: number, groupIndex: number) {
-        const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
-        return this.productionItem.productionItemQuantumsGroups[groupIndex].workshopDurations[workshopIndex];
-    }
-
-    public getWorkshopStartTime(workshopId: number, groupIndex: number) {
-        const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
-        return this.productionItem.productionItemQuantumsGroups[groupIndex].workshopStartTimes[workshopIndex];
-    }
-
-    public getViewWorkshopEndTime(workshopId: number, groupIndex: number) {
-        const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
-        return this.productionItem.productionItemQuantumsGroups[groupIndex].workshopEndTimes[workshopIndex];
-    }
-    //#endregion
-
-    //#region Получение времен для отображения значений времен
-    public getViewWorkshopDuration(workshopId: number, groupIndex: number) {
-        const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
-        return this.order.orderQuantums[this.selectedBlock.orderQuantumIndex]
-            .productionItem.productionItemQuantumsGroups[groupIndex].workshopDurations[workshopIndex];
-    }
-
-    public getViewWorkshopStartTime(workshopId: number, groupIndex: number) {
-        const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
-        return this.order.orderQuantums[this.selectedBlock.orderQuantumIndex]
-            .productionItem.productionItemQuantumsGroups[groupIndex].workshopStartTimes[workshopIndex];
-    }
-
-    public getWorkshopEndTime(workshopId: number, groupIndex: number) {
-        const workshopIndex = this.productionItem.productionItemQuantumsGroups[groupIndex].workshopSequence.indexOf(workshopId);
-        return this.order.orderQuantums[this.selectedBlock.orderQuantumIndex]
-            .productionItem.productionItemQuantumsGroups[groupIndex].workshopEndTimes[workshopIndex];
-    }
-    //#endregion
-
-    public getBlockColor(groupIndex: number) {
-        return this.colors[groupIndex];
-    }
-
-    public selectGroup(groupIndex: number) {
-        this.selectedGroup.emit({
-            orderQuantumIndex: this.selectedBlock.orderQuantumIndex
-            , groupIndex: groupIndex
-            , offset: this.selectedBlock.offset
-                + this.order.orderQuantums[this.selectedBlock.orderQuantumIndex]
-                    .productionItem.productionItemQuantumsGroups[groupIndex].workshopStartTimes[0]
-        });
+    public selectGroup(groupBlock: GroupBlock) {
+        this.selectedGroup.emit(Object.assign(new GroupBlock(), groupBlock));
     }
 
 }

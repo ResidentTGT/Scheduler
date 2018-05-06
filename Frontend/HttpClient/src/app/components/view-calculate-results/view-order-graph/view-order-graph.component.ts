@@ -4,6 +4,8 @@ import { BackendApiService } from '../../../services/backend-api.service';
 import { Observable } from 'rxjs/Rx';
 import { OrderReport } from '../../../models/Reporting/OrderReport';
 import { ActivatedRoute } from '@angular/router';
+import { OrderBlock } from '../../../models/Reporting/OrderBlock';
+import { GroupBlock } from '../../../models/Reporting/GroupBlock';
 
 @Component({
     selector: 'sch-view-order-graph',
@@ -14,9 +16,9 @@ export class ViewOrderGraphComponent implements OnInit {
 
     public loading: boolean;
 
-    public selectedBlock: { orderQuantumIndex: number, offset: number };
+    public selectedBlock: OrderBlock;
 
-    public selectedGroup: { orderQuantumIndex: number, groupIndex: number, offset: number };
+    public selectedGroup: GroupBlock;
 
     public report: OrderReport;
 
@@ -36,7 +38,6 @@ export class ViewOrderGraphComponent implements OnInit {
         this.loading = true;
         return this._api.getGraphOrderReport(orderId)
             .do(r => {
-                debugger;
                 this.report = r;
                 this.loading = false;
             })

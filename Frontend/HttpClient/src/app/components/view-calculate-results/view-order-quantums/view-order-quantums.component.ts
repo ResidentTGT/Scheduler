@@ -51,7 +51,6 @@ export class ViewOrderQuantumsComponent implements OnInit {
     }
 
     public selectBlock(orderBlock: OrderBlock) {
-        debugger;
         this.selectedBlock.emit(Object.assign(new OrderBlock(), orderBlock));
     }
 

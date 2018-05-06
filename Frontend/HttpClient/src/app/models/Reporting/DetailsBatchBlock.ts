@@ -1,3 +1,5 @@
+import { Equipment } from '../equipment';
+
 export class DetailsBatchBlock {
     public id: number;
 
@@ -10,4 +12,6 @@ export class DetailsBatchBlock {
     public startTime: number;
 
     public duration: number;
+
+    public equipment: Equipment;
 }

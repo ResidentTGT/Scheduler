@@ -19,5 +19,7 @@ namespace Scheduler.Dto.Reporting
         public long StartTime { get; set; }
 
         public long Duration { get; set; }
+
+        public EquipmentDto Equipment { get; set; }
     }
 }

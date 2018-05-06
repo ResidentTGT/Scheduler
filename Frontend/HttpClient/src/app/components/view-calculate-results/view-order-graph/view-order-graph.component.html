@@ -1,8 +1,9 @@
 <main>
-    <sch-view-order-quantums *ngIf="report" [report]="report" (selectedBlock)="selectedBlock = $event"></sch-view-order-quantums>
-
-    <sch-view-production-item-quantums-groups *ngIf="selectedBlock" [selectedBlock]="selectedBlock" (selectedGroup)="selectedGroup=$event">
+    <div class="view-order-quantums">
+        <sch-view-order-quantums *ngIf="report" [report]="report" (selectedBlock)="selectedBlock=$event;selectedGroup=null"></sch-view-order-quantums>
+    </div>
+    <sch-view-production-item-quantums-groups *ngIf="selectedBlock" [setSelectedBlock]="selectedBlock" (selectedGroup)="selectedGroup=$event">
     </sch-view-production-item-quantums-groups>
 
-    <!-- <sch-view-production-item-quantum-group *ngIf="selectedGroup" [order]="calculatedOrder" [selectedGroup]="selectedGroup"></sch-view-production-item-quantum-group> -->
+    <sch-view-production-item-quantum-group *ngIf="selectedGroup" [setSelectedGroup]="selectedGroup"></sch-view-production-item-quantum-group>
 </main>

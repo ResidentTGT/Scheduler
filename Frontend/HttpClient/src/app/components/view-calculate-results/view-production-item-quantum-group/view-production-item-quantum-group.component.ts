@@ -4,6 +4,9 @@ import { ProductionItemQuantumsGroup } from '../../../models/production-item-qua
 import { ProductionItemQuantum } from '../../../models/production-item-quantum';
 import { Detail } from '../../../models/detail';
 import { randomColor } from 'randomcolor';
+import { GroupBlock } from '../../../models/Reporting/GroupBlock';
+import { DetailsBatchBlock } from '../../../models/Reporting/DetailsBatchBlock';
+import { Equipment } from '../../../models/equipment';
 
 @Component({
     selector: 'sch-view-production-item-quantum-group',
@@ -11,127 +14,74 @@ import { randomColor } from 'randomcolor';
     styleUrls: ['./view-production-item-quantum-group.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ViewProductionItemQuantumGroupComponent implements OnInit, OnChanges {
+export class ViewProductionItemQuantumGroupComponent implements OnInit {
 
     @Input()
-    public order: Order;
-    @Input()
-    public selectedGroup: { orderQuantumIndex: number, groupIndex: number, offset: number };
+    public set setSelectedGroup(block: GroupBlock) {
+        this.selectedGroup = block;
+        this.defaultZoom();
 
-    public colors: any[] = [];
-    public group: ProductionItemQuantumsGroup;
-    public equipments: Array<{ id: number, name: string }> = new Array<{ id: number, name: string }>();
+        this.generateColors();
+        this.setAllEquipments();
+    }
+
+    public colors: { detailId: number, color: string }[] = [];
+    public selectedGroup: GroupBlock;
+    public filteredDetailsBlocks: DetailsBatchBlock[] = [];
+    public allEquipments: Equipment[] = [];
 
     constructor() { }
 
     ngOnInit() {
-        this.defaultZoom();
-
-        this.generateColors();
-        this.setAllEquipments();
-    }
-
-    ngOnChanges() {
-        this.defaultZoom();
-
-        this.generateColors();
-        this.setAllEquipments();
     }
 
     public defaultZoom() {
-        this.group = new ProductionItemQuantumsGroup();
-        this.group.productionItemQuantums = new Array<ProductionItemQuantum>();
-        this.order.orderQuantums[this.selectedGroup.orderQuantumIndex]
-            .productionItem.productionItemQuantumsGroups[this.selectedGroup.groupIndex].productionItemQuantums
-            .forEach(iq => this.group.productionItemQuantums.push({
-                machiningDurations: Object.assign(new Array<number>(), iq.machiningDurations),
-                startTimes: Object.assign(new Array<number>(), iq.startTimes),
-                endTimes: Object.assign(new Array<number>(), iq.endTimes),
-                count: iq.count,
-                detail: Object.assign(new Detail(), iq.detail)
-            }));
+        this.filteredDetailsBlocks = new Array<DetailsBatchBlock>();
+        const minTime = this.selectedGroup.detailsBatchBlocks.map(b => b.startTime).sort(function (a, b) { return a - b; })[0];
+        this.selectedGroup.detailsBatchBlocks.forEach(g => {
+            this.filteredDetailsBlocks.push(Object.assign(new DetailsBatchBlock(), g));
+        });
+        this.filteredDetailsBlocks.forEach(b => b.startTime -= minTime);
     }
 
     private generateColors() {
-        this.group.productionItemQuantums.forEach(q => this.colors.push(randomColor({ luminosity: 'light' })));
+        const set = new Set<number>();
+        this.selectedGroup.detailsBatchBlocks.forEach(g => set.add(g.detailId));
+        set.forEach(id => this.colors.push({ detailId: id, color: randomColor({ luminosity: 'light' }) }));
     }
 
     public setAllEquipments() {
-        const equipments = new Array<{ id: number, name: string }>();
-        this.group.productionItemQuantums.forEach(g => g.detail.equipmentsIdSequence.forEach(id => {
-            if (!equipments.some(e => e.id === id)) {
-                equipments.push({ id: id, name: g.detail.equipmentsNameSequence[g.detail.equipmentsIdSequence.indexOf(id)] });
+        this.selectedGroup.detailsBatchBlocks.forEach(g => {
+            if (!this.allEquipments.some(w => w.id === g.equipment.id)) {
+                this.allEquipments.push(g.equipment);
             }
-        }
-        ));
-        this.equipments = equipments;
+        });
     }
 
-    public isProductionItemQuantumInEquipment(equipment: any, productionItemQuantumIndex: number) {
-        return this.group.productionItemQuantums[productionItemQuantumIndex].detail.equipmentsIdSequence.some(s => s === equipment.id);
+    public getBlockColor(id: number) {
+        return this.colors.filter(c => c.detailId === id)[0].color;
     }
 
-    public getMachiningDuration(equipment: any, productionItemQuantumIndex: number) {
-        const equipmentIndex = this.group.productionItemQuantums[productionItemQuantumIndex]
-            .detail.equipmentsIdSequence.indexOf(equipment.id);
-        return this.group.productionItemQuantums[productionItemQuantumIndex].machiningDurations[equipmentIndex];
+    public GetRealDetailsBlock(id: number): DetailsBatchBlock {
+        return this.selectedGroup.detailsBatchBlocks.filter(b => b.id === id)[0];
     }
 
-    public getMachiningStartTime(equipment: any, productionItemQuantumIndex: number) {
-        const equipmentIndex = this.group.productionItemQuantums[productionItemQuantumIndex]
-            .detail.equipmentsIdSequence.indexOf(equipment.id);
-        return this.group.productionItemQuantums[productionItemQuantumIndex].startTimes[equipmentIndex];
-    }
-
-    public getBlockColor(productionItemQuantumIndex: number) {
-        return this.colors[productionItemQuantumIndex];
+    public getBlocksInEquipment(equipment: Equipment) {
+        return this.filteredDetailsBlocks.filter(g => g.equipment.id === equipment.id);
     }
 
     public zoomPlus() {
-        this.group.productionItemQuantums.forEach(g => {
-            for (let i = 0; i < g.machiningDurations.length; i++) {
-                g.machiningDurations[i] *= 1.1;
-                g.startTimes[i] *= 1.1;
-            }
+        this.filteredDetailsBlocks.forEach(b => {
+            b.duration *= 1.1;
+            b.startTime *= 1.1;
         });
     }
 
     public zoomMinus() {
-        this.group.productionItemQuantums.forEach(g => {
-            for (let i = 0; i < g.machiningDurations.length; i++) {
-                g.machiningDurations[i] *= 0.9;
-                g.startTimes[i] *= 0.9;
-            }
+        this.filteredDetailsBlocks.forEach(b => {
+            b.duration *= 0.9;
+            b.startTime *= 0.9;
         });
     }
-
-    //#region Получение времен для отображения значений времен
-    public getViewMachiningDuration(equipment: any, productionItemQuantumIndex: number) {
-        const equipmentIndex = this.group.productionItemQuantums[productionItemQuantumIndex]
-            .detail.equipmentsIdSequence.indexOf(equipment.id);
-        return this.order.orderQuantums[this.selectedGroup.orderQuantumIndex]
-            .productionItem.productionItemQuantumsGroups[this.selectedGroup.groupIndex]
-            .productionItemQuantums[productionItemQuantumIndex]
-            .machiningDurations[equipmentIndex];
-    }
-
-    public getViewMachiningStartTime(equipment: any, productionItemQuantumIndex: number) {
-        const equipmentIndex = this.group.productionItemQuantums[productionItemQuantumIndex]
-            .detail.equipmentsIdSequence.indexOf(equipment.id);
-        return this.order.orderQuantums[this.selectedGroup.orderQuantumIndex]
-            .productionItem.productionItemQuantumsGroups[this.selectedGroup.groupIndex]
-            .productionItemQuantums[productionItemQuantumIndex]
-            .startTimes[equipmentIndex];
-    }
-
-    public getViewMachiningEndTime(equipment: any, productionItemQuantumIndex: number) {
-        const equipmentIndex = this.group.productionItemQuantums[productionItemQuantumIndex]
-            .detail.equipmentsIdSequence.indexOf(equipment.id);
-        return this.order.orderQuantums[this.selectedGroup.orderQuantumIndex]
-            .productionItem.productionItemQuantumsGroups[this.selectedGroup.groupIndex]
-            .productionItemQuantums[productionItemQuantumIndex]
-            .endTimes[equipmentIndex];
-    }
-    //#endregion
 
 }

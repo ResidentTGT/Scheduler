@@ -202,7 +202,8 @@ namespace Scheduler.Dto
                 DetailName = block.DetailName,
                 DetailsCount = block.DetailsCount,
                 Duration = block.Duration,
-                StartTime = block.StartTime
+                StartTime = block.StartTime,
+                Equipment = ConvertEquipment(block.Equipment)
             };
 
             return blockDto;

@@ -16,26 +16,25 @@ import { Workshop } from '../../../models/workshop';
 export class ViewProductionItemQuantumsGroupsComponent implements OnInit {
 
     @Input()
-    public order: Order;
+    public set setSelectedBlock(block: OrderBlock) {
+        this.selectedBlock = block;
+        this.defaultZoom();
 
-    @Input()
-    public selectedBlock: OrderBlock;
-
-    public filteredGroupBlocks: GroupBlock[] = [];
+        this.generateColors();
+        this.setAllWorkshops();
+    }
 
     @Output()
     selectedGroup: EventEmitter<GroupBlock> = new EventEmitter<GroupBlock>();
 
+    public filteredGroupBlocks: GroupBlock[] = [];
+    public selectedBlock: OrderBlock;
     public colors: { groupIndex: number, color: string }[] = [];
     public allWorkshops: Workshop[] = [];
 
     constructor() { }
 
     ngOnInit() {
-        this.defaultZoom();
-
-        this.generateColors();
-        this.setAllWorkshops();
     }
 
     private generateColors() {

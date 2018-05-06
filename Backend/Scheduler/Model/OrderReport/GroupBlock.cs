@@ -10,12 +10,14 @@ namespace Scheduler.Model.OrderReport
     {
         public int Id { get; set; }
 
+        public int GroupIndex { get; set; }
+
         public int OrderBlockId { get; set; }
         public virtual OrderBlock OrderBlock { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public long StartTime { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public long Duration { get; set; }
 
         public virtual Workshop Workshop { get; set; }
         public int WorkshopId { get; set; }

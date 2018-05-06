@@ -7,13 +7,13 @@ namespace Scheduler.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddedOrderReportModel : IMigrationMetadata
+    public sealed partial class AddOrderReportModel : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedOrderReportModel));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddOrderReportModel));
         
         string IMigrationMetadata.Id
         {
-            get { return "201805051430194_AddedOrderReportModel"; }
+            get { return "201805061407256_AddOrderReportModel"; }
         }
         
         string IMigrationMetadata.Source

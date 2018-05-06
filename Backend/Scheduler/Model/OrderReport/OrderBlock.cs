@@ -13,15 +13,17 @@ namespace Scheduler.Model.OrderReport
         public int OrderReportId { get; set; }
         public virtual OrderReport OrderReport { get; set; }
 
+        public int ProductionItemId { get; set; }
+
         public int ProductionItemsCount { get; set; }
 
         public string ProductionItemsName { get; set; }
 
-        public DateTime StartTime { get; set; }
+        public long StartTime { get; set; }
 
-        public DateTime EndTime { get; set; }
+        public long Duration { get; set; }
 
-        bool isMachining { get; set; }
+        public bool IsMachining { get; set; }
 
         public virtual List<GroupBlock> GroupBlocks { get; set; }
     }

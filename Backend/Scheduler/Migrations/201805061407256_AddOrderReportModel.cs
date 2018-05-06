@@ -3,7 +3,7 @@ namespace Scheduler.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AddedOrderReportModel : DbMigration
+    public partial class AddOrderReportModel : DbMigration
     {
         public override void Up()
         {
@@ -25,10 +25,12 @@ namespace Scheduler.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         OrderReportId = c.Int(nullable: false),
+                        ProductionItemId = c.Int(nullable: false),
                         ProductionItemsCount = c.Int(nullable: false),
                         ProductionItemsName = c.String(),
-                        StartTime = c.DateTime(nullable: false),
-                        EndTime = c.DateTime(nullable: false),
+                        StartTime = c.Long(nullable: false),
+                        Duration = c.Long(nullable: false),
+                        IsMachining = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.OrderReports", t => t.OrderReportId, cascadeDelete: true)
@@ -39,9 +41,10 @@ namespace Scheduler.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        GroupIndex = c.Int(nullable: false),
                         OrderBlockId = c.Int(nullable: false),
-                        StartTime = c.DateTime(nullable: false),
-                        EndTime = c.DateTime(nullable: false),
+                        StartTime = c.Long(nullable: false),
+                        Duration = c.Long(nullable: false),
                         WorkshopId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -55,9 +58,12 @@ namespace Scheduler.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        DetailId = c.Int(nullable: false),
+                        DetailName = c.String(),
+                        DetailsCount = c.Int(nullable: false),
                         GroupBlockId = c.Int(nullable: false),
-                        StartTime = c.DateTime(nullable: false),
-                        EndTime = c.DateTime(nullable: false),
+                        StartTime = c.Long(nullable: false),
+                        Duration = c.Long(nullable: false),
                         EquipmentId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)

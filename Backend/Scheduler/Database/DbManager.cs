@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using Scheduler.Model.OrderReport;
 
 namespace Scheduler.Database
 {
@@ -464,5 +465,13 @@ namespace Scheduler.Database
             _context.SaveChanges();
         }
         #endregion
+
+        public int CreateReport(OrderReport orderReport)
+        {
+            _context.OrderReports.Add(orderReport);
+            _context.SaveChanges();
+
+            return orderReport.Id;
+        }
     }
 }

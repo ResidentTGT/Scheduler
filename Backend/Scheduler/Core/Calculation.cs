@@ -12,6 +12,7 @@ using Scheduler.Core.Grouping;
 using Scheduler.Core.DeterminingOrder;
 using Scheduler.Core.CountingTime;
 using System.Diagnostics;
+using Scheduler.Core.OrderReporting;
 
 namespace Scheduler.Core
 {
@@ -69,10 +70,16 @@ namespace Scheduler.Core
             OrderQuantumsTiming.CountTimeForOrderQuantums(order);
             Logger.Log($"Закончен подсчет времен для части заказов (партий изделий) для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
 
-             _dbManager.SetOrderState(order.Id, OrderState.Ready);
+            _dbManager.SetOrderState(order.Id, OrderState.Ready);
 
             timer.Stop();
             Logger.Log($"Расчет заказа завершен. Занятое время: {timer.Elapsed}.", LogLevel.Info);
+
+            Logger.Log($"Начато формирование отчета.", LogLevel.Info);
+            var reporting = new Reporting(_dbManager);
+            var report = reporting.CreateReport(order);
+            _dbManager.CreateReport(report);
+            Logger.Log($"Закончено формирование отчета.", LogLevel.Info);
         }
     }
 }

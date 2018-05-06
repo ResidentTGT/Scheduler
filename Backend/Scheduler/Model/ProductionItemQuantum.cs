@@ -21,6 +21,9 @@ namespace Scheduler.Model
 
         public int Count { get; set; }
 
+        /// <summary>
+        /// Все времена располагаются в порядке прохождения деталью станков
+        /// </summary>
         public List<TimeSpan> StartTimes { get; set; } = new List<TimeSpan>();
         public List<TimeSpan> EndTimes { get; set; } = new List<TimeSpan>();
         public List<TimeSpan> MachiningDurations { get; set; } = new List<TimeSpan>();

@@ -78,6 +78,7 @@
     <Compile Include="Core\DeterminingOrder\DeterminingGroupsOrder.cs" />
     <Compile Include="Core\Grouping\GroupingDetails.cs" />
     <Compile Include="Core\Grouping\ProductionItemQuantumsGroup.cs" />
+    <Compile Include="Core\OrderReporting\Reporting.cs" />
     <Compile Include="Database\DbManager.cs" />
     <Compile Include="Dto\ConveyorDto.cs" />
     <Compile Include="Dto\DtoConverter.cs" />
@@ -102,9 +103,9 @@
     <Compile Include="Migrations\201804071938101_InitialDb.Designer.cs">
       <DependentUpon>201804071938101_InitialDb.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805051430194_AddedOrderReportModel.cs" />
-    <Compile Include="Migrations\201805051430194_AddedOrderReportModel.Designer.cs">
-      <DependentUpon>201805051430194_AddedOrderReportModel.cs</DependentUpon>
+    <Compile Include="Migrations\201805061407256_AddOrderReportModel.cs" />
+    <Compile Include="Migrations\201805061407256_AddOrderReportModel.Designer.cs">
+      <DependentUpon>201805061407256_AddOrderReportModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
@@ -145,8 +146,8 @@
     <EmbeddedResource Include="Migrations\201804071938101_InitialDb.resx">
       <DependentUpon>201804071938101_InitialDb.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805051430194_AddedOrderReportModel.resx">
-      <DependentUpon>201805051430194_AddedOrderReportModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805061407256_AddOrderReportModel.resx">
+      <DependentUpon>201805061407256_AddOrderReportModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,6 +1,8 @@
 ﻿using Scheduler.Core.Grouping;
 using Scheduler.Database;
+using Scheduler.Dto.Reporting;
 using Scheduler.Model;
+using Scheduler.Model.OrderReport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -155,6 +157,68 @@ namespace Scheduler.Dto
 
             return orderDto;
         }
+
+
+
+        #endregion
+
+        #region Reporting
+        internal OrderReportDto ConvertOrderReportForView(OrderReport orderReport)
+        {
+            var orderReportDto = new OrderReportDto()
+            {
+                CreationTime = orderReport.CreationTime,
+                Id = orderReport.Id,
+                Order = new OrderDto(),
+                OrderBlocks = orderReport.OrderBlocks.Select(b => ConvertOrderBlockForView(b)).ToList()
+            };
+
+            return orderReportDto;
+        }
+
+        internal OrderBlockDto ConvertOrderBlockForView(OrderBlock block)
+        {
+            var blockDto = new OrderBlockDto()
+            {
+                IsMachining = block.IsMachining,
+                ProductionItemId = block.ProductionItemId,
+                ProductionItemsCount = block.ProductionItemsCount,
+                ProductionItemsName = block.ProductionItemsName,
+                Duration = block.Duration,
+                StartTime = block.StartTime,
+                GroupBlocks = block.GroupBlocks.Select(b => ConvertGroupBlockForView(b)).ToList()
+            };
+
+            return blockDto;
+        }
+
+        internal DetailsBatchBlockDto ConvertDetailsBatchBlockForView(DetailsBatchBlock block)
+        {
+            var blockDto = new DetailsBatchBlockDto()
+            {
+                DetailId = block.DetailId,
+                DetailName = block.DetailName,
+                DetailsCount = block.DetailsCount,
+                Duration = block.Duration,
+                StartTime = block.StartTime
+            };
+
+            return blockDto;
+        }
+
+        internal GroupBlockDto ConvertGroupBlockForView(GroupBlock block)
+        {
+            var blockDto = new GroupBlockDto()
+            {
+                Duration = block.Duration,
+                StartTime = block.StartTime,
+                GroupIndex = block.GroupIndex,
+                WorkshopId = block.WorkshopId,
+                DetailsBatchBlocks = block.DetailsBatchBlocks.Select(b => ConvertDetailsBatchBlockForView(b)).ToList()
+            };
+
+            return blockDto;
+        }
         #endregion
 
         #region OrderQuantumConvert
@@ -210,7 +274,6 @@ namespace Scheduler.Dto
 
 
         #endregion
-
 
         #region ProductionItemConvert
         internal ProductionItemDto ConvertProductionItem(ProductionItem productionItem)

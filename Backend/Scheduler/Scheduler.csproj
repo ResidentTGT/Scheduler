@@ -91,6 +91,10 @@
     <Compile Include="Dto\ProductionItemDto.cs" />
     <Compile Include="Dto\ProductionItemQuantumDto.cs" />
     <Compile Include="Dto\ProductionItemQuantumsGroupDto.cs" />
+    <Compile Include="Dto\Reporting\DetailsBatchBlockDto.cs" />
+    <Compile Include="Dto\Reporting\GroupBlockDto.cs" />
+    <Compile Include="Dto\Reporting\OrderBlockDto.cs" />
+    <Compile Include="Dto\Reporting\OrderReportDto.cs" />
     <Compile Include="Dto\RouteDto.cs" />
     <Compile Include="Dto\WorkshopDto.cs" />
     <Compile Include="Core\Assembling\AssemblingTime.cs" />

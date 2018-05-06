@@ -201,6 +201,15 @@ namespace Scheduler.Database
             order.State = state;
             _context.SaveChanges();
         }
+
+        public OrderReport GetOrderReportByOrderId(int id)
+        {
+            var report = _context.OrderReports
+                .Include(r => r.OrderBlocks)
+                .Single(r => r.OrderId== id);
+
+            return report;
+        }
         #endregion
 
         #region ProductionItems

@@ -11,6 +11,7 @@ import { Conveyor } from '../models/conveyor';
 import { Workshop } from '../models/workshop';
 import { Order } from '../models/order';
 import { Route } from '../models/route';
+import { OrderReport } from '../models/Reporting/OrderReport';
 
 
 @Injectable()
@@ -207,6 +208,12 @@ export class BackendApiService {
     deleteRoute(id: number | {}) {
         return this.http
             .get(`${env.backendUrl}api/delete-route?id=${id}`);
+    }
+
+    getGraphOrderReport(orderId: number): Observable<OrderReport> {
+        return this.http
+            .get(`${env.backendUrl}api/order-report?id=${orderId}`)
+            .map(resp => OrderReport.fromJSON(resp));
     }
 
 }

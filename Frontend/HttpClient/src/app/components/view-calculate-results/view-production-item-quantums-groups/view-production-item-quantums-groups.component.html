@@ -2,7 +2,7 @@
     <div class="production-name">
         Изделие "{{selectedBlock.productionItemsName}}"
     </div>
-    <div class="diagram-names" [ngStyle]="{'height': 'calc(' + (117 * allWorkshops.length) + 'px )'}">
+    <div class="diagram-names" [ngStyle]="{'height': 'calc(' + (97 * allWorkshops.length + 35) + 'px )'}">
 
         <div class="workshops">
             <mat-card *ngFor="let workshop of allWorkshops">{{workshop.name}}</mat-card>
@@ -11,7 +11,7 @@
         <div class="diagram">
             <div class="workshop-line" *ngFor="let workshop of allWorkshops">
                 <div *ngFor="let group of getGroupsInWorkshop(workshop)">
-                    <div class="mach-block" (click)="selectGroup(group)" [ngStyle]="{'width.px':group.duration,'left.px':group.startTime,'background-color':getBlockColor(group.groupIndex)}">
+                    <div class="mach-block" (click)="selectGroup(group,workshop)" [ngStyle]="{'width.px':group.duration,'left.px':group.startTime,'background-color':getBlockColor(group.groupIndex)}">
                         <div class="group-index">
                             Группа {{group.groupIndex+1}}
                         </div>

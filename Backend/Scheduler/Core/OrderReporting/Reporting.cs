@@ -99,7 +99,8 @@ namespace Scheduler.Core.OrderReporting
             var items = productionItemQuantumsGroup.ProductionItemQuantums;
             for (int i = 0; i < items.Count; i++)
             {
-                for (int j = 0; j < items[i].Detail.EquipmentsIdSequence.Count; j++)
+               // var equipmentsInWorkshop = _dbManager.GetEquipmentsInWorkshop(workshopId).Select(e => e.Id);
+                for (int j = 0; j < items[i].MachiningDurations.Count; j++)
                 {
                     detailsBatchBlocks.Add(new DetailsBatchBlock()
                     {

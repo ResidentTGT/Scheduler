@@ -25,7 +25,7 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit {
     }
 
     @Output()
-    selectedGroup: EventEmitter<GroupBlock> = new EventEmitter<GroupBlock>();
+    selectedGroup: EventEmitter<{ group: GroupBlock, workshop: Workshop }> = new EventEmitter<{ group: GroupBlock, workshop: Workshop }>();
 
     public filteredGroupBlocks: GroupBlock[] = [];
     public selectedBlock: OrderBlock;
@@ -86,8 +86,8 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit {
         return this.colors.filter(c => c.groupIndex === id)[0].color;
     }
 
-    public selectGroup(groupBlock: GroupBlock) {
-        this.selectedGroup.emit(Object.assign(new GroupBlock(), groupBlock));
+    public selectGroup(groupBlock: GroupBlock, workshop: Workshop) {
+        this.selectedGroup.emit({ group: Object.assign(new GroupBlock(), groupBlock), workshop: workshop });
     }
 
 }

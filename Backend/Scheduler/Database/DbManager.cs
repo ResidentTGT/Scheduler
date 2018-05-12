@@ -134,6 +134,11 @@ namespace Scheduler.Database
             var equipment = _context.Operations.Include(o => o.Equipment.Conveyor).First(o => o.Id == id).Equipment;
             return equipment;
         }
+        public List<Equipment> GetEquipmentsInWorkshop(int id)
+        {
+            var equipments = _context.Equipments.Where(e => e.Workshop != null && e.WorkshopId == id).ToList();
+            return equipments;
+        }
         #endregion
 
         #region Orders
@@ -205,8 +210,8 @@ namespace Scheduler.Database
         public OrderReport GetOrderReportByOrderId(int id)
         {
             var report = _context.OrderReports
-                .Include(r => r.OrderBlocks)
-                .Single(r => r.OrderId== id);
+                .Include(r => r.OrderBlocks.Select(ob => ob.GroupBlocks.Select(gb => gb.DetailsBatchBlocks.Select(dbb => dbb.Equipment.Workshop))))
+                .Single(r => r.OrderId == id);
 
             return report;
         }

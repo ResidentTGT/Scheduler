@@ -7,6 +7,7 @@ import { randomColor } from 'randomcolor';
 import { GroupBlock } from '../../../models/Reporting/GroupBlock';
 import { DetailsBatchBlock } from '../../../models/Reporting/DetailsBatchBlock';
 import { Equipment } from '../../../models/equipment';
+import { Workshop } from '../../../models/workshop';
 
 @Component({
     selector: 'sch-view-production-item-quantum-group',
@@ -17,8 +18,10 @@ import { Equipment } from '../../../models/equipment';
 export class ViewProductionItemQuantumGroupComponent implements OnInit {
 
     @Input()
-    public set setSelectedGroup(block: GroupBlock) {
-        this.selectedGroup = block;
+    public set setSelectedGroup(block: { group: GroupBlock, workshop: Workshop }) {
+        this.allEquipments = [];
+        this.selectedGroup = block.group;
+        this.workshop = block.workshop;
         this.defaultZoom();
 
         this.generateColors();
@@ -27,6 +30,7 @@ export class ViewProductionItemQuantumGroupComponent implements OnInit {
 
     public colors: { detailId: number, color: string }[] = [];
     public selectedGroup: GroupBlock;
+    public workshop: Workshop;
     public filteredDetailsBlocks: DetailsBatchBlock[] = [];
     public allEquipments: Equipment[] = [];
 
@@ -37,7 +41,8 @@ export class ViewProductionItemQuantumGroupComponent implements OnInit {
 
     public defaultZoom() {
         this.filteredDetailsBlocks = new Array<DetailsBatchBlock>();
-        const minTime = this.selectedGroup.detailsBatchBlocks.map(b => b.startTime).sort(function (a, b) { return a - b; })[0];
+        const minTime = this.selectedGroup.detailsBatchBlocks.filter(b => b.equipment.workshop.id === this.workshop.id)
+            .map(b => b.startTime).sort(function (a, b) { return a - b; })[0];
         this.selectedGroup.detailsBatchBlocks.forEach(g => {
             this.filteredDetailsBlocks.push(Object.assign(new DetailsBatchBlock(), g));
         });
@@ -52,7 +57,7 @@ export class ViewProductionItemQuantumGroupComponent implements OnInit {
 
     public setAllEquipments() {
         this.selectedGroup.detailsBatchBlocks.forEach(g => {
-            if (!this.allEquipments.some(w => w.id === g.equipment.id)) {
+            if (g.equipment.workshop.id === this.workshop.id && !this.allEquipments.some(e => e.id === g.equipment.id)) {
                 this.allEquipments.push(g.equipment);
             }
         });

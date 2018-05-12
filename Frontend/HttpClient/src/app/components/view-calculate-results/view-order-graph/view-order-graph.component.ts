@@ -6,6 +6,7 @@ import { OrderReport } from '../../../models/Reporting/OrderReport';
 import { ActivatedRoute } from '@angular/router';
 import { OrderBlock } from '../../../models/Reporting/OrderBlock';
 import { GroupBlock } from '../../../models/Reporting/GroupBlock';
+import { Workshop } from '../../../models/workshop';
 
 @Component({
     selector: 'sch-view-order-graph',
@@ -18,7 +19,7 @@ export class ViewOrderGraphComponent implements OnInit {
 
     public selectedBlock: OrderBlock;
 
-    public selectedGroup: GroupBlock;
+    public selectedGroup: { group: GroupBlock, workshop: Workshop };
 
     public report: OrderReport;
 

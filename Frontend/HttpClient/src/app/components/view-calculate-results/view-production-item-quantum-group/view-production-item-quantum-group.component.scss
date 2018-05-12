@@ -13,7 +13,7 @@
         margin-top: 8px;
         .equipments {
             mat-card {
-                margin: 25px 0;
+                margin: 15px 0 30px 0;
                 height: 19px;
                 width: 110px;
             }
@@ -28,7 +28,7 @@
             .equipment-line {
                 display: flex;
                 position: relative;
-                margin: 25px;
+                padding: 15px 0;
                 height: 67px;
                 .mach-block {
                     height: 67px;

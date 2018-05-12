@@ -169,7 +169,6 @@ namespace Scheduler.Dto
             {
                 CreationTime = orderReport.CreationTime,
                 Id = orderReport.Id,
-                Order = new OrderDto(),
                 OrderBlocks = orderReport.OrderBlocks.Select(b => ConvertOrderBlockForView(b)).ToList()
             };
 

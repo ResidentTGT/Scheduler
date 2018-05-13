@@ -487,5 +487,15 @@ namespace Scheduler.Database
 
             return orderReport.Id;
         }
+
+        public Workshop GetWorkshop(int id)
+        {
+            return _context.Workshops.Single(w => w.Id == id);
+        }
+
+        public Workshop getWorkshopByEquipmentId(int equipmentId)
+        {
+            return _context.Equipments.Single(e => e.Id == equipmentId).Workshop;
+        }
     }
 }

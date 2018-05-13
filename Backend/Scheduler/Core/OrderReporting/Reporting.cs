@@ -19,7 +19,7 @@ namespace Scheduler.Core.OrderReporting
             _dbManager = dbManager;
         }
 
-        internal OrderReport CreateReport(Order order)
+        internal OrderReport GenerateReport(Order order)
         {
             var report = new OrderReport
             {

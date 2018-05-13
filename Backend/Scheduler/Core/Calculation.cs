@@ -27,7 +27,7 @@ namespace Scheduler.Core
             _dtoConverter = new DtoConverter();
         }
 
-        internal void CalculateOrderById(int orderId)
+        internal  void CalculateOrderById(int orderId)
         {
             var timer = new Stopwatch();
             timer.Start();
@@ -77,9 +77,15 @@ namespace Scheduler.Core
 
             Logger.Log($"Начато формирование отчета.", LogLevel.Info);
             var reporting = new Reporting(_dbManager);
-            var report = reporting.CreateReport(order);
-            _dbManager.CreateReport(report);
+            var report = reporting.GenerateReport(order);
             Logger.Log($"Закончено формирование отчета.", LogLevel.Info);
+            _dbManager.CreateReport(report);
+            Logger.Log($"Отчет сохранен в базу.", LogLevel.Info);
+            Logger.Log($"Начато формирование отчета в виде файла CSV.", LogLevel.Info);
+            var csvExporter = new CsvExporter(_dbManager);
+            csvExporter.GenerateCsvExportFile(order);
+            Logger.Log($"Закончено формирование отчета в виде файла CSV.", LogLevel.Info);
+
         }
     }
 }

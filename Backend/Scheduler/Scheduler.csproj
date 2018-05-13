@@ -78,6 +78,7 @@
     <Compile Include="Core\DeterminingOrder\DeterminingGroupsOrder.cs" />
     <Compile Include="Core\Grouping\GroupingDetails.cs" />
     <Compile Include="Core\Grouping\ProductionItemQuantumsGroup.cs" />
+    <Compile Include="Core\OrderReporting\CsvExporter.cs" />
     <Compile Include="Core\OrderReporting\Reporting.cs" />
     <Compile Include="Database\DbManager.cs" />
     <Compile Include="Dto\ConveyorDto.cs" />

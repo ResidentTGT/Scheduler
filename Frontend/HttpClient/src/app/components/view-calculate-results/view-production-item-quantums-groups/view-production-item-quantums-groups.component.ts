@@ -56,6 +56,12 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit {
         return this.filteredGroupBlocks.filter(g => g.workshop.id === workshop.id);
     }
 
+    public sortByAlpha(equipments: Workshop[]) {
+        return equipments.sort(function (a, b) {
+            return a.name.localeCompare(b.name);
+        });
+    }
+
     public GetRealGroupBlock(id: number): GroupBlock {
         return this.selectedBlock.groupBlocks.filter(b => b.id === id)[0];
     }

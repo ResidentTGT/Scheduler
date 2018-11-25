@@ -5,11 +5,11 @@
     <div class="diagram-names" [ngStyle]="{'height': 'calc(' + (97 * allEquipments.length + 35) + 'px )'}">
 
         <div class="equipments">
-            <mat-card *ngFor="let equipment of allEquipments">{{equipment.name}}</mat-card>
+            <mat-card *ngFor="let equipment of sortByAlpha(allEquipments)">{{equipment.name}}</mat-card>
         </div>
 
         <div class="diagram">
-            <div class="equipment-line" *ngFor="let equipment of allEquipments">
+            <div class="equipment-line" *ngFor="let equipment of sortByAlpha(allEquipments)">
                 <div *ngFor="let block of getBlocksInEquipment(equipment)">
                     <div class="mach-block" [ngStyle]="{'width.px':block.duration,'left.px':block.startTime,'background-color':getBlockColor(block.detailId)}">
                         <div class="name">

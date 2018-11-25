@@ -49,7 +49,7 @@ namespace Scheduler.Core.CountingTime
 
                     var diffBetween = previousGroupLastTime.Ticks - startTimes.Min().Ticks;
 
-                   
+
                     if (diffBetween > 0)
                         for (var k = 0; k < startTimes.Count; k++)
                         {
@@ -69,7 +69,12 @@ namespace Scheduler.Core.CountingTime
 
                     if (productionItemQuantums.Count == (j + 1))
                     {
-                        previousGroupLastTime = productionItemQuantums[j].EndTimes.Max();
+                        long max = 0;
+                        foreach (var iq in productionItemQuantums)
+                            if (max < iq.EndTimes.Max().Ticks)
+                                max = iq.EndTimes.Max().Ticks;
+
+                        previousGroupLastTime = new TimeSpan(max);
                         if (isFinally)
                             productionItemQuantumsGroup.WorkshopDurations.Add(currentWorkshopGroupDurationTime);
                     }

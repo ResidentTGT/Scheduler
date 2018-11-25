@@ -75,6 +75,12 @@ export class ViewProductionItemQuantumGroupComponent implements OnInit {
         return this.filteredDetailsBlocks.filter(g => g.equipment.id === equipment.id);
     }
 
+    public sortByAlpha(equipments: Equipment[]) {
+        return equipments.sort(function (a, b) {
+            return a.name.localeCompare(b.name);
+        });
+    }
+
     public zoomPlus() {
         this.filteredDetailsBlocks.forEach(b => {
             b.duration *= 1.1;

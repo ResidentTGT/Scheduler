@@ -5,11 +5,11 @@
     <div class="diagram-names" [ngStyle]="{'height': 'calc(' + (97 * allWorkshops.length + 35) + 'px )'}">
 
         <div class="workshops">
-            <mat-card *ngFor="let workshop of allWorkshops">{{workshop.name}}</mat-card>
+            <mat-card *ngFor="let workshop of sortByAlpha(allWorkshops)">{{workshop.name}}</mat-card>
         </div>
 
         <div class="diagram">
-            <div class="workshop-line" *ngFor="let workshop of allWorkshops">
+            <div class="workshop-line" *ngFor="let workshop of sortByAlpha(allWorkshops)">
                 <div *ngFor="let group of getGroupsInWorkshop(workshop)">
                     <div class="mach-block" (click)="selectGroup(group,workshop)" [ngStyle]="{'width.px':group.duration,'left.px':group.startTime,'background-color':getBlockColor(group.groupIndex)}">
                         <div class="group-index">

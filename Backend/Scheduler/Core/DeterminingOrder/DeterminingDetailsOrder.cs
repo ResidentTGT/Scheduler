@@ -47,6 +47,22 @@ namespace Scheduler.Core.DeterminingOrder
                     Logger.Log($"Определение суммарного времени обработки группы по правилу SPT закончено. Получившееся время: {time}", LogLevel.Trace);
                     dictDecisiveRulesTimes.Add("SPT", time);
 
+                    Logger.Log($"Сортировка деталей по правилу LPT начата.", LogLevel.Trace);
+                    Lpt.SortDetails(productionItemQuantumsGroup);
+                    Logger.Log($"Сортировка деталей по правилу LPT закончена.", LogLevel.Trace);
+                    Logger.Log($"Определение суммарного времени обработки группы по правилу LPT начато.", LogLevel.Trace);
+                    time = detailsTiming.CountGroupMachiningTime(productionItemQuantumsGroup, false, orderQuantum.ItemsCountInOnePart);
+                    Logger.Log($"Определение суммарного времени обработки группы по правилу LPT закончено. Получившееся время: {time}", LogLevel.Trace);
+                    dictDecisiveRulesTimes.Add("LPT", time);
+
+                    Logger.Log($"Сортировка деталей по правилу ReverseLukr начата.", LogLevel.Trace);
+                    ReverseLukr.SortDetails(productionItemQuantumsGroup);
+                    Logger.Log($"Сортировка деталей по правилу ReverseLukr закончена.", LogLevel.Trace);
+                    Logger.Log($"Определение суммарного времени обработки группы по правилу ReverseLukr начато.", LogLevel.Trace);
+                    time = detailsTiming.CountGroupMachiningTime(productionItemQuantumsGroup, false, orderQuantum.ItemsCountInOnePart);
+                    Logger.Log($"Определение суммарного времени обработки группы по правилу ReverseLukr закончено. Получившееся время: {time}", LogLevel.Trace);
+                    dictDecisiveRulesTimes.Add("ReverseLukr", time);
+
                     Logger.Log($"Выбор и сортировка деталей по лучшему правилу начаты.", LogLevel.Trace);
                     SortByLowestTime(detailsTiming,productionItemQuantumsGroup, dictDecisiveRulesTimes, orderQuantum.ItemsCountInOnePart);
                     Logger.Log($"Выбор и сортировка деталей по лучшему правилу закончены.", LogLevel.Trace);
@@ -70,6 +86,12 @@ namespace Scheduler.Core.DeterminingOrder
                     break;
                 case "SPT":
                     Spt.SortDetails(productionItemQuantumsGroup);
+                    break;
+                case "LPT":
+                    Lpt.SortDetails(productionItemQuantumsGroup);
+                    break;
+                case "ReverseLukr":
+                    Lukr.SortDetails(productionItemQuantumsGroup);
                     break;
                 default:
                     break;

@@ -43,6 +43,24 @@ namespace Scheduler.Core.DeterminingOrder
                 Logger.Log($"Определение суммарного времени обработки части партии издлий по правилу SPT закончено. Получившееся время: {time}", LogLevel.Trace);
                 dictDecisiveRulesTimes.Add("SPT", time);
 
+                Logger.Log($"Сортировка групп по правилу LPT начата.", LogLevel.Trace);
+                Lukr.SortGroups(orderQuantum.ProductionItem);
+                Logger.Log($"Сортировка групп по правилу LPT закончена.", LogLevel.Trace);
+                Logger.Log($"Определение суммарного времени обработки части партии издлий по правилу LPT начато.", LogLevel.Trace);
+                time = GroupsTiming.CountProductionItemMachiningTime(orderQuantum, false);
+                Logger.Log($"Определение суммарного времени обработки части партии издлий по правилу LPT закончено. Получившееся время: {time}", LogLevel.Trace);
+                dictDecisiveRulesTimes.Add("LPT", time);
+
+                Logger.Log($"Сортировка групп по правилу ReverseLukr начата.", LogLevel.Trace);
+                Lukr.SortGroups(orderQuantum.ProductionItem);
+                Logger.Log($"Сортировка групп по правилу ReverseLukr закончена.", LogLevel.Trace);
+                Logger.Log($"Определение суммарного времени обработки части партии издлий по правилу ReverseLukr начато.", LogLevel.Trace);
+                time = GroupsTiming.CountProductionItemMachiningTime(orderQuantum, false);
+                Logger.Log($"Определение суммарного времени обработки части партии издлий по правилу ReverseLukr закончено. Получившееся время: {time}", LogLevel.Trace);
+                dictDecisiveRulesTimes.Add("ReverseLukr", time);
+
+
+
                 Logger.Log($"Выбор и сортировка групп по лучшему правилу начаты.", LogLevel.Trace);
                 SortByLowestTime(orderQuantum, dictDecisiveRulesTimes);
                 Logger.Log($"Выбор и сортировка групп по лучшему правилу закончены.", LogLevel.Trace);
@@ -64,6 +82,12 @@ namespace Scheduler.Core.DeterminingOrder
                     break;
                 case "SPT":
                     Spt.SortGroups(orderQuantum.ProductionItem);
+                    break;
+                case "LPT":
+                    Spt.SortGroups(orderQuantum.ProductionItem);
+                    break;
+                case "ReverseLukr":
+                    Lukr.SortGroups(orderQuantum.ProductionItem);
                     break;
                 default:
                     break;

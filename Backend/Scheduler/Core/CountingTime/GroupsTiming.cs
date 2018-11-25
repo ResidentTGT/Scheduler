@@ -54,7 +54,11 @@ namespace Scheduler.Core.CountingTime
                 }
             }
 
-            productionItemTime = groups.Last().WorkshopEndTimes.Max();
+            long max = 0;
+            foreach (var group in groups)
+                max = (Math.Max(max, group.WorkshopEndTimes.Max().Ticks));
+            productionItemTime = new TimeSpan(max);
+
 
             if (isFinally)
             {

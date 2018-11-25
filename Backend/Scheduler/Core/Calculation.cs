@@ -27,7 +27,7 @@ namespace Scheduler.Core
             _dtoConverter = new DtoConverter();
         }
 
-        internal  void CalculateOrderById(int orderId)
+        internal void CalculateOrderById(int orderId)
         {
             var timer = new Stopwatch();
             timer.Start();

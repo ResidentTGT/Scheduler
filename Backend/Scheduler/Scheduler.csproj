@@ -71,7 +71,9 @@
     <Compile Include="Core\Calculation.cs" />
     <Compile Include="Core\CountingTime\GroupsTiming.cs" />
     <Compile Include="Core\CountingTime\OrderQuantumsTiming.cs" />
+    <Compile Include="Core\DecisiveRules\Lpt.cs" />
     <Compile Include="Core\DecisiveRules\Lukr.cs" />
+    <Compile Include="Core\DecisiveRules\ReverseLukr.cs" />
     <Compile Include="Core\DecisiveRules\Spt.cs" />
     <Compile Include="Core\CountingTime\DetailsTiming.cs" />
     <Compile Include="Core\DeterminingOrder\DeterminingDetailsOrder.cs" />
@@ -112,6 +114,10 @@
     <Compile Include="Migrations\201805061407256_AddOrderReportModel.Designer.cs">
       <DependentUpon>201805061407256_AddOrderReportModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811251454380_AddedTransport.cs" />
+    <Compile Include="Migrations\201811251454380_AddedTransport.Designer.cs">
+      <DependentUpon>201811251454380_AddedTransport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
     <Compile Include="Model\Detail.cs" />
@@ -126,6 +132,8 @@
     <Compile Include="Model\Order.cs" />
     <Compile Include="Model\OrderQuantum.cs" />
     <Compile Include="Model\Route.cs" />
+    <Compile Include="Model\Transport.cs" />
+    <Compile Include="Model\TransportOperation.cs" />
     <Compile Include="Model\Workshop.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -153,6 +161,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805061407256_AddOrderReportModel.resx">
       <DependentUpon>201805061407256_AddOrderReportModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811251454380_AddedTransport.resx">
+      <DependentUpon>201811251454380_AddedTransport.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

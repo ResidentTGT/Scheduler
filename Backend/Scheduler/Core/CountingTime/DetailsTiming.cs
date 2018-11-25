@@ -46,9 +46,10 @@ namespace Scheduler.Core.CountingTime
                     if (j != 0)
                         ShiftTime(productionItemQuantums, operationsInWorkshop, productionItemQuantumsGroup.WorkshopSequence[i], j, startTimes, endTimes);
 
-                    currentWorkshopGroupDurationTime = endTimes.Max();
 
                     var diffBetween = previousGroupLastTime.Ticks - startTimes.Min().Ticks;
+
+                   
                     if (diffBetween > 0)
                         for (var k = 0; k < startTimes.Count; k++)
                         {
@@ -62,6 +63,9 @@ namespace Scheduler.Core.CountingTime
                         productionItemQuantums[j].StartTimes.Add(startTime);
                     foreach (var endTime in endTimes)
                         productionItemQuantums[j].EndTimes.Add(endTime);
+
+                    if (endTimes.Max().Ticks - previousGroupLastTime.Ticks > currentWorkshopGroupDurationTime.Ticks)
+                        currentWorkshopGroupDurationTime = new TimeSpan(endTimes.Max().Ticks - previousGroupLastTime.Ticks);
 
                     if (productionItemQuantums.Count == (j + 1))
                     {
@@ -100,9 +104,11 @@ namespace Scheduler.Core.CountingTime
 
                     var prevDetailOper = prevOperationsInWorkshop.FirstOrDefault(o => o.EquipmentId == operationsInWorkshop[i].EquipmentId);
 
+                    var allPrevOperations = _groupingDetails.GetSortedByRouteOperationsByWorkshopId(productionItemQuantums[lastProductionItemQuantumIndex - j], null);
+
                     if (prevDetailOper != null)
                     {
-                        var diff = productionItemQuantums[lastProductionItemQuantumIndex - j].EndTimes[prevOperationsInWorkshop.IndexOf(prevDetailOper)] - startTimes[i];
+                        var diff = productionItemQuantums[lastProductionItemQuantumIndex - j].EndTimes[allPrevOperations.IndexOf(prevDetailOper)] - startTimes[i];
 
                         if (diff > maxDiff)
                             maxDiff = diff;

@@ -43,5 +43,7 @@ namespace Scheduler.Model
         public List<TimeSpan> AssemblingStartTimes { get; set; }
         public List<TimeSpan> AssemblingEndTimes { get; set; }
         public List<TimeSpan> AssemblingDurations { get; set; }
+
+        public virtual ICollection<TransportOperation> TransportOperations { get; set; }
     }
 }

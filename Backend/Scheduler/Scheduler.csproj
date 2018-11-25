@@ -106,17 +106,9 @@
     <Compile Include="HttpServer\HttpServerFactory.cs" />
     <Compile Include="HttpServer\NancyServer.cs" />
     <Compile Include="Log\Logger.cs" />
-    <Compile Include="Migrations\201804071938101_InitialDb.cs" />
-    <Compile Include="Migrations\201804071938101_InitialDb.Designer.cs">
-      <DependentUpon>201804071938101_InitialDb.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805061407256_AddOrderReportModel.cs" />
-    <Compile Include="Migrations\201805061407256_AddOrderReportModel.Designer.cs">
-      <DependentUpon>201805061407256_AddOrderReportModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811251454380_AddedTransport.cs" />
-    <Compile Include="Migrations\201811251454380_AddedTransport.Designer.cs">
-      <DependentUpon>201811251454380_AddedTransport.cs</DependentUpon>
+    <Compile Include="Migrations\201811252008500_initial.cs" />
+    <Compile Include="Migrations\201811252008500_initial.Designer.cs">
+      <DependentUpon>201811252008500_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
@@ -156,14 +148,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201804071938101_InitialDb.resx">
-      <DependentUpon>201804071938101_InitialDb.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805061407256_AddOrderReportModel.resx">
-      <DependentUpon>201805061407256_AddOrderReportModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811251454380_AddedTransport.resx">
-      <DependentUpon>201811251454380_AddedTransport.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201811252008500_initial.resx">
+      <DependentUpon>201811252008500_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,6 +39,11 @@ namespace Scheduler.Model
         /// </summary>
         public float AverageSpeed { get; set; }
 
+        [NotMapped]
         public bool? IsFree { get; set; }
+
+        public bool IsAvailable { get; set; } = true;
+
+        public virtual ICollection<TransportOperation> TransportOperations { get; set; }
     }
 }

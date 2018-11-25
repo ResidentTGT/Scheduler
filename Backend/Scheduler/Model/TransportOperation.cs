@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,10 @@ namespace Scheduler.Model
         public int Id { get; set; }
 
         public int FirstWorkshopId { get; set; }
+        [NotMapped]
         public virtual Workshop FirstWorkshop { get; set; }
-
         public int SecondWorkshopId { get; set; }
+        [NotMapped]
         public virtual Workshop SecondWorkshop { get; set; }
 
         /// <summary>

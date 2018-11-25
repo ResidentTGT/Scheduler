@@ -3,7 +3,7 @@ namespace Scheduler.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialDb : DbMigration
+    public partial class initial : DbMigration
     {
         public override void Up()
         {
@@ -70,6 +70,10 @@ namespace Scheduler.Migrations
                         Description = c.String(),
                         Cost = c.Int(),
                         IsPurchased = c.Boolean(),
+                        Height = c.Int(nullable: false),
+                        Width = c.Int(nullable: false),
+                        Length = c.Int(nullable: false),
+                        Mass = c.Int(nullable: false),
                         WorkshopSequenceStr = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
@@ -134,6 +138,113 @@ namespace Scheduler.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.OrderReports",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        OrderId = c.Int(nullable: false),
+                        CreationTime = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Orders", t => t.OrderId, cascadeDelete: true)
+                .Index(t => t.OrderId);
+            
+            CreateTable(
+                "dbo.OrderBlocks",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        OrderReportId = c.Int(nullable: false),
+                        ProductionItemId = c.Int(nullable: false),
+                        ProductionItemsCount = c.Int(nullable: false),
+                        ProductionItemsName = c.String(),
+                        StartTime = c.Long(nullable: false),
+                        Duration = c.Long(nullable: false),
+                        IsMachining = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.OrderReports", t => t.OrderReportId, cascadeDelete: true)
+                .Index(t => t.OrderReportId);
+            
+            CreateTable(
+                "dbo.GroupBlocks",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        GroupIndex = c.Int(nullable: false),
+                        OrderBlockId = c.Int(nullable: false),
+                        StartTime = c.Long(nullable: false),
+                        Duration = c.Long(nullable: false),
+                        WorkshopId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Workshops", t => t.WorkshopId, cascadeDelete: true)
+                .ForeignKey("dbo.OrderBlocks", t => t.OrderBlockId, cascadeDelete: true)
+                .Index(t => t.OrderBlockId)
+                .Index(t => t.WorkshopId);
+            
+            CreateTable(
+                "dbo.DetailsBatchBlocks",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        DetailId = c.Int(nullable: false),
+                        DetailName = c.String(),
+                        DetailsCount = c.Int(nullable: false),
+                        GroupBlockId = c.Int(nullable: false),
+                        StartTime = c.Long(nullable: false),
+                        Duration = c.Long(nullable: false),
+                        EquipmentId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Equipments", t => t.EquipmentId, cascadeDelete: true)
+                .ForeignKey("dbo.GroupBlocks", t => t.GroupBlockId, cascadeDelete: true)
+                .Index(t => t.GroupBlockId)
+                .Index(t => t.EquipmentId);
+            
+            CreateTable(
+                "dbo.Workshops",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Description = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.TransportOperations",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        FirstWorkshopId = c.Int(nullable: false),
+                        SecondWorkshopId = c.Int(nullable: false),
+                        Distance = c.Single(nullable: false),
+                        TransportId = c.Int(nullable: false),
+                        OrderQuantumId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.OrderQuantums", t => t.OrderQuantumId, cascadeDelete: true)
+                .ForeignKey("dbo.Transports", t => t.TransportId, cascadeDelete: true)
+                .Index(t => t.TransportId)
+                .Index(t => t.OrderQuantumId);
+            
+            CreateTable(
+                "dbo.Transports",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Height = c.Int(nullable: false),
+                        Width = c.Int(nullable: false),
+                        Length = c.Int(nullable: false),
+                        LoadCapacity = c.Int(nullable: false),
+                        UnloadingTime = c.Time(nullable: false, precision: 7),
+                        AverageSpeed = c.Single(nullable: false),
+                        IsFree = c.Boolean(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.Routes",
                 c => new
                     {
@@ -147,16 +258,6 @@ namespace Scheduler.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Details", t => t.DetailId)
                 .Index(t => t.DetailId);
-            
-            CreateTable(
-                "dbo.Workshops",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        Description = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.RouteOperations",
@@ -176,7 +277,6 @@ namespace Scheduler.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.Equipments", "ConveyorId", "dbo.Conveyors");
-            DropForeignKey("dbo.Equipments", "WorkshopId", "dbo.Workshops");
             DropForeignKey("dbo.Operations", "EquipmentId", "dbo.Equipments");
             DropForeignKey("dbo.Operations", "DetailId", "dbo.Details");
             DropForeignKey("dbo.RouteOperations", "Operation_Id", "dbo.Operations");
@@ -184,12 +284,29 @@ namespace Scheduler.Migrations
             DropForeignKey("dbo.Routes", "DetailId", "dbo.Details");
             DropForeignKey("dbo.ProductionItems", "Detail_Id", "dbo.Details");
             DropForeignKey("dbo.ProductionItemQuantums", "ProductionItemId", "dbo.ProductionItems");
+            DropForeignKey("dbo.TransportOperations", "TransportId", "dbo.Transports");
+            DropForeignKey("dbo.TransportOperations", "OrderQuantumId", "dbo.OrderQuantums");
             DropForeignKey("dbo.OrderQuantums", "ProductionItemId", "dbo.ProductionItems");
+            DropForeignKey("dbo.OrderReports", "OrderId", "dbo.Orders");
+            DropForeignKey("dbo.OrderBlocks", "OrderReportId", "dbo.OrderReports");
+            DropForeignKey("dbo.GroupBlocks", "OrderBlockId", "dbo.OrderBlocks");
+            DropForeignKey("dbo.GroupBlocks", "WorkshopId", "dbo.Workshops");
+            DropForeignKey("dbo.Equipments", "WorkshopId", "dbo.Workshops");
+            DropForeignKey("dbo.DetailsBatchBlocks", "GroupBlockId", "dbo.GroupBlocks");
+            DropForeignKey("dbo.DetailsBatchBlocks", "EquipmentId", "dbo.Equipments");
             DropForeignKey("dbo.OrderQuantums", "OrderId", "dbo.Orders");
             DropForeignKey("dbo.ProductionItemQuantums", "DetailId", "dbo.Details");
             DropIndex("dbo.RouteOperations", new[] { "Operation_Id" });
             DropIndex("dbo.RouteOperations", new[] { "Route_Id" });
             DropIndex("dbo.Routes", new[] { "DetailId" });
+            DropIndex("dbo.TransportOperations", new[] { "OrderQuantumId" });
+            DropIndex("dbo.TransportOperations", new[] { "TransportId" });
+            DropIndex("dbo.DetailsBatchBlocks", new[] { "EquipmentId" });
+            DropIndex("dbo.DetailsBatchBlocks", new[] { "GroupBlockId" });
+            DropIndex("dbo.GroupBlocks", new[] { "WorkshopId" });
+            DropIndex("dbo.GroupBlocks", new[] { "OrderBlockId" });
+            DropIndex("dbo.OrderBlocks", new[] { "OrderReportId" });
+            DropIndex("dbo.OrderReports", new[] { "OrderId" });
             DropIndex("dbo.OrderQuantums", new[] { "OrderId" });
             DropIndex("dbo.OrderQuantums", new[] { "ProductionItemId" });
             DropIndex("dbo.ProductionItems", new[] { "Detail_Id" });
@@ -200,8 +317,14 @@ namespace Scheduler.Migrations
             DropIndex("dbo.Equipments", new[] { "ConveyorId" });
             DropIndex("dbo.Equipments", new[] { "WorkshopId" });
             DropTable("dbo.RouteOperations");
-            DropTable("dbo.Workshops");
             DropTable("dbo.Routes");
+            DropTable("dbo.Transports");
+            DropTable("dbo.TransportOperations");
+            DropTable("dbo.Workshops");
+            DropTable("dbo.DetailsBatchBlocks");
+            DropTable("dbo.GroupBlocks");
+            DropTable("dbo.OrderBlocks");
+            DropTable("dbo.OrderReports");
             DropTable("dbo.Orders");
             DropTable("dbo.OrderQuantums");
             DropTable("dbo.ProductionItems");

@@ -12,5 +12,9 @@ export class GroupBlock {
 
     public duration: number;
 
+    public transportStartTime: number;
+
+    public transportDuration: number;
+
     public detailsBatchBlocks: DetailsBatchBlock[];
 }

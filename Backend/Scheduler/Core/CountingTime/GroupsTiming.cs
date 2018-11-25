@@ -11,7 +11,9 @@ namespace Scheduler.Core.CountingTime
 {
     internal static class GroupsTiming
     {
-        public static TimeSpan CountProductionItemMachiningTime(OrderQuantum orderQuantum, bool isFinally)
+        private static int _currentTime { get; set; }
+
+        public static TimeSpan CountProductionItemMachiningTime(OrderQuantum orderQuantum, List<Transport> transports, bool isFinally)
         {
             Logger.Log($"Начат расчет времени части партии изделия: {orderQuantum.ProductionItem.Title}", LogLevel.Info);
 
@@ -23,7 +25,7 @@ namespace Scheduler.Core.CountingTime
             {
                 var currentGroup = groups[i];
 
-                CountTimesForGroup(currentGroup);
+                CountTimesForGroup(currentGroup, transports);
 
                 if (i != 0)
                 {
@@ -78,7 +80,7 @@ namespace Scheduler.Core.CountingTime
             return productionItemTime;
         }
 
-        private static void CountTimesForGroup(ProductionItemQuantumsGroup group)
+        private static void CountTimesForGroup(ProductionItemQuantumsGroup group, List<Transport> transports)
         {
             for (var j = 0; j < group.WorkshopSequence.Count; j++)
             {

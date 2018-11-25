@@ -497,5 +497,10 @@ namespace Scheduler.Database
         {
             return _context.Equipments.Single(e => e.Id == equipmentId).Workshop;
         }
+
+        public List<Transport> GetAvailableTransport()
+        {
+            return _context.Transports.Where(t => t.IsAvailable == true).ToList();
+        }
     }
 }

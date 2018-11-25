@@ -61,7 +61,8 @@ namespace Scheduler.Core
             determiningDetailsOrder.DetermineDetailsOrderInGroups(order);
             Logger.Log($"Закончено определение порядка обработки деталей на станках для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
 
-            var determiningGroupsOrder = new DeterminingGroupsOrder(_dbManager);
+            var transports = _dbManager.GetAvailableTransport();
+            var determiningGroupsOrder = new DeterminingGroupsOrder(_dbManager,transports);
             Logger.Log($"Начато определение порядка обработки групп для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);
             determiningGroupsOrder.DetermineGroupsOrder(order);
             Logger.Log($"Закончено определение порядка обработки групп для заказа: id = {order.Id}, название = '{order.Name}'.", LogLevel.Info);

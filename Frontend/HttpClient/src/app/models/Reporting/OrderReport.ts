@@ -18,6 +18,9 @@ export class OrderReport {
         return Object.assign(
             new OrderReport(),
             obj,
+            {
+                orderBlocks: obj.orderBlocks ? obj.orderBlocks.map(g => OrderBlock.fromJSON(g)) : []
+            }
         );
     }
 }

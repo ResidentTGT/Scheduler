@@ -74,17 +74,12 @@ namespace Scheduler.Database
              .WithRequired(b => b.GroupBlock);
             modelBuilder.Entity<GroupBlock>()
             .HasRequired(o => o.Workshop);
+            modelBuilder.Entity<GroupBlock>()
+             .HasOptional(o => o.TransportOperationBlock)
+             .WithRequired(b => b.GroupBlock);
 
             modelBuilder.Entity<DetailsBatchBlock>()
            .HasRequired(o => o.Equipment);
-
-            modelBuilder.Entity<TransportOperation>()
-            .HasRequired(o => o.Transport)
-            .WithMany(b => b.TransportOperations);
-
-            modelBuilder.Entity<TransportOperation>()
-           .HasRequired(o => o.OrderQuantum)
-           .WithMany(b => b.TransportOperations);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -119,7 +114,7 @@ namespace Scheduler.Database
 
         public virtual DbSet<Transport> Transports { get; set; }
 
-        public virtual DbSet<TransportOperation> TransportOperations { get; set; }
+        public virtual DbSet<TransportOperationBlock> TransportOperationBlocks { get; set; }
 
     }
 

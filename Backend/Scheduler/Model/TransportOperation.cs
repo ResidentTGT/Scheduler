@@ -12,10 +12,9 @@ namespace Scheduler.Model
         public int Id { get; set; }
 
         public int FirstWorkshopId { get; set; }
-        [NotMapped]
         public virtual Workshop FirstWorkshop { get; set; }
-        public int SecondWorkshopId { get; set; }
-        [NotMapped]
+
+        public int? SecondWorkshopId { get; set; }
         public virtual Workshop SecondWorkshop { get; set; }
 
         /// <summary>
@@ -23,10 +22,9 @@ namespace Scheduler.Model
         /// </summary>
         public float Distance { get; set; }
 
+        public TimeSpan Duration { get; set; }
+
         public int TransportId { get; set; }
         public virtual Transport Transport { get; set; }
-
-        public int OrderQuantumId { get; set; }
-        public virtual OrderQuantum OrderQuantum { get; set; }
     }
 }

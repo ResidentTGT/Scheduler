@@ -3,7 +3,7 @@ namespace Scheduler.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initial : DbMigration
+    public partial class Init : DbMigration
     {
         public override void Up()
         {
@@ -176,6 +176,7 @@ namespace Scheduler.Migrations
                         StartTime = c.Long(nullable: false),
                         Duration = c.Long(nullable: false),
                         WorkshopId = c.Int(nullable: false),
+                        TransportOperationBlockId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Workshops", t => t.WorkshopId, cascadeDelete: true)
@@ -203,6 +204,23 @@ namespace Scheduler.Migrations
                 .Index(t => t.EquipmentId);
             
             CreateTable(
+                "dbo.TransportOperationBlocks",
+                c => new
+                    {
+                        Id = c.Int(nullable: false),
+                        FirstWorkshopId = c.Int(nullable: false),
+                        FirstWorkshopName = c.String(),
+                        SecondWorkshopId = c.Int(),
+                        SecondWorkshopName = c.String(),
+                        Distance = c.Single(nullable: false),
+                        Duration = c.Long(nullable: false),
+                        GroupBlockId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.GroupBlocks", t => t.Id)
+                .Index(t => t.Id);
+            
+            CreateTable(
                 "dbo.Workshops",
                 c => new
                     {
@@ -218,16 +236,21 @@ namespace Scheduler.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         FirstWorkshopId = c.Int(nullable: false),
-                        SecondWorkshopId = c.Int(nullable: false),
+                        SecondWorkshopId = c.Int(),
                         Distance = c.Single(nullable: false),
+                        Duration = c.Time(nullable: false, precision: 7),
                         TransportId = c.Int(nullable: false),
-                        OrderQuantumId = c.Int(nullable: false),
+                        OrderQuantum_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.OrderQuantums", t => t.OrderQuantumId, cascadeDelete: true)
+                .ForeignKey("dbo.Workshops", t => t.FirstWorkshopId, cascadeDelete: true)
+                .ForeignKey("dbo.Workshops", t => t.SecondWorkshopId)
                 .ForeignKey("dbo.Transports", t => t.TransportId, cascadeDelete: true)
+                .ForeignKey("dbo.OrderQuantums", t => t.OrderQuantum_Id)
+                .Index(t => t.FirstWorkshopId)
+                .Index(t => t.SecondWorkshopId)
                 .Index(t => t.TransportId)
-                .Index(t => t.OrderQuantumId);
+                .Index(t => t.OrderQuantum_Id);
             
             CreateTable(
                 "dbo.Transports",
@@ -240,7 +263,7 @@ namespace Scheduler.Migrations
                         LoadCapacity = c.Int(nullable: false),
                         UnloadingTime = c.Time(nullable: false, precision: 7),
                         AverageSpeed = c.Single(nullable: false),
-                        IsFree = c.Boolean(),
+                        IsAvailable = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -284,14 +307,17 @@ namespace Scheduler.Migrations
             DropForeignKey("dbo.Routes", "DetailId", "dbo.Details");
             DropForeignKey("dbo.ProductionItems", "Detail_Id", "dbo.Details");
             DropForeignKey("dbo.ProductionItemQuantums", "ProductionItemId", "dbo.ProductionItems");
+            DropForeignKey("dbo.TransportOperations", "OrderQuantum_Id", "dbo.OrderQuantums");
             DropForeignKey("dbo.TransportOperations", "TransportId", "dbo.Transports");
-            DropForeignKey("dbo.TransportOperations", "OrderQuantumId", "dbo.OrderQuantums");
+            DropForeignKey("dbo.TransportOperations", "SecondWorkshopId", "dbo.Workshops");
+            DropForeignKey("dbo.TransportOperations", "FirstWorkshopId", "dbo.Workshops");
             DropForeignKey("dbo.OrderQuantums", "ProductionItemId", "dbo.ProductionItems");
             DropForeignKey("dbo.OrderReports", "OrderId", "dbo.Orders");
             DropForeignKey("dbo.OrderBlocks", "OrderReportId", "dbo.OrderReports");
             DropForeignKey("dbo.GroupBlocks", "OrderBlockId", "dbo.OrderBlocks");
             DropForeignKey("dbo.GroupBlocks", "WorkshopId", "dbo.Workshops");
             DropForeignKey("dbo.Equipments", "WorkshopId", "dbo.Workshops");
+            DropForeignKey("dbo.TransportOperationBlocks", "Id", "dbo.GroupBlocks");
             DropForeignKey("dbo.DetailsBatchBlocks", "GroupBlockId", "dbo.GroupBlocks");
             DropForeignKey("dbo.DetailsBatchBlocks", "EquipmentId", "dbo.Equipments");
             DropForeignKey("dbo.OrderQuantums", "OrderId", "dbo.Orders");
@@ -299,8 +325,11 @@ namespace Scheduler.Migrations
             DropIndex("dbo.RouteOperations", new[] { "Operation_Id" });
             DropIndex("dbo.RouteOperations", new[] { "Route_Id" });
             DropIndex("dbo.Routes", new[] { "DetailId" });
-            DropIndex("dbo.TransportOperations", new[] { "OrderQuantumId" });
+            DropIndex("dbo.TransportOperations", new[] { "OrderQuantum_Id" });
             DropIndex("dbo.TransportOperations", new[] { "TransportId" });
+            DropIndex("dbo.TransportOperations", new[] { "SecondWorkshopId" });
+            DropIndex("dbo.TransportOperations", new[] { "FirstWorkshopId" });
+            DropIndex("dbo.TransportOperationBlocks", new[] { "Id" });
             DropIndex("dbo.DetailsBatchBlocks", new[] { "EquipmentId" });
             DropIndex("dbo.DetailsBatchBlocks", new[] { "GroupBlockId" });
             DropIndex("dbo.GroupBlocks", new[] { "WorkshopId" });
@@ -321,6 +350,7 @@ namespace Scheduler.Migrations
             DropTable("dbo.Transports");
             DropTable("dbo.TransportOperations");
             DropTable("dbo.Workshops");
+            DropTable("dbo.TransportOperationBlocks");
             DropTable("dbo.DetailsBatchBlocks");
             DropTable("dbo.GroupBlocks");
             DropTable("dbo.OrderBlocks");

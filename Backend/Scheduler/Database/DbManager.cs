@@ -211,7 +211,8 @@ namespace Scheduler.Database
         {
             var report = _context.OrderReports
                 .Include(r => r.OrderBlocks.Select(ob => ob.GroupBlocks.Select(gb => gb.DetailsBatchBlocks.Select(dbb => dbb.Equipment.Workshop))))
-                .Single(r => r.OrderId == id);
+                .ToList()
+                .LastOrDefault(r => r.OrderId == id);
 
             return report;
         }

@@ -16,4 +16,18 @@ export class OrderBlock {
     public isMachining: boolean;
 
     public groupBlocks: GroupBlock[];
+
+    static fromJSON(obj: any) {
+        if (!obj) {
+            return null;
+        }
+
+        return Object.assign(
+            new OrderBlock(),
+            obj,
+            {
+                groupBlocks: obj.groupBlocks ? obj.groupBlocks.map(g => GroupBlock.fromJSON(g)) : []
+            }
+        );
+    }
 }

@@ -74,6 +74,7 @@ namespace Scheduler.Core.OrderReporting
         private List<GroupBlock> GenerateGroupBlocks(List<ProductionItemQuantumsGroup> groups, int index, TimeSpan orderBlockStartTime)
         {
             var groupBlocks = new List<GroupBlock>();
+            var workshops = _dbManager.GetWorkshops().ToList();
 
             for (int k = 0; k < groups.Count; k++)
             {
@@ -81,6 +82,9 @@ namespace Scheduler.Core.OrderReporting
 
                 for (int j = 0; j < groups[k].WorkshopSequence.Count; j++)
                 {
+                    long transportTime = 0;
+                    if (j != 0)
+                        transportTime = groups[k].TransportOperations[j - 1].Duration.Ticks;
 
                     groupBlocks.Add(new GroupBlock()
                     {
@@ -88,7 +92,16 @@ namespace Scheduler.Core.OrderReporting
                         GroupIndex = k,
                         StartTime = groups[k].WorkshopStartTimes[j].Ticks + orderBlockStartTime.Ticks,
                         WorkshopId = groups[k].WorkshopSequence[j],
-                        DetailsBatchBlocks = GenerateDetailsBatchBlocks(groups[k], groups[k].WorkshopSequence[j], groupStartTime)
+                        DetailsBatchBlocks = GenerateDetailsBatchBlocks(groups[k], groups[k].WorkshopSequence[j], groupStartTime + new TimeSpan(transportTime)),
+                        TransportOperationBlock = new TransportOperationBlock()
+                        {
+                            Distance = groups[k].TransportOperations[j].Distance,
+                            Duration = groups[k].TransportOperations[j].Duration.Ticks,
+                            FirstWorkshopId = groups[k].TransportOperations[j].FirstWorkshopId,
+                            FirstWorkshopName = workshops.FirstOrDefault(w => w.Id == groups[k].TransportOperations[j].FirstWorkshopId).Name,
+                            SecondWorkshopId = groups[k].TransportOperations[j].SecondWorkshopId,
+                            SecondWorkshopName = groups[k].TransportOperations[j].SecondWorkshop != null ? workshops.FirstOrDefault(w => w.Id == groups[k].TransportOperations[j].SecondWorkshopId).Name : "Конвейер"
+                        }
                     });
                 }
             }

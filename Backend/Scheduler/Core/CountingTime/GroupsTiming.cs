@@ -6,14 +6,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Scheduler.Core.Grouping;
+using Scheduler.Database;
 
 namespace Scheduler.Core.CountingTime
 {
-    internal static class GroupsTiming
+    internal class GroupsTiming
     {
-        private static int _currentTime { get; set; }
+        private int _currentTime { get; set; }
 
-        public static TimeSpan CountProductionItemMachiningTime(OrderQuantum orderQuantum, List<Transport> transports, bool isFinally)
+        private List<Transport> _transports;
+        private DbManager _dbManager;
+
+        internal GroupsTiming(List<Transport> transports,DbManager dbManager)
+        {
+            _transports = transports;
+            _dbManager = dbManager;
+        }
+
+        public TimeSpan CountProductionItemMachiningTime(OrderQuantum orderQuantum, bool isFinally)
         {
             Logger.Log($"Начат расчет времени части партии изделия: {orderQuantum.ProductionItem.Title}", LogLevel.Info);
 
@@ -25,7 +35,7 @@ namespace Scheduler.Core.CountingTime
             {
                 var currentGroup = groups[i];
 
-                CountTimesForGroup(currentGroup, transports);
+                CountTimesForGroup(currentGroup);
 
                 if (i != 0)
                 {
@@ -58,9 +68,8 @@ namespace Scheduler.Core.CountingTime
 
             long max = 0;
             foreach (var group in groups)
-                max = (Math.Max(max, group.WorkshopEndTimes.Max().Ticks));
+                max = (Math.Max(max, group.WorkshopEndTimes.Max().Ticks + group.TransportOperations.Last().Duration.Ticks));
             productionItemTime = new TimeSpan(max);
-
 
             if (isFinally)
             {
@@ -72,6 +81,7 @@ namespace Scheduler.Core.CountingTime
                 {
                     group.WorkshopStartTimes.Clear();
                     group.WorkshopEndTimes.Clear();
+                    group.TransportOperations.Clear();
                 }
             }
 
@@ -80,10 +90,30 @@ namespace Scheduler.Core.CountingTime
             return productionItemTime;
         }
 
-        private static void CountTimesForGroup(ProductionItemQuantumsGroup group, List<Transport> transports)
+        private void CountTimesForGroup(ProductionItemQuantumsGroup group)
         {
+
             for (var j = 0; j < group.WorkshopSequence.Count; j++)
             {
+
+                if (j != group.WorkshopSequence.Count - 1)
+                    group.TransportOperations.Add(new TransportOperation()
+                    {
+                        FirstWorkshopId = group.WorkshopSequence[j],
+                        SecondWorkshopId = group.WorkshopSequence[j + 1],
+                        Distance = 5,
+                        Duration = TimeSpan.FromTicks(100)
+                    });
+                else
+                {
+                    group.TransportOperations.Add(new TransportOperation()
+                    {
+                        FirstWorkshopId = group.WorkshopSequence[j],
+                        SecondWorkshopId = null,
+                        Distance = 5,
+                        Duration = TimeSpan.FromTicks(100)
+                    });
+                }
                 if (j == 0)
                 {
                     group.WorkshopStartTimes.Add(new TimeSpan(0));
@@ -91,9 +121,10 @@ namespace Scheduler.Core.CountingTime
                 }
                 else
                 {
-                    group.WorkshopStartTimes.Add(group.WorkshopEndTimes[j - 1]);
+                    group.WorkshopStartTimes.Add(group.WorkshopEndTimes[j - 1] + group.TransportOperations[j - 1].Duration);
                     group.WorkshopEndTimes.Add(group.WorkshopStartTimes[j] + group.WorkshopDurations[j]);
                 }
+
             }
         }
     }

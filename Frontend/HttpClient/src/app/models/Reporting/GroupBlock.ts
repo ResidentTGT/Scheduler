@@ -1,5 +1,6 @@
 import { DetailsBatchBlock } from './DetailsBatchBlock';
 import { Workshop } from '../workshop';
+import { TransportOperationBlock } from './transport-operation-block';
 
 export class GroupBlock {
     public id: number;
@@ -17,4 +18,21 @@ export class GroupBlock {
     public transportDuration: number;
 
     public detailsBatchBlocks: DetailsBatchBlock[];
+
+    public transportOperationBlock: TransportOperationBlock;
+
+    static fromJSON(obj: any) {
+        if (!obj) {
+            return null;
+        }
+
+        return Object.assign(
+            new GroupBlock(),
+            obj,
+            {
+                detailsBatchBlocks: obj.detailsBatchBlocks ? obj.detailsBatchBlocks.map(g => DetailsBatchBlock.fromJSON(g)) : [],
+                transportOperationBlock: obj.transportOperationBlock ? TransportOperationBlock.fromJSON(obj.transportOperationBlock) : null
+            }
+        );
+    }
 }

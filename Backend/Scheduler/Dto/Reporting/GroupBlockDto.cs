@@ -19,5 +19,7 @@ namespace Scheduler.Dto.Reporting
         public long Duration { get; set; }
 
         public List<DetailsBatchBlockDto> DetailsBatchBlocks { get; set; }
+
+        public TransportOperationBlockDto TransportOperationBlock { get; set; }
     }
 }

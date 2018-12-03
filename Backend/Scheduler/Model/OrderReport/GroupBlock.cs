@@ -23,5 +23,8 @@ namespace Scheduler.Model.OrderReport
         public int WorkshopId { get; set; }
 
         public virtual List<DetailsBatchBlock> DetailsBatchBlocks { get; set; }
+
+        public int TransportOperationBlockId { get; set; }
+        public virtual TransportOperationBlock TransportOperationBlock { get; set; }
     }
 }

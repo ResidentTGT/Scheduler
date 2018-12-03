@@ -11,17 +11,21 @@
         <div class="diagram">
             <div class="workshop-line" *ngFor="let workshop of sortByAlpha(allWorkshops)">
                 <div *ngFor="let group of getGroupsInWorkshop(workshop)">
-                    <div class="mach-block" (click)="selectGroup(group,workshop)" [ngStyle]="{'width.px':group.duration,'left.px':group.startTime,'background-color':getBlockColor(group.groupIndex)}">
-                        <div class="group-index">
-                            Группа {{group.groupIndex+1}}
-                        </div>
+                    <div class="block" (click)="selectGroup(group,workshop)" [ngStyle]="{'width.px':group.duration,'left.px':group.startTime,'background-color':getBlockColor(group.groupIndex)}">
 
-                        <div class="times-view">
-                            <div class="from"> {{GetRealGroupBlock(group.id).startTime}}</div>
-                            <div class="duration"> {{GetRealGroupBlock(group.id).duration}}</div>
-                            <div class="to"> {{GetRealGroupBlock(group.id).startTime + GetRealGroupBlock(group.id).duration}}</div>
-                        </div>
+                        <div class="mach">
+                            <div class="group-index">
+                                Группа {{group.groupIndex+1}}
+                            </div>
 
+                            <div class="times-view">
+                                <div class="from"> {{GetRealGroupBlock(group.id).startTime}}</div>
+                                <div class="duration"> {{GetRealGroupBlock(group.id).duration}}</div>
+                                <div class="to"> {{GetRealGroupBlock(group.id).startTime +
+                                    GetRealGroupBlock(group.id).duration}}</div>
+                            </div>
+                        </div>
+                        <div class="transport" [ngStyle]="{'width.px':100,'left.px':group.duration,'background-color':getBlockColor(group.groupIndex)}">Транспорт</div>
                     </div>
                 </div>
             </div>

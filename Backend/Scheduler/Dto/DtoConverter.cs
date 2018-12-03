@@ -208,6 +208,22 @@ namespace Scheduler.Dto
             return blockDto;
         }
 
+        internal TransportOperationBlockDto ConvertTransportOperationBlocksForView(TransportOperationBlock block)
+        {
+            var blockDto = new TransportOperationBlockDto()
+            {
+                Id = block.Id,
+                Distance = block.Distance,
+                Duration = block.Duration,
+                FirstWorkshopId = block.FirstWorkshopId,
+                FirstWorkshopName = block.FirstWorkshopName,
+                SecondWorkshopId = block.SecondWorkshopId,
+                SecondWorkshopName = block.SecondWorkshopName
+            };
+
+            return blockDto;
+        }
+
         internal GroupBlockDto ConvertGroupBlockForView(GroupBlock block)
         {
             var blockDto = new GroupBlockDto()
@@ -217,7 +233,8 @@ namespace Scheduler.Dto
                 StartTime = block.StartTime,
                 GroupIndex = block.GroupIndex,
                 Workshop = ConvertWorkshop(block.Workshop),
-                DetailsBatchBlocks = block.DetailsBatchBlocks.Select(b => ConvertDetailsBatchBlockForView(b)).ToList()
+                DetailsBatchBlocks = block.DetailsBatchBlocks.Select(b => ConvertDetailsBatchBlockForView(b)).ToList(),
+                TransportOperationBlock = ConvertTransportOperationBlocksForView(block.TransportOperationBlock),
             };
 
             return blockDto;

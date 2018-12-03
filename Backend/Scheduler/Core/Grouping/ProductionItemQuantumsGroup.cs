@@ -22,6 +22,9 @@ namespace Scheduler.Core.Grouping
         public List<TimeSpan> WorkshopStartTimes { get; set; } = new List<TimeSpan>();
         public List<TimeSpan> WorkshopEndTimes { get; set; } = new List<TimeSpan>();
         public List<TimeSpan> WorkshopDurations { get; set; } = new List<TimeSpan>();
-        
+
+        public List<TransportOperation> TransportOperations { get; set; } = new List<TransportOperation>();
+
+
     }
 }

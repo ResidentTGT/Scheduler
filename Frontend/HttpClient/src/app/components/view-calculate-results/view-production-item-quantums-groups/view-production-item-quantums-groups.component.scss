@@ -30,33 +30,44 @@
                 position: relative;
                 padding: 15px 0;
                 height: 67px;
-                .mach-block {
+                .block {
                     height: 67px;
                     position: absolute;
+                    display: flex;
                     cursor: pointer;
                     @include mat-elevation(4);
-                    .group-index {
-                        font-size: 18px;
-                        display: flex;
-                        justify-content: center;
-                        font-family: 'Roboto-Light';
-                        overflow: hidden;
-                    }
-                    .times-view {
+                    .mach {
                         position: relative;
-                        margin-top: 26px;
-                        display: flex;
-                        justify-content: space-between;
-                        overflow: hidden;
-                        .duration {
-                            margin-top: 25px;
+                        width: 100%;
+                        height: 100%;
+                        .group-index {
+                            font-size: 18px;
+                            display: flex;
+                            justify-content: center;
+                            font-family: 'Roboto-Light';
+                            overflow: hidden;
                         }
-                        .from {
-                            margin-left: 5px;
+                        .times-view {
+                            position: relative;
+                            margin-top: 26px;
+                            display: flex;
+                            justify-content: space-between;
+                            overflow: hidden;
+                            .duration {
+                                z-index: 1000;
+                                margin-top: 25px;
+                            }
+                            .from {
+                                margin-left: 5px;
+                            }
+                            .to {
+                                margin-right: 5px;
+                            }
                         }
-                        .to {
-                            margin-right: 5px;
-                        }
+                    }
+                    .transport {
+                        position: absolute;
+                        top: 67px;
                     }
                 }
             }

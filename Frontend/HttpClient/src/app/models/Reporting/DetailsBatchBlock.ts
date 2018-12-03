@@ -14,4 +14,18 @@ export class DetailsBatchBlock {
     public duration: number;
 
     public equipment: Equipment;
+
+    static fromJSON(obj: any) {
+        if (!obj) {
+            return null;
+        }
+
+        return Object.assign(
+            new DetailsBatchBlock(),
+            obj,
+            {
+                equipment: obj.equipment ? Equipment.fromJSON(obj.equipment) : null
+            }
+        );
+    }
 }

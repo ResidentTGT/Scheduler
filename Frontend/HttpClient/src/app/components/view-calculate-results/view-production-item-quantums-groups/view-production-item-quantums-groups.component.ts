@@ -70,6 +70,7 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit {
         this.filteredGroupBlocks.forEach(b => {
             b.duration *= 1.1;
             b.startTime *= 1.1;
+            b.transportOperationBlock.duration *= 1.1;
         });
     }
 
@@ -77,6 +78,7 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit {
         this.filteredGroupBlocks.forEach(b => {
             b.duration *= 0.9;
             b.startTime *= 0.9;
+            b.transportOperationBlock.duration *= 0.9;
         });
     }
 

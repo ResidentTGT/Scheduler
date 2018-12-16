@@ -17,7 +17,7 @@ namespace Scheduler.Core.CountingTime
         private List<Transport> _transports;
         private DbManager _dbManager;
 
-        internal GroupsTiming(List<Transport> transports,DbManager dbManager)
+        internal GroupsTiming(List<Transport> transports, DbManager dbManager)
         {
             _transports = transports;
             _dbManager = dbManager;
@@ -30,6 +30,8 @@ namespace Scheduler.Core.CountingTime
             var groups = orderQuantum.ProductionItem.ProductionItemQuantumsGroups;
 
             var productionItemTime = new TimeSpan(0);
+
+            CountTransport(groups);
 
             for (var i = 0; i < groups.Count; i++)
             {
@@ -66,6 +68,7 @@ namespace Scheduler.Core.CountingTime
                 }
             }
 
+
             long max = 0;
             foreach (var group in groups)
                 max = (Math.Max(max, group.WorkshopEndTimes.Max().Ticks + group.TransportOperations.Last().Duration.Ticks));
@@ -92,28 +95,8 @@ namespace Scheduler.Core.CountingTime
 
         private void CountTimesForGroup(ProductionItemQuantumsGroup group)
         {
-
             for (var j = 0; j < group.WorkshopSequence.Count; j++)
             {
-
-                if (j != group.WorkshopSequence.Count - 1)
-                    group.TransportOperations.Add(new TransportOperation()
-                    {
-                        FirstWorkshopId = group.WorkshopSequence[j],
-                        SecondWorkshopId = group.WorkshopSequence[j + 1],
-                        Distance = 5,
-                        Duration = TimeSpan.FromTicks(100)
-                    });
-                else
-                {
-                    group.TransportOperations.Add(new TransportOperation()
-                    {
-                        FirstWorkshopId = group.WorkshopSequence[j],
-                        SecondWorkshopId = null,
-                        Distance = 5,
-                        Duration = TimeSpan.FromTicks(100)
-                    });
-                }
                 if (j == 0)
                 {
                     group.WorkshopStartTimes.Add(new TimeSpan(0));
@@ -125,6 +108,30 @@ namespace Scheduler.Core.CountingTime
                     group.WorkshopEndTimes.Add(group.WorkshopStartTimes[j] + group.WorkshopDurations[j]);
                 }
 
+            }
+        }
+
+        private void CountTransport(List<ProductionItemQuantumsGroup> groups)
+        {
+            var rand = new Random();
+
+            for (var i = 0; i < groups.Count; i++)
+            {
+                var group = groups[i];
+                for (var j = 0; j < groups[i].WorkshopSequence.Count; j++)
+                {
+                    var tOperation = new TransportOperation()
+                    {
+                        FirstWorkshopId = group.WorkshopSequence[j],
+                        Distance = 5,
+                        Duration = TimeSpan.FromTicks(rand.Next(50, 100))
+                    };
+
+                    if (j != group.WorkshopSequence.Count - 1)
+                        tOperation.SecondWorkshopId = group.WorkshopSequence[j + 1];
+
+                    group.TransportOperations.Add(tOperation);
+                }
             }
         }
     }

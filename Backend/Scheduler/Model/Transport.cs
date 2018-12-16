@@ -12,19 +12,6 @@ namespace Scheduler.Model
         public int Id { get; set; }
 
         /// <summary>
-        /// см
-        /// </summary>
-        public int Height { get; set; }
-        /// <summary>
-        /// см
-        /// </summary>
-        public int Width { get; set; }
-        /// <summary>
-        /// см
-        /// </summary>
-        public int Length { get; set; }
-
-        /// <summary>
         /// кг
         /// </summary>
         public int LoadCapacity { get; set; }

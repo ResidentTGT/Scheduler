@@ -111,6 +111,10 @@
     <Compile Include="Migrations\201812031206559_Init.Designer.cs">
       <DependentUpon>201812031206559_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812131814571_ChangedTransport.cs" />
+    <Compile Include="Migrations\201812131814571_ChangedTransport.Designer.cs">
+      <DependentUpon>201812131814571_ChangedTransport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Conveyor.cs" />
     <Compile Include="Model\Detail.cs" />
@@ -152,6 +156,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201812031206559_Init.resx">
       <DependentUpon>201812031206559_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812131814571_ChangedTransport.resx">
+      <DependentUpon>201812131814571_ChangedTransport.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

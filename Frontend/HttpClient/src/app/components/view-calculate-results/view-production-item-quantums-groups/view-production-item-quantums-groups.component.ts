@@ -6,6 +6,7 @@ import { ProductionItemQuantumsGroup } from '../../../models/production-item-qua
 import { OrderBlock } from '../../../models/Reporting/OrderBlock';
 import { GroupBlock } from '../../../models/Reporting/GroupBlock';
 import { Workshop } from '../../../models/workshop';
+import { TransportOperationBlock } from '../../../models/Reporting/transport-operation-block';
 
 @Component({
     selector: 'sch-view-production-item-quantums-groups',
@@ -47,7 +48,9 @@ export class ViewProductionItemQuantumsGroupsComponent implements OnInit {
         this.filteredGroupBlocks = new Array<GroupBlock>();
         const minTime = this.selectedBlock.groupBlocks.map(b => b.startTime).sort(function (a, b) { return a - b; })[0];
         this.selectedBlock.groupBlocks.forEach(g => {
-            this.filteredGroupBlocks.push(Object.assign(new GroupBlock(), g));
+            const gb = Object.assign(new GroupBlock(), g);
+            gb.transportOperationBlock = Object.assign(new TransportOperationBlock(), g.transportOperationBlock);
+            this.filteredGroupBlocks.push(gb);
         });
         this.filteredGroupBlocks.forEach(b => b.startTime -= minTime);
     }

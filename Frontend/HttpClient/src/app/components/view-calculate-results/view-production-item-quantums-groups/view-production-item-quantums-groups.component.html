@@ -25,7 +25,7 @@
                                     GetRealGroupBlock(group.id).duration}}</div>
                             </div>
                         </div>
-                        <div class="transport" [ngStyle]="{'width.px': group.transportOperationBlock.duration,'left.px':group.duration,'background-color':getBlockColor(group.groupIndex)}">Транспорт</div>
+                        <div class="transport" [ngStyle]="{'width.px': group.transportOperationBlock.duration,'left.px':group.duration,'background-color':getBlockColor(group.groupIndex)}">{{GetRealGroupBlock(group.id).transportOperationBlock.duration}}</div>
                     </div>
                 </div>
             </div>
